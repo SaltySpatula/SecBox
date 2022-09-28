@@ -1,7 +1,6 @@
 <template>
 
   <v-app class="bg-grey-darken-4">
-    <body>
     <v-app-bar
       absolute
       color="deep-purple darken-2"
@@ -21,7 +20,10 @@
 
       <StartAnalysisDialog/>
 
-      <v-app-bar-title>SecBox</v-app-bar-title>
+      <v-app-bar-title>
+        <p>{{ greeting }}</p>
+         <p>{{ flaskGreeting }}</p>
+      </v-app-bar-title>
 
       <v-spacer></v-spacer>
 
@@ -30,7 +32,6 @@
     <v-main>
       <HelloWorld/>
     </v-main>
-  </body>
   </v-app>
 
 </template>
@@ -54,7 +55,13 @@ export default {
   },
 
   data: () => ({
-
+      greeting: 'Hello, Vue!',
+      flaskGreeting: ''
   }),
+  created: async function(){
+        const gResponse = await fetch("http://localhost:5000/greeting");
+        const gObject = await gResponse.json();
+        this.flaskGreeting = gObject.greeting;
+    }
 }
 </script>
