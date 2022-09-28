@@ -66,7 +66,7 @@
               </v-col>
             </v-row>
           </v-container>
-          <small>*indicates required field</small>
+          <small>{{processId}}</small>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -80,7 +80,7 @@
           <v-btn
             color="blue darken-1"
             text
-            @click="loading = true;dialog=false"
+            @click="loading = true;dialog=false;start()"
           >
             Save
           </v-btn>
@@ -116,14 +116,22 @@ export default {
   data: () => ({
       dialog: false,
       loading:false,
+      processId:""
     }),
   watch: {
-      loading (val) {
-        if (!val) return
-
-        setTimeout(() => (this.loading = false), 4000)
+      loading () {
+        if (this.processId){
+          this.loading = false
+        }
       },
     },
+  methods:{
+    start: async function(){
+        const gResponse = await fetch("http://localhost:5000/start");
+        const gObject = await gResponse.json();
+        this.processId = gObject.processId;
+    }
+    }
 }
 
 </script>

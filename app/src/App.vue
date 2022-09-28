@@ -21,8 +21,8 @@
       <StartAnalysisDialog/>
 
       <v-app-bar-title>
-        <p>{{ greeting }}</p>
-         <p>{{ flaskGreeting }}</p>
+        <p>{{ greeting }} - {{ flaskGreeting }}</p>
+         <p></p>
       </v-app-bar-title>
 
       <v-spacer></v-spacer>
@@ -55,7 +55,7 @@ export default {
   },
 
   data: () => ({
-      greeting: 'Hello, Vue!',
+      greeting: 'SecBox',
       flaskGreeting: ''
   }),
   created: async function(){

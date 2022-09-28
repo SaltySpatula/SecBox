@@ -44,7 +44,9 @@ import StartAnalysisDialog from "@/components/StartAnalysisDialog";
 export default {
   name: 'HomeScreen',
   components: {StartAnalysisDialog},
+
   data: () => ({
+    processId:""
   }),
 }
 </script>
