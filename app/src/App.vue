@@ -1,8 +1,10 @@
 <template>
-  <v-app>
+
+  <v-app class="bg-grey-darken-4">
+    <body>
     <v-app-bar
       absolute
-      color="indigo darken-2"
+      color="deep-purple darken-2"
       dark
       shrink-on-scroll
       prominent
@@ -21,21 +23,28 @@
         <v-icon >mdi-plus-circle</v-icon>
       </v-btn>
 
-      <v-app-bar-title>Secbox</v-app-bar-title>
+      <v-app-bar-title>SecBox</v-app-bar-title>
 
       <v-spacer></v-spacer>
 
     </v-app-bar>
+
     <v-main>
       <HelloWorld/>
     </v-main>
+  </body>
   </v-app>
-
 
 </template>
 
+<style>
+v-app {
+  color: darkslategrey;
+}
+</style>
+
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import HelloWorld from './components/HomeScreen.vue'
 
 export default {
   name: 'App',
@@ -45,7 +54,8 @@ export default {
   },
 
   data: () => ({
-    //
+
+
   }),
 }
 </script>
