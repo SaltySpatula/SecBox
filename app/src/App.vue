@@ -19,9 +19,7 @@
         <v-icon >mdi-view-dashboard</v-icon>
       </v-btn>
 
-             <v-btn icon>
-        <v-icon >mdi-plus-circle</v-icon>
-      </v-btn>
+      <StartAnalysisDialog/>
 
       <v-app-bar-title>SecBox</v-app-bar-title>
 
@@ -45,16 +43,17 @@ v-app {
 
 <script>
 import HelloWorld from './components/HomeScreen.vue'
+import StartAnalysisDialog from "@/components/StartAnalysisDialog";
 
 export default {
   name: 'App',
 
   components: {
+    StartAnalysisDialog,
     HelloWorld,
   },
 
   data: () => ({
-
 
   }),
 }
