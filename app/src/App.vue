@@ -11,12 +11,17 @@
     >
 
       <v-btn icon>
-        <v-icon >mdi-home</v-icon>
+          <router-link to="/">
+          <v-icon >mdi-home</v-icon>
+            </router-link>
       </v-btn>
 
-      <v-btn icon>
+      <router-link to="/reports">
+
+      <v-btn icon color="white">
         <v-icon >mdi-view-dashboard</v-icon>
       </v-btn>
+      </router-link>
 
       <StartAnalysisDialog/>
 
@@ -30,7 +35,7 @@
     </v-app-bar>
 
     <v-main>
-      <HelloWorld/>
+      <router-view />
     </v-main>
   </v-app>
 
@@ -43,7 +48,6 @@ v-app {
 </style>
 
 <script>
-import HelloWorld from './components/HomeScreen.vue'
 import StartAnalysisDialog from "@/components/StartAnalysisDialog";
 
 export default {
@@ -51,7 +55,7 @@ export default {
 
   components: {
     StartAnalysisDialog,
-    HelloWorld,
+
   },
 
   data: () => ({

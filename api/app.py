@@ -16,5 +16,11 @@ def create():
     return {"processId": handler.start_process()}
 
 
+@app.route("/getReports")
+def get_reports():
+    reports = handler.get_reports()
+    return {"reports": reports}
+
+
 if __name__ == '__main__':
     app.run()
