@@ -1,6 +1,8 @@
 #setup python and pip
 sudo apt-get update
-sudo apt-get install -y python3.9
+sudo apt install software-properties-common
+sudo add-apt-repository ppa:deadsnakes/ppa
+sudo apt install -y python3.9
 sudo apt-get install -y python3-pip
 
 #setup docker repository
@@ -24,27 +26,30 @@ sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-compose-plu
 sudo groupadd docker
 sudo usermod -aG docker $USER
 newgrp docker
+#setup bazel
+sudo apt install apt-transport-https curl gnupg
+curl -fsSL https://bazel.build/bazel-release.pub.gpg | gpg --dearmor >bazel-archive-keyring.gpg
+sudo mv bazel-archive-keyring.gpg /usr/share/keyrings
+echo "deb [arch=amd64 signed-by=/usr/share/keyrings/bazel-archive-keyring.gpg] https://storage.googleapis.com/bazel-apt stable jdk1.8" | sudo tee /etc/apt/sources.list.d/bazel.list
 
+sudo apt update && sudo apt install bazel
+sudo apt update && sudo apt full-upgrade
 #setup gvisor
 sudo apt-get update
-(
-  set -e
-  ARCH=$(uname -m)
-  URL=https://storage.googleapis.com/gvisor/releases/release/latest/${ARCH}
-  wget ${URL}/runsc ${URL}/runsc.sha512 \
-    ${URL}/containerd-shim-runsc-v1 ${URL}/containerd-shim-runsc-v1.sha512
-  sha512sum -c runsc.sha512 \
-    -c containerd-shim-runsc-v1.sha512
-  rm -f *.sha512
-  chmod a+rx runsc containerd-shim-runsc-v1
-  sudo mv runsc containerd-shim-runsc-v1 /usr/local/bin
-)
+sudo apt-get install unzip
+wget https://github.com/google/gvisor/archive/refs/heads/master.zip
+unzip master.zip
+cd gvisor-master
+mkdir -p bin
+make copy TARGETS=runsc DESTINATION=bin/
+sudo cp ./bin/runsc /usr/local/bin
 
 sudo /usr/local/bin/runsc install
 sudo systemctl reload docker
 
-#setup trace-specific runtime
-sudo runsc install --runtime=runsc-trace -- --pod-init-config=$PWD/monitors/session.json
+#setup sandbox- and trace-specific runtimes
+sudo runsc install --runtime=runsc-trace-infected -- --pod-init-config=$PWD/infected/session.json
+sudo runsc install --runtime=runsc-trace-healthy -- --pod-init-config=$PWD/healthy/session.json
 sudo systemctl restart docker
 
 #install dependencies

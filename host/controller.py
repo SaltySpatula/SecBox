@@ -8,6 +8,7 @@ class Controller:
         self.infectedInstance = None
 
     def __enter__(self):
+        self.start_instances("./healthy/", "./infected/")
         return self
 
     def __exit__(self, exc_type, exc_value, traceback):
@@ -66,7 +67,7 @@ class Instance:
     def start_instance(self) -> int:
         if self.container is None:
             self.container = self.client.containers.run(
-                self.image, runtime='runsc', detach=True, tty=True)
+                self.image, runtime='runsc-trace-'+self.infection_status, detach=True, tty=True)
 
     def execute_command(self, command):
         if self.container is not None:
