@@ -1,0 +1,3 @@
+sockets==1.0.0
+docker==6.0.0
+websockets==10.3
