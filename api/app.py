@@ -36,7 +36,8 @@ def greeting():
 
 
 @app.route("/start")
-def create():
+def create(data):
+    print(data)
     return {"processId": handler.start_process()}
 
 
@@ -44,6 +45,11 @@ def create():
 def get_reports():
     reports = handler.get_reports()
     return {"reports": reports}
+
+@app.route("/getAvailableMalwares")
+def get_malware():
+    malwares = handler.get_available_malwares()
+    return {"malwares": malwares}
 
 
 if __name__ == '__main__':

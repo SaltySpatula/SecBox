@@ -21,15 +21,6 @@
         <v-card-text>
           <v-container>
             <v-row>
-              <v-col
-                cols="12"
-              >
-               <v-select
-                  :items="['Mirai', 'Gafgyt']"
-                  label="Select Malware*"
-                  required
-                ></v-select>
-              </v-col>
               <v-col cols="12">
                 <v-select
                   :items="['Ubuntu']"
@@ -38,35 +29,41 @@
                 ></v-select>
               </v-col>
               <v-col cols="12">
-                <v-text-field
-                  label="Password*"
-                  type="password"
-                  required
-                ></v-text-field>
-              </v-col>
-              <v-col
-                cols="12"
-                sm="6"
-              >
-                <v-select
-                  :items="['0-17', '18-29', '30-54', '54+']"
-                  label="Age*"
-                  required
-                ></v-select>
-              </v-col>
-              <v-col
-                cols="12"
-                sm="6"
-              >
-                <v-autocomplete
-                  :items="['Skiing', 'Ice hockey', 'Soccer', 'Basketball', 'Hockey', 'Reading', 'Writing', 'Coding', 'Basejump']"
-                  label="Interests"
-                  multiple
-                ></v-autocomplete>
+                <v-table>
+                  <thead>
+                    <tr>
+                      <th>
+                        Select
+                      </th>
+                      <th class="text-left">
+                        Name
+                      </th>
+                      <th class="text-left">
+                        Type
+                      </th>
+                      <th class="text-left">
+                        Url
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr
+                      v-for="item in this.mwData"
+                      :key="item.name"
+                    >
+                      <td>
+                        <input type="radio" :id="item.hash" :value=item.hash v-model="picked_malware" />
+                        <label :for=item.hash></label>
+                      </td>
+                      <td >{{ item.name }}</td>
+                      <td>{{ item.type }}</td>
+                      <td ><a :href="item.url" target="_blank"><v-icon color="black">mdi-link-box-variant</v-icon></a></td>
+                    </tr>
+                  </tbody>
+                </v-table>
               </v-col>
             </v-row>
           </v-container>
-          <small>{{processId}}</small>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -116,22 +113,25 @@ export default {
   data: () => ({
       dialog: false,
       loading:false,
-      processId:""
+      processId:"",
+      mwData:null,
+      picked_malware:null,
+      reports:null,
     }),
-  watch: {
-      loading () {
-        if (this.processId){
-          this.loading = false
-        }
-      },
-    },
+  created: async function(){
+      const gResponse = await fetch("http://localhost:5000/getAvailableMalwares");
+      const gObject = await gResponse.json();
+      this.mwData = JSON.parse(gObject.malwares);
+      console.log(this.mwData);
+  },
   methods:{
     start: async function(){
         const gResponse = await fetch("http://localhost:5000/start");
         const gObject = await gResponse.json();
         this.processId = gObject.processId;
+        console.log(this.picked_malware)
     }
-    }
+  }
 }
 
 </script>

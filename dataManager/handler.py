@@ -17,8 +17,20 @@ def get_reports():
 
 def get_available_malwares():
     # some DB action required
-    data_set = {"1": {"name": "Mirai", "type": "elf", "tags": ["elf"]},
-                "2": {"name": "SFadf", "type": "elf", "tags": ["exe"]}}
+    data_set = {"e2394ac05edcb0094bac8a12a6d5adfdbe56239165e81b773a16a81236b28b4f": {"name": "Mirai",
+                                                                                     "type": "elf",
+                                                                                     "tags": ["elf"],
+                                                                                     "hash":"e2394ac05edcb0094bac8a12a6d5adfdbe56239165e81b773a16a81236b28b4f",
+                                                                                     "url":"https://bazaar.abuse.ch/sample/e2394ac05edcb0094bac8a12a6d5adfdbe56239165e81b773a16a81236b28b4f/"
+                                                                                     },
 
-    reports = json.dumps(data_set)
-    return reports
+                "6537d07bcfebd413e82d10b3a2308cb922605a3adae3aa8091af6548ac267106": {"name": "Gafgyt",
+                                                                                     "type": "elf",
+                                                                                     "tags": ["elf", "mirai"],
+                                                                                     "hash":"6537d07bcfebd413e82d10b3a2308cb922605a3adae3aa8091af6548ac267106",
+                                                                                    "url":"https://bazaar.abuse.ch/sample/6537d07bcfebd413e82d10b3a2308cb922605a3adae3aa8091af6548ac267106"
+                                                                                     }
+                }
+
+    malwares = json.dumps(data_set)
+    return malwares

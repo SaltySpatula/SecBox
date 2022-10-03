@@ -5,8 +5,8 @@
         <v-col cols="12" md="4">
           <v-card class="bg-deep-purple-accent-1" style="overflow-y: auto; height:50rem">
             <v-card-text >
-            <h1 class="pa-md-4"> Project Description </h1>
-            <p class="pa-md-4">
+            <h1 class="pa-md-4" align="center"> Project Description </h1>
+            <p class="pa-md-4 text-justify">
               SecBox is a light-weight, container-based sandbox for malware analysis.
               It uses Google's <a href="https://gvisor.dev/">gVisor</a> technology to create a secure and isolate environment.
               In this environment, users can securely execute malware and compare it to a baseline container in which no such malware is executed.
@@ -28,7 +28,26 @@
         </v-col>
         <v-col cols="12" md="4">
           <v-card class="bg-deep-purple-accent-1" style="overflow-y: auto; height:50rem">
-            Plot 2 goes here
+            <v-card-text >
+            <h1 class="pa-md-4" align="center"> Latest Reports </h1>
+
+            <v-row align="center" class="ma-2">
+              <v-col justify="center" cols="4" md="12" sm="12"
+                v-for="report in reports"
+                :key="report.title">
+                <v-card class="bg-purple-darken-4">
+                  <v-card-title v-text="report.title"></v-card-title>
+                  <v-card-actions >
+                    <div v-for="tag in report.tags" :key="tag" style="padding-right:10px">
+                        <v-btn flat variant="outlined">
+                                {{tag}}
+                        </v-btn>
+                      </div>
+                  </v-card-actions>
+                </v-card>
+              </v-col>
+            </v-row>
+              </v-card-text>
           </v-card>
         </v-col>
       </v-row>
@@ -46,7 +65,14 @@ export default {
   components: {StartAnalysisDialog},
 
   data: () => ({
-    processId:""
+      reports:[]
   }),
+  created: async function(){
+        const gResponse = await fetch("http://localhost:5000/getReports");
+        const gObject = await gResponse.json();
+        this.reports = JSON.parse(gObject.reports);
+        console.log(this.reports);
+
+    }
 }
 </script>
