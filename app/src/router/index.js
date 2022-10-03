@@ -1,6 +1,7 @@
 import { createWebHistory, createRouter } from "vue-router";
 import HomeScreen from "@/components/HomeScreen.vue"
 import ReportDashboard from "@/components/ReportDashboard.vue";
+import LiveAnalysis from "@/components/LiveAnalysis.vue";
 
 const routes = [
   {
@@ -12,6 +13,11 @@ const routes = [
     path: "/reports",
     name: "ReportDashboard",
     component: ReportDashboard,
+  },
+  {
+    path: "/live",
+    name: "LiveAnalysis",
+    component: LiveAnalysis,
   },
 ];
 
