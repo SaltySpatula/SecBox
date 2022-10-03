@@ -1,5 +1,0 @@
-starting up on /tmp/gvisor_events.sock
-waiting for a connection
-connection from
-received "b'\x08\x01'"
-b'\x08\x01'
