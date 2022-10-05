@@ -21,6 +21,15 @@ def handle_my_custom_event(json, methods=['GET', 'POST']):
     print('received my event: ' + str(json))
     send_data()
 
+@socketio.on("cli command")
+def post_command(json):
+    print("received command", json)
+    get_command(json)
+
+@socketio.on("cli feedback")
+def get_command(cmd):
+    emit("get cli feedback", cmd)
+
 @socketio.on('disconnect')
 def disconnect():
     print('Client disconnected')
