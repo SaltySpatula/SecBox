@@ -1,3 +1,4 @@
 sockets==1.0.0
 docker==6.0.0
 websockets==10.3
+python-socketio==5.7.1

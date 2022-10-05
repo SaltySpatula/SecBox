@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 # setup ubuntu version
-FROM ubuntu:18.04
+FROM ubuntu:latest
 
 #setup python and pip
 RUN apt-get update

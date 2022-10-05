@@ -1,11 +1,16 @@
 import docker
 from multiprocessing import Process
+import json
 
 
 class Controller:
-    def __init__(self) -> None:
+    def __init__(self, client, mw_hash, os, sandbox_id) -> None:
         self.healthyInstance = None
         self.infectedInstance = None
+        self.client = client
+        self.mw_hash = mw_hash
+        self.os = os
+        self.sandbox_id = sandbox_id
 
     def __enter__(self):
         self.start_instances("./healthy/", "./infected/")
@@ -24,11 +29,15 @@ class Controller:
     def start_instances(self, healthy_dockerfile, infected_dockerfile) -> int:
         if self.healthyInstance is None and self.infectedInstance is None:
             # setup healthy and infected instances
-            self.healthyInstance = Instance(healthy_dockerfile, "healthy")
-            self.infectedInstance = Instance(infected_dockerfile, "infected")
+            self.healthyInstance = Instance(
+                healthy_dockerfile, "healthy", self.client, self.sandbox_id)
+            self.infectedInstance = Instance(
+                infected_dockerfile, "infected", self.client, self.sandbox_id)
             # start instances
             self.healthyInstance.start_instance()
-            #self.infectedInstance.start_instance()
+            self.infectedInstance.start_instance()
+            self.client.emit('sandboxReady', {
+                             'ID': self.sandbox_id}, namespace='/sandbox')
 
     def runInParallel(self, healthyfn, infectedfn, command):
         fns = [healthyfn, infectedfn]
@@ -42,22 +51,25 @@ class Controller:
 
     def execute_command(self, command):
         self.runInParallel(self.healthyInstance.execute_command,
-                      self.infectedInstance.execute_command, command)
+                           self.infectedInstance.execute_command, command)
 
     def terminate_command(self):
         pass
         # ToDo: implement a way to stop a running command e.g. ping google.com
-        #e.g. through ps -aux , find process running currently runniing command and kill
+        # e.g. through ps -aux , find process running currently runniing command and kill
 
 
 class Instance:
-    def __init__(self, dockerfile, infection_status) -> None:
+    def __init__(self, dockerfile, infection_status, client, sandbox_id) -> None:
         self.dockerfile = dockerfile
-        self.client = docker.from_env()
-        (self.image, self.logs) = self.client.images.build(path=dockerfile)
+        self.docker_client = docker.from_env()
+        (self.image, self.logs) = self.docker_client.images.build(path=dockerfile)
         self.container = None
         self.log_generator = None
         self.infection_status = infection_status
+        self.client = client
+        self.sandbox_id = sandbox_id
+        self.order_count = 0
 
     def stop_instance(self) -> int:
         if self.container is not None:
@@ -66,7 +78,7 @@ class Instance:
 
     def start_instance(self) -> int:
         if self.container is None:
-            self.container = self.client.containers.run(
+            self.container = self.docker_client.containers.run(
                 self.image, runtime='runsc-trace-'+self.infection_status, detach=True, tty=True)
 
     def execute_command(self, command):
@@ -74,5 +86,11 @@ class Instance:
             console_output = self.container.exec_run(
                 command, stream=True).output
             for line in console_output:
-                print(self.infection_status + str(line))
-                # ToDo: Stream Output to websockets from Controller
+                ++self.order_count
+                message = {
+                    'ID': self.sandbox_id,
+                    'infectedStatus': self.infection_status,
+                    'orderNo': self.order_count,
+                    'cmdOut': line
+                }
+                self.client.emit('cmdOut', json.dumps(message), namespace='/cmd')

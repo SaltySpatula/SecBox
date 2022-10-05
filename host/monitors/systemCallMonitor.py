@@ -1,7 +1,7 @@
-import socket
 import os
 from subprocess import Popen, PIPE, STDOUT
 from multiprocessing import Process
+import json
 
 healthy_server_address = "/tmp/healthy_gvisor_events.sock"
 infected_server_address = "/tmp/infected_gvisor_events.sock"
@@ -12,12 +12,15 @@ infected_configuration_file = "SecBox/host/infected/session.json"
 base_command = "bazel run examples/seccheck:server_cc"
 
 
-class systemCallMonitor():
-    def __init__(self) -> None:
+class systemCallMonitor:
+    def __init__(self, client, sandbox_id) -> None:
         self.base_command = base_command
+        self.sandbox_id = sandbox_id
+        self.client = client
 
     def run(self):
-        self.mp = Process(target=self.runInParallel, args=(self.monitoring_process, self.monitoring_process, "healthy", "infected"))
+        self.mp = Process(target=self.runInParallel, args=(
+            self.monitoring_process, self.monitoring_process, "healthy", "infected"))
         self.runInParallel(self.monitoring_process, self.monitoring_process,
                            "healthy", "infected")
 
@@ -31,6 +34,7 @@ class systemCallMonitor():
         self.mp.join()
 
     def monitoring_process(self, infected_status):
+        order_count = 0
         cwd = os.getcwd() + "/gvisor-master/"
         command = self.base_command + " /tmp/" + \
             infected_status + "_gvisor_events.sock"
@@ -38,10 +42,15 @@ class systemCallMonitor():
         # ToDo: rename self.process
         self.process = Popen(command.split(),
                              stdin=PIPE, stdout=PIPE, stderr=STDOUT, cwd=cwd)
-        with open(infected_status + "_syscalls.log", "w+") as f:
-            for line in self.process.stdout:
-                print(line, file=f)
-                # ToDo: Stream over Websocket
+        for line in self.process.stdout:
+            ++order_count
+            message = {
+                'ID': self.sandbox_id,
+                'infectedStatus': infected_status,
+                'orderNo': order_count,
+                'sysCall': line
+            }
+            self.client.emit('sysCall', json.dumps(message), namespace='/sysCall')
 
     def runInParallel(self, fn1, fn2, arg1, arg2):
         fns = [fn1, fn2]

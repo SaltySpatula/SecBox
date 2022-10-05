@@ -1,13 +1,58 @@
 from controller import Controller
-from multiprocessing import Process
 from monitors.systemCallMonitor import systemCallMonitor
+import socketio
+import SecBox.host.sandboxHandler as sandboxHandler
+import json
 
-def main():
-    with systemCallMonitor() as systemCallmonitor:
-        with Controller() as test_controller:
-            test_controller.execute_command("apt-get install -y iputils-ping")
-            test_controller.execute_command("ping google.com")
-            test_controller.execute_command("ps")
+socketio = socketio.Client()
 
-if __name__ == "__main__":
-    main()
+
+@socketio.event
+def connect():
+    print('connection established')
+
+
+@socketio.event
+def disconnect():
+    print('disconnected from server')
+
+
+@socketio.on("startSandbox", namespace='/sandbox')
+def start_sandbox(data):
+    sandboxHandler.start_sandbox(json.loads(data), socketio)
+
+
+@socketio.on("stopSandbox", namespace='/sandbox')
+def start_sandbox(data):
+    sandboxHandler.stop_sandbox(json.loads(data))
+
+
+@socketio.on("stopAll", namespace='/sandbox')
+def stop_all_sandboxes():
+    sandboxHandler.stop_all()
+
+
+@socketio.on("paralellCommand", namespace='/cmd')
+def parallel_command(data):
+    sandboxHandler.parallel_command(json.loads(data))
+
+
+@socketio.on("healthyCommand", namespace='/cmd')
+def healthy_command(data):
+    sandboxHandler.healthy_command(json.loads(data))
+
+
+@socketio.on("infectedCommand", namespace='/cmd')
+def healthy_command(data):
+    sandboxHandler.infected_command(json.loads(data))
+
+
+@socketio.on('*')
+def catch_all(event, data):
+    socketio.emit('Unknown Event')
+
+
+if __name__ == '__main__':
+    socketio.connect('http://localhost:5000',
+                     namespaces=['/sandbox', '/sysCall', '/network', '/performance', '/cmd'])
+    socketio.wait()
