@@ -1,7 +1,7 @@
 from controller import Controller
 from monitors.systemCallMonitor import systemCallMonitor
 import socketio
-import SecBox.host.sandboxHandler as sandboxHandler
+import sandboxHandler as sandboxHandler
 import json
 
 socketio = socketio.Client()
@@ -23,7 +23,7 @@ def start_sandbox(data):
 
 
 @socketio.on("stopSandbox", namespace='/sandbox')
-def start_sandbox(data):
+def stop_sandbox(data):
     sandboxHandler.stop_sandbox(json.loads(data))
 
 
