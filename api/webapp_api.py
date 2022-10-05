@@ -10,29 +10,34 @@ CORS(app)
 
 app.config['SECRET_KEY'] = 'secret!'
 
-socketio = SocketIO(app, cors_allowed_origins='http://localhost:8080')
+socketio = SocketIO(app, cors_allowed_origins=['http://localhost:8080', 'http://localhost:5000'])
+
 
 @socketio.on("receive data")
 def send_data():
     emit("receive data", handler.get_reports())
+
 
 @socketio.on('my event')
 def handle_my_custom_event(json, methods=['GET', 'POST']):
     print('received my event: ' + str(json))
     send_data()
 
+
 @socketio.on("cli command")
 def post_command(json):
     print("received command", json)
-    get_command(json)
+
 
 @socketio.on("cli feedback")
 def get_command(cmd):
     emit("get cli feedback", cmd)
 
+
 @socketio.on('disconnect')
 def disconnect():
     print('Client disconnected')
+
 
 @socketio.on('connect')
 def connected():
@@ -44,10 +49,12 @@ def greeting():
     return {"greeting": "Server is running"}
 
 
-@app.route("/start")
-def create(data):
-    print(data)
-    return {"processId": handler.start_process()}
+@app.route("/start", methods=['GET'])
+def create():
+    feedback = handler.start_process()
+    start(feedback)
+
+    return feedback
 
 
 @app.route("/getReports")
@@ -55,12 +62,19 @@ def get_reports():
     reports = handler.get_reports()
     return {"reports": reports}
 
+
 @app.route("/getAvailableMalwares")
 def get_malware():
     malwares = handler.get_available_malwares()
     return {"malwares": malwares}
 
 
+@ socketio.on('startSandbox')
+def start(data):
+    print("trying to start with", data)
+    socketio.emit("startSandbox", data)
+
+
 if __name__ == '__main__':
-    socketio.run(app)
+    socketio.run(app, port=5000)
     app.run()
