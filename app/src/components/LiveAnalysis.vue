@@ -94,7 +94,7 @@ export default {
       }),
   created() {
     // testing connection
-    this.socket = io("ws://localhost:5000");
+    this.socket = io("ws://localhost:5000/live");
     this.socket.on('receive data', function(data){
     console.log(data);   //should output 'hello world'
 });

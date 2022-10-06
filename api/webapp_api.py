@@ -24,22 +24,22 @@ def handle_my_custom_event(json, methods=['GET', 'POST']):
     send_data()
 
 
-@socketio.on("cli command")
+@socketio.on("cli command", namespace='/live')
 def post_command(json):
     print("received command", json)
 
 
-@socketio.on("cli feedback")
+@socketio.on("cli feedback", namespace='/live')
 def get_command(cmd):
     emit("get cli feedback", cmd)
 
 
-@socketio.on('disconnect')
+@socketio.on('disconnect', namespace='/live')
 def disconnect():
     print('Client disconnected')
 
 
-@socketio.on('connect')
+@socketio.on('connect', namespace='/live')
 def connected():
     print("Client Connected ...")
 
