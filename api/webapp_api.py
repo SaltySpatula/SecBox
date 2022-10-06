@@ -6,6 +6,7 @@ from backend import handler, models
 from flask_mongoengine import MongoEngine
 from flask_login import LoginManager, login_user, current_user, UserMixin
 
+
 app = Flask(__name__)
 CORS(app)
 
@@ -122,9 +123,26 @@ def create(data):
     p = models.Process(SHA256=data["SHA256"], selected_os=data["OS"])
     p.save()
     feedback = handler.start_process(sha=data["SHA256"], selected_os=data["OS"])
-    start(feedback)
-    start_feedback(feedback)
+@ socketio.on('sysCall', namespace='/sysCall')
+def handle_sys_call(json):
+    print(json)
 
+
+@ socketio.on('sandboxReady', namespace='/sandbox')
+def handle_ready(json):
+    print("sandbox ready!")
+
+
+@ socketio.on('cmdOut', namespace='/cmd')
+def handle_cmdline(json):
+    print(json)
+
+
+@app.route("/start", methods=['GET'])
+def create():
+    feedback = handler.start_process()
+    start(feedback)
+    return feedback
 
 @socketio.on("start feedback", namespace="/start")
 def start_feedback(feedback):
@@ -148,8 +166,9 @@ def get_malware():
 
 @socketio.on('startSandbox')
 def start(data):
-    print("trying to start with", data)
-    socketio.emit("startSandbox", data)
+    data = json.dumps(
+        {"ID": 123, "SHA256": "094fd325049b8a9cf6d3e5ef2a6d4cc6a567d7d49c35f8bb8dd9e3c6acf3d78d", "OS": "ubuntu:latest"})
+    socketio.emit("startSandbox", data, namespace='/sandbox')
 
 
 if __name__ == '__main__':
