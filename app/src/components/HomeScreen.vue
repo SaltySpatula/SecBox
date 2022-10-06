@@ -72,7 +72,6 @@ export default {
         const gObject = await gResponse.json();
         this.reports = JSON.parse(gObject.reports);
         console.log(this.reports);
-
     }
 }
 </script>

@@ -12,8 +12,7 @@ CORS(app)
 
 app.config['SECRET_KEY'] = 'secret!'
 
-socketio = SocketIO(app, cors_allowed_origins='http://localhost:5000',
-                    namespaces=available_namespaces)
+socketio = SocketIO(app)
 
 @ socketio.on('disconnect')
 def disconnect():
@@ -38,3 +37,8 @@ def handle_ready(json):
 @ socketio.on('cmdOut', namespace='/cmd')
 def handle_cmdline(json):
     pass
+
+@ socketio.on('startSandbox')
+def start(data):
+    print("trying to start with", data)
+    socketio.emit("startSandbox", data)

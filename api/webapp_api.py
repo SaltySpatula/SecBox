@@ -49,12 +49,19 @@ def greeting():
     return {"greeting": "Server is running"}
 
 
-@app.route("/start", methods=['GET'])
-def create():
-    feedback = handler.start_process()
+@socketio.on("start request", namespace="/start")
+def create(data):
+    print(data)
+    feedback = handler.start_process(sha=data["SHA256"], selected_os=data["OS"])
     start(feedback)
+    start_feedback(feedback)
 
-    return feedback
+
+@socketio.on("start feedback", namespace="/start")
+def start_feedback(feedback):
+    emit("start feedback", feedback, namespace="/start")
+
+
 
 
 @app.route("/getReports")
@@ -63,10 +70,12 @@ def get_reports():
     return {"reports": reports}
 
 
-@app.route("/getAvailableMalwares")
+@app.route("/getStartData")
 def get_malware():
     malwares = handler.get_available_malwares()
-    return {"malwares": malwares}
+    oss = handler.get_available_os()
+
+    return {"malwares": malwares, "oss":oss}
 
 
 @ socketio.on('startSandbox')

@@ -1,14 +1,23 @@
 import time, json
-from api import hostapp
+
+counter = 0
 
 
-def start_process():
-    expected_json = {
-        'ID': 123,
-        'SHA256': '094fd325049b8a9cf6d3e5ef2a6d4cc6a567d7d49c35f8bb8dd9e3c6acf3d78d',
-        'OS': 'ubuntu:latest',
+def start_process(sha, selected_os):
+    global counter
+    counter = counter + 1
+    random_id = counter
+    dictionary = {
+        "ID": random_id,
+        "SHA256": sha,
+        "OS": selected_os,
     }
-    return expected_json
+    return dictionary
+
+
+def get_available_os():
+    oss = ["ubuntu 22.04","ubuntu 20.04","ubuntu 18.04"]
+    return json.dumps(oss)
 
 
 def get_reports():
@@ -37,7 +46,6 @@ def get_available_malwares():
                                                                                      }
                 }
 
-    malwares = json.dumps(data_set)
-    return malwares
+    return json.dumps(data_set)
 
 
