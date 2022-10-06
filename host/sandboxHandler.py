@@ -1,4 +1,4 @@
-from time import time
+from time import sleep
 from monitors.systemCallMonitor import systemCallMonitor
 from controller import Controller
 from multiprocessing import Process
@@ -88,4 +88,4 @@ class Sandbox:
             with Controller(self.client, self.mw_hash, self.os, self.sandbox_id) as controller:
                 self.controller = controller
                 while not self.stopped:
-                    time.sleep(1)
+                    sleep(1)

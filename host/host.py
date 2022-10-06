@@ -19,6 +19,7 @@ def disconnect():
 
 @socketio.on("startSandbox", namespace='/sandbox')
 def start_sandbox(data):
+    print(data)
     sandboxHandler.start_sandbox(json.loads(data), socketio)
 
 
@@ -52,7 +53,7 @@ def catch_all(event, data):
     socketio.emit('Unknown Event')
 
 
+namespaces = ['/sandbox', '/sysCall', '/network', '/performance', '/cmd']
 if __name__ == '__main__':
-    socketio.connect('http://localhost:5000',
-                     namespaces=['/sandbox', '/sysCall', '/network', '/performance', '/cmd'])
+    socketio.connect('http://localhost:5000', namespaces=['/sandbox', '/sysCall', '/network', '/performance', '/cmd'], wait_timeout=10)
     socketio.wait()

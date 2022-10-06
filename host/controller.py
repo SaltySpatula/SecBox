@@ -13,7 +13,7 @@ class Controller:
         self.sandbox_id = sandbox_id
 
     def __enter__(self):
-        self.start_instances("./healthy/", "./infected/")
+        self.start_instances("./host/healthy/", "./host/infected/")
         return self
 
     def __exit__(self, exc_type, exc_value, traceback):
@@ -36,8 +36,8 @@ class Controller:
             # start instances
             self.healthyInstance.start_instance()
             self.infectedInstance.start_instance()
-            self.client.emit('sandboxReady', {
-                             'ID': self.sandbox_id}, namespace='/sandbox')
+            self.client.emit('sandboxReady', json.dumps({"ID": self.sandbox_id}), namespace='/sandbox')
+            print("Sandbox Ready")
 
     def runInParallel(self, healthyfn, infectedfn, command):
         fns = [healthyfn, infectedfn]
@@ -88,9 +88,9 @@ class Instance:
             for line in console_output:
                 ++self.order_count
                 message = {
-                    'ID': self.sandbox_id,
-                    'infectedStatus': self.infection_status,
-                    'orderNo': self.order_count,
-                    'cmdOut': line
+                    "ID": self.sandbox_id,
+                    "infectedStatus": self.infection_status,
+                    "orderNo": self.order_count,
+                    "cmdOut": line
                 }
                 self.client.emit('cmdOut', json.dumps(message), namespace='/cmd')

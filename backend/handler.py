@@ -1,7 +1,12 @@
-import time, json
+import time
+import json
+import subprocess
 
 counter = 0
 
+def start_process():
+    time.sleep(10)
+    return "MQ=="
 
 def start_process(sha, selected_os):
     global counter
@@ -34,18 +39,25 @@ def get_available_malwares():
     data_set = {"e2394ac05edcb0094bac8a12a6d5adfdbe56239165e81b773a16a81236b28b4f": {"name": "Mirai",
                                                                                      "type": "elf",
                                                                                      "tags": ["elf"],
-                                                                                     "hash":"e2394ac05edcb0094bac8a12a6d5adfdbe56239165e81b773a16a81236b28b4f",
-                                                                                     "url":"https://bazaar.abuse.ch/sample/e2394ac05edcb0094bac8a12a6d5adfdbe56239165e81b773a16a81236b28b4f/"
+                                                                                     "hash": "e2394ac05edcb0094bac8a12a6d5adfdbe56239165e81b773a16a81236b28b4f",
+                                                                                     "url": "https://bazaar.abuse.ch/sample/e2394ac05edcb0094bac8a12a6d5adfdbe56239165e81b773a16a81236b28b4f/"
                                                                                      },
 
                 "6537d07bcfebd413e82d10b3a2308cb922605a3adae3aa8091af6548ac267106": {"name": "Gafgyt",
                                                                                      "type": "elf",
                                                                                      "tags": ["elf", "mirai"],
-                                                                                     "hash":"6537d07bcfebd413e82d10b3a2308cb922605a3adae3aa8091af6548ac267106",
-                                                                                    "url":"https://bazaar.abuse.ch/sample/6537d07bcfebd413e82d10b3a2308cb922605a3adae3aa8091af6548ac267106"
+                                                                                     "hash": "6537d07bcfebd413e82d10b3a2308cb922605a3adae3aa8091af6548ac267106",
+                                                                                     "url": "https://bazaar.abuse.ch/sample/6537d07bcfebd413e82d10b3a2308cb922605a3adae3aa8091af6548ac267106"
                                                                                      }
                 }
 
     return json.dumps(data_set)
 
 
+def get_available_images():
+    output = subprocess.run(
+        ['curl', '-L', '-s', 'https://registry.hub.docker.com/v2/repositories/library/ubuntu/tags?page_size=40'], text=True, capture_output=True)
+    available_images = []
+    for item in json.loads(output.stdout)['results']:
+        available_images.append("ubuntu:"+item['name'])
+    return available_images

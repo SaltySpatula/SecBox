@@ -35,7 +35,7 @@ class systemCallMonitor:
 
     def monitoring_process(self, infected_status):
         order_count = 0
-        cwd = os.getcwd() + "/gvisor-master/"
+        cwd = os.getcwd() + "/host/gvisor-master/"
         command = self.base_command + " /tmp/" + \
             infected_status + "_gvisor_events.sock"
         print(command)
@@ -45,10 +45,10 @@ class systemCallMonitor:
         for line in self.process.stdout:
             ++order_count
             message = {
-                'ID': self.sandbox_id,
-                'infectedStatus': infected_status,
-                'orderNo': order_count,
-                'sysCall': line
+                "ID": self.sandbox_id,
+                "infectedStatus": infected_status,
+                "orderNo": order_count,
+                "sysCall": str(line)
             }
             self.client.emit('sysCall', json.dumps(message), namespace='/sysCall')
 
