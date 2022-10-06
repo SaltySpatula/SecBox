@@ -1,9 +1,14 @@
 import time, json
+from api import hostapp
 
 
 def start_process():
-    time.sleep(10)
-    return "MQ=="
+    expected_json = {
+        'ID': 123,
+        'SHA256': '094fd325049b8a9cf6d3e5ef2a6d4cc6a567d7d49c35f8bb8dd9e3c6acf3d78d',
+        'OS': 'ubuntu:latest',
+    }
+    return expected_json
 
 
 def get_reports():
@@ -34,3 +39,5 @@ def get_available_malwares():
 
     malwares = json.dumps(data_set)
     return malwares
+
+
