@@ -2,6 +2,7 @@ import { createWebHistory, createRouter } from "vue-router";
 import HomeScreen from "@/components/HomeScreen.vue"
 import ReportDashboard from "@/components/ReportDashboard.vue";
 import LiveAnalysis from "@/components/LiveAnalysis.vue";
+import PostAnalysis from "@/components/PostAnalysis";
 
 const routes = [
   {
@@ -18,6 +19,11 @@ const routes = [
     path: "/live",
     name: "LiveAnalysis",
     component: LiveAnalysis,
+  },
+  {
+    path: "/post",
+    name: "PostAnalysis",
+    component: PostAnalysis,
   },
 ];
 
