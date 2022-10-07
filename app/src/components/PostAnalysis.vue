@@ -3,76 +3,40 @@
         floating
         permanent
         width="400"
-        class="bg-deep-purple-darken-2"
-      ><v-list v-model:opened="open">
-      <v-list-group value="System Calls">
+        class="bg-deep-purple-darken-1"
+      >
+        <v-list v-model:opened="open"
+                v-for="graph_group in this.graph_data"
+                :key="graph_group.title"
+        >
+      <v-list-group :value="graph_group.title">
         <template v-slot:activator="{ props }">
           <v-list-item
             v-bind="props"
-            prepend-icon="mdi-console-network"
-            title="System Calls"
+            :prepend-icon="graph_group.icon"
+            :title="graph_group.title"
           ></v-list-item>
         </template>
           <v-list-item
-            v-for="item in syscall_graphs"
+            v-for="item in graph_group.graphs"
             :key="item.title"
             :title="item.title"
             :prepend-icon="item.icon"
             :value="item.title"
             :disabled="item.disabled"
-            @click="createGraph(item.title, syscall_graphs)"
+            @click="createGraph(item)"
           ></v-list-item>
       </v-list-group>
     </v-list>
-        <v-list v-model:opened="open">
-      <v-list-group value="Network">
-        <template v-slot:activator="{ props }">
-          <v-list-item
-            v-bind="props"
-            prepend-icon="mdi-wan"
-            title="Network"
-          ></v-list-item>
-        </template>
-          <v-list-item
-            v-for="item in network_graphs"
-            :key="item.title"
-            :title="item.title"
-            :prepend-icon="item.icon"
-            :value="item.title"
-            :disabled="item.disabled"
-            @click="createGraph(item.title, network_graphs)"
-          ></v-list-item>
-      </v-list-group>
-        </v-list>
-        <v-list v-model:opened="open">
-        <v-list-group value="Performance">
-        <template v-slot:activator="{ props }">
-          <v-list-item
-            v-bind="props"
-            prepend-icon="mdi-poll"
-            title="Performance"
-          ></v-list-item>
-        </template>
-          <v-list-item
-            v-for="item in performance_graphs"
-            :key="item.title"
-            :title="item.title"
-            :prepend-icon="item.icon"
-            :value="item.title"
-            :disabled="item.disabled"
-            @click="createGraph(item.title, performance_graphs)"
-          ></v-list-item>
-      </v-list-group>
-        </v-list>
       </v-navigation-drawer>
   <v-container fluid>
     <v-row>
-      <v-col cols="12" md="4" v-for="title in selected_graphs">
+      <v-col cols="12" md="4" v-for="graph in selected_graphs" v-bind:key="graph.title">
         <v-card  class="bg-deep-purple-accent-1">
-          <v-card-title >{{ title }}</v-card-title>
+          <v-card-title >{{ graph.title }}</v-card-title>
           <v-card-actions>
             <div class="my-2">
-            <v-btn class="bg-red" @click="deleteGraph(item.title, performance_graphs)">
+            <v-btn class="bg-red" @click="deleteGraph(graph)">
               <v-icon>
                 mdi-delete
               </v-icon>
@@ -91,35 +55,41 @@ export default {
   data: () => ({
       open: [],
       selected_graphs:[],
-      network_graphs: [
-        {"title":'Packet Ratio', "icon":'mdi-nas', "disabled":false},
-        {"title":'IP addresses',"icon":'mdi-map-marker', "disabled":false},
-      ],
-      syscall_graphs: [
-        {"title":'Rule violations', "icon":'mdi-alert-octagon', "disabled":false},
+      graph_data:{
+      "network_graphs": {
+        "title":"Network",
+          "icon":"mdi-wan",
+          "graphs":[
+                {"title":'Packet Ratio', "icon":'mdi-nas', "disabled":false},
+                {"title":'IP addresses',"icon":'mdi-map-marker', "disabled":false},
+              ]},
+      "syscall_graphs": {
+        "title":"System Calls",
+        "icon":"mdi-console-network",
+          "graphs":[
+        {"title":'Rule violations', "icon":'mdi-alert-octagon', "disabled":false, },
         {"title":'Direct Comparison',"icon": 'mdi-ab-testing', "disabled":false},
-      ],
-      performance_graphs: [
+      ]},
+      "performance_graphs":{
+        "title":"Performance",
+        "icon":"mdi-poll",
+          "graphs":[
         {"title":'CPU Memory',"icon": 'mdi-cpu-64-bit', "disabled":false},
         {"title":'RAM', "icon":'mdi-memory', "disabled":false},
-      ],
-    }),
+      ]},
+    }}),
   methods:{
-    createGraph: function(graphTitle, source){
-      this.selected_graphs.push(graphTitle)
-      for (const g of source){
-        if (g.title === graphTitle){
-          g.disabled = true
+    createGraph: function(graph){
+      this.selected_graphs.push(graph)
+        graph.disabled = true;
+      },
+    deleteGraph: function(graph){
+        graph.disabled = false;
+        for (let i = 0; i < this.selected_graphs.length; i++){
+          if(graph.title === this.selected_graphs[i].title){
+            this.selected_graphs.splice(i, 1)
+          }
         }
-      }
-    },
-    deleteGraph: function(graphTitle, source){
-      this.selected_graphs.push(graphTitle)
-      for (const g of source){
-        if (g.title === graphTitle){
-          g.disabled = true
-        }
-      }
     },
   }
 }
