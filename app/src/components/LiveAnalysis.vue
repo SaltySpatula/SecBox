@@ -1,18 +1,49 @@
 <template>
 <v-container fluid>
-      <v-row align="center" class="ma-2">
-        <v-col cols="12" md="12">
-          <v-card class="bg-deep-purple-accent-1">
-            <v-card-title style="font-family:'Courier New';font-size:2em">Live Analysis</v-card-title>
-          </v-card>
+      <v-row align="center" class="ma-2 bg-deep-purple-accent-1" style="margin:0">
+        <v-col cols="12" md="8">
+            <h1 style="font-family:'Courier New';font-size:2em">Live Analysis</h1>
         </v-col>
+        <v-col cols="12" md="2">
+            <v-btn
+              block
+              color="red"
+              dark
+              tile
+            >
+              <v-icon              >
+                mdi-delete
+              </v-icon>
+              Delete & Quit
+            </v-btn>
+        </v-col>
+        <v-col cols="12" md="2">
+          <router-link to="/post">
+            <v-btn
+                block
+              large
+              color="primary"
+              dark
+
+            >
+              <v-icon              >
+                mdi-content-save
+              </v-icon>
+              Save & Exit
+            </v-btn>
+          </router-link>
+        </v-col>
+        </v-row>
+        <v-row style="margin:0">
         <v-col cols="12" md="3">
           <v-card class="bg-deep-purple-accent-1" style="overflow-y: auto; height:50rem">
               <button v-on:click="sendMessage('hello')">Send Message</button>
           </v-card>
         </v-col>
-        <v-col cols="12" md="6" class="pa-0 bg-deep-purple-accent-1" >
+        <v-col cols="12" md="6"  >
+          <v-card class="pa-0 bg-deep-purple-accent-1">
           <LiveTerminal></LiveTerminal>
+            </v-card>
         </v-col>
         <v-col cols="12" md="3">
           <v-card class="bg-deep-purple-accent-1" style="overflow-y: auto; height:50rem">
@@ -36,5 +67,4 @@ export default {
     font-family: "Courier New";
     font-weight: bold;
 }
-
 </style>

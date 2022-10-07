@@ -9,12 +9,13 @@
       prominent
       scroll-target="#scrolling-techniques"
     >
+<router-link to="/">
+      <v-btn icon color="white">
 
-      <v-btn icon>
-          <router-link to="/">
           <v-icon >mdi-home</v-icon>
-            </router-link>
+
       </v-btn>
+  </router-link>
 
       <router-link to="/reports">
 
