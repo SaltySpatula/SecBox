@@ -89,7 +89,6 @@
           >
             Start Sandbox
           </v-btn>
-
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -118,6 +117,7 @@
 
 <script>
 import io from "socket.io-client";
+import router from "@/router";
 
 export default {
   name: "StartAnalysisDialog",
@@ -126,7 +126,7 @@ export default {
       loading:false,
       processId:"",
       mwData:{},
-      osData:{},
+      osData:[],
       picked_malware:null,
       picked_os:null,
       reports:null,
@@ -152,6 +152,9 @@ export default {
             console.log(data);
             if (data){
               this.loading = true
+              let analysis_id = data.ID
+              this.dialog=false
+              router.push({path: `/live/${analysis_id}`})
             }
             console.log(this.loading)
         });

@@ -59,6 +59,12 @@ import LiveTerminal from "@/components/LiveTerminal";
 export default {
   name: "LiveAnalysis",
   components: {LiveTerminal},
+  props:{
+    id:null
+  },
+  created: async function(){
+      console.log(this.props)
+  },
 }
 </script>
 

@@ -54,7 +54,6 @@ import StartAnalysisDialog from "@/components/StartAnalysisDialog";
 
 export default {
   name: 'App',
-
   components: {
     StartAnalysisDialog,
 
