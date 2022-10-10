@@ -4,11 +4,6 @@ import ReportDashboard from "@/components/ReportDashboard.vue";
 import LiveAnalysis from "@/components/LiveAnalysis.vue";
 import PostAnalysis from "@/components/PostAnalysis";
 
-const LA = {
-  template: '<LiveAnalysis :id="$route.params.id"></LiveAnalysis>',
-}
-
-
 const routes = [
   {
     path: "/",
@@ -32,7 +27,7 @@ const routes = [
   },
   {
     path: '/live/:id',
-    component: LA
+    component: LiveAnalysis
   }
 ];
 

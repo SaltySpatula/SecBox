@@ -16,7 +16,7 @@ def start_process(sha, selected_os):
 
 
 def get_available_os():
-    oss = ["ubuntu 22.04","ubuntu 20.04","ubuntu 18.04"]
+    oss = ["ubuntu 22.04", "ubuntu 20.04", "ubuntu 18.04"]
     return json.dumps(oss)
 
 

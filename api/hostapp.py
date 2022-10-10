@@ -2,7 +2,7 @@ from flask import Flask, session
 from flask_socketio import SocketIO
 from flask_socketio import send, emit
 from flask_cors import CORS
-from dataManager import handler
+from backend import handler
 
 # generate unique id for container set here
 available_namespaces = ['/sandbox', '/sysCall',

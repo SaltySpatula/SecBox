@@ -2,7 +2,8 @@ from flask import Flask, session
 from flask_socketio import SocketIO
 from flask_socketio import send, emit
 from flask_cors import CORS
-from dataManager import handler
+from backend import handler, models
+from flask_mongoengine import MongoEngine
 
 
 app = Flask(__name__)
@@ -10,7 +11,18 @@ CORS(app)
 
 app.config['SECRET_KEY'] = 'secret!'
 
+app.config['MONGODB_SETTINGS'] = {
+    'db': 'SecBoxDB',
+    'host': 'localhost',
+    'port': 27017
+}
+
+
+db = MongoEngine()
+db.init_app(app)
+
 socketio = SocketIO(app, cors_allowed_origins=['http://localhost:8080', 'http://localhost:5000'])
+
 
 
 @socketio.on("receive data")
@@ -51,7 +63,8 @@ def greeting():
 
 @socketio.on("start request", namespace="/start")
 def create(data):
-    print(data)
+    p = models.Process(SHA256=data["SHA256"], selected_os=data["OS"])
+    p.save()
     feedback = handler.start_process(sha=data["SHA256"], selected_os=data["OS"])
     start(feedback)
     start_feedback(feedback)
@@ -72,7 +85,8 @@ def get_reports():
 
 @app.route("/getStartData")
 def get_malware():
-    malwares = handler.get_available_malwares()
+    # malwares = handler.get_available_malwares()
+    malwares = models.Malware.objects.to_json()
     oss = handler.get_available_os()
 
     return {"malwares": malwares, "oss":oss}
