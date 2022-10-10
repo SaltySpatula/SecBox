@@ -147,7 +147,8 @@ export default {
         this.socket = io("ws://localhost:5000/start");
         const response = {"SHA256": this.picked_malware, "OS": this.picked_os};
         this.socket.emit('start request', response);
-        this.sent_request = true
+        this.sent_request = true;
+        this.dialog=false;
         this.socket.on('start feedback', function(data){
             console.log(data);
             if (data){
@@ -156,7 +157,6 @@ export default {
               this.dialog=false
               router.push({path: `/live/${analysis_id}`})
             }
-            console.log(this.loading)
         });
       }
     }

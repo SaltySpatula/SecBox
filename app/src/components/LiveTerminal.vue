@@ -103,8 +103,8 @@ export default {
           this.infected_lines.push(this.cli_text_infected)
         }
         this.socket.emit('cli command', { "clean_cmd": this.cli_text_clean, "infected_cmd": this.cli_text_infected});
-        this.$refs.CLI_text_field_clean.reset();
-        this.$refs.CLI_text_field_infected.reset();
+        this.$refs.CLI_text_field_clean.reset("");
+        this.$refs.CLI_text_field_infected.reset("");
       }
   }
   }

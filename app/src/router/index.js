@@ -21,7 +21,7 @@ const routes = [
     component: LiveAnalysis,
   },
   {
-    path: "/post",
+    path: "/analysis/:id",
     name: "PostAnalysis",
     component: PostAnalysis,
   },

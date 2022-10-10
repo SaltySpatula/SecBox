@@ -18,20 +18,18 @@
             </v-btn>
         </v-col>
         <v-col cols="12" md="2">
-          <router-link to="/post">
             <v-btn
                 block
               large
               color="primary"
               dark
-
+              @click="postAnalyze"
             >
               <v-icon              >
                 mdi-content-save
               </v-icon>
               Save & Exit
             </v-btn>
-          </router-link>
         </v-col>
         </v-row>
         <v-row style="margin:0">
@@ -56,15 +54,21 @@
 
 <script>
 import LiveTerminal from "@/components/LiveTerminal";
+import router from  "@/router/index"
 export default {
   name: "LiveAnalysis",
   components: {LiveTerminal},
   props:{
-    id:null
+
   },
   created: async function(){
-      console.log(this.props)
   },
+  methods:{
+  postAnalyze:function(){
+     const current_id = this.$route.params.id
+     router.replace({ path: '/analysis/' +current_id}, )
+  }
+  }
 }
 </script>
 
