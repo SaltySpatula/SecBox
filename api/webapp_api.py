@@ -1,6 +1,6 @@
 from flask import Flask, session
 from flask_socketio import SocketIO
-from flask_socketio import send, emit
+from flask_socketio import send, emit, join_room, leave_room
 from flask_cors import CORS
 from backend import handler, models
 from flask_mongoengine import MongoEngine
@@ -24,7 +24,6 @@ db.init_app(app)
 socketio = SocketIO(app, cors_allowed_origins=['http://localhost:8080', 'http://localhost:5000'])
 
 
-
 @socketio.on("receive data")
 def send_data():
     emit("receive data", handler.get_reports())
@@ -39,11 +38,16 @@ def handle_my_custom_event(json, methods=['GET', 'POST']):
 @socketio.on("cli command", namespace='/live')
 def post_command(json):
     print("received command", json)
+    get_command(json)
 
 
 @socketio.on("cli feedback", namespace='/live')
 def get_command(cmd):
-    emit("get cli feedback", cmd)
+    print("Echo: ", cmd)
+    room = cmd["room"]
+    cmd["clean_cmd"] = "echo " + cmd["clean_cmd"]
+    cmd["infected_cmd"] = "echo " + cmd["infected_cmd"]
+    emit("cli feedback", cmd, to=room)
 
 
 @socketio.on('disconnect', namespace='/live')
@@ -53,7 +57,22 @@ def disconnect():
 
 @socketio.on('connect', namespace='/live')
 def connected():
-    print("Client Connected ...")
+    print("Client Connected...", )
+
+
+@socketio.on('join room', namespace='/live')
+def join(data):
+    room = data["room"]
+    join_room(room)
+    print("Client Connected to room", room)
+    emit("Successfully connected to live analysis room "+room, to=room)
+
+
+@socketio.on('leave room', namespace='/live')
+def leave(data):
+    room = data["room"]
+    leave_room(room)
+    print("Client left room", room)
 
 
 @app.route("/greeting")
@@ -89,7 +108,7 @@ def get_malware():
     malwares = models.Malware.objects.to_json()
     oss = handler.get_available_os()
 
-    return {"malwares": malwares, "oss":oss}
+    return {"malwares": malwares, "oss": oss}
 
 
 @ socketio.on('startSandbox')

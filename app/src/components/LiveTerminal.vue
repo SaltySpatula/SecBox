@@ -60,9 +60,13 @@
 import TerminalInterface from "@/components/TerminalInterface";
 import io from "socket.io-client";
 
+
 export default {
   name: "LiveTerminal",
     components: {TerminalInterface},
+  props:{
+    current_id: String
+  },
   data: () =>({
     socket:null,
     cli_text:"",
@@ -70,28 +74,33 @@ export default {
     cli_text_clean:"",
     infected_lines:[],
     clean_lines:[],
-    combined_cli : true
+    combined_cli : true,
       }),
   created() {
     // testing connection
-    this.socket = io("ws://localhost:5000/live");
-    this.socket.on('receive data', function(data){
-    console.log(data);   //should output 'hello world'
-});
+    this.socket = io("ws://localhost:5000/live", {query:"foo=bar"});
+    this.socket.emit('join room', {"room":this.current_id}, function(data){
+        console.log(data);   //should output 'hello world'
+    });
+    let ref = this
+    this.socket.on("cli feedback", function (data){
+      ref.add_feedback(data)
+    });
   },
+
   methods:{
     sendMessage: function(message){
       //sending to server
       console.log(message)
-       this.socket.emit('my event', { data: message });
+      this.socket.emit('my event', { data: message });
+
   },
   onEnter:function(){
       if (this.combined_cli){
-        this.clean_lines.push(this.cli_text);
-        this.infected_lines.push(this.cli_text);
+        this.clean_lines.push("$ " + this.cli_text);
+        this.infected_lines.push("$ " +this.cli_text);
 
-        console.log(this.cli_text)
-        this.socket.emit('cli command', { "clean_cmd": this.cli_text, "infected_cmd": this.cli_text});
+        this.socket.emit('cli command', { "room":this.current_id, "clean_cmd": this.cli_text, "infected_cmd": this.cli_text});
         this.$refs.CLI_text_field.reset();
       }
       else{
@@ -102,11 +111,18 @@ export default {
         if(this.cli_text_infected){
           this.infected_lines.push(this.cli_text_infected)
         }
-        this.socket.emit('cli command', { "clean_cmd": this.cli_text_clean, "infected_cmd": this.cli_text_infected});
+        this.socket.emit('cli command', { "room":this.current_id, "clean_cmd": this.cli_text_clean, "infected_cmd": this.cli_text_infected});
         this.$refs.CLI_text_field_clean.reset("");
         this.$refs.CLI_text_field_infected.reset("");
       }
-  }
+  },
+    add_feedback(data){
+      this.clean_lines.push(data["clean_cmd"])
+      this.infected_lines.push(data["infected_cmd"])
+    }
+  },
+  beforeUnmount: function() {
+    this.socket.emit("leave room", {"room": this.current_id})
   }
 }
 </script>

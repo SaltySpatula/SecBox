@@ -75,43 +75,18 @@
           >
             Close
           </v-btn>
-          <v-progress-circular
-                  v-if="this.loading"
-            indeterminate
-            color="purple"
-          ></v-progress-circular>
           <v-btn
             color="purple"
             text
             :disabled="sent_request"
             @click="start()"
-            v-if="!this.loading"
           >
             Start Sandbox
           </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
-    <v-dialog
-      v-if="loading"
-      hide-overlay
-      persistent
-      width="300"
-    >
-      <v-card
-        color="primary"
-        dark
-      >
-        <v-card-text>
-          Please stand by
-          <v-progress-linear
-            indeterminate
-            color="white"
-            class="mb-0"
-          ></v-progress-linear>
-        </v-card-text>
-      </v-card>
-    </v-dialog>
+
   </div>
 </template>
 
@@ -123,7 +98,6 @@ export default {
   name: "StartAnalysisDialog",
   data: () => ({
       dialog: false,
-      loading:false,
       processId:"",
       mwData:{},
       osData:[],
@@ -152,10 +126,9 @@ export default {
         this.socket.on('start feedback', function(data){
             console.log(data);
             if (data){
-              this.loading = true
-              let analysis_id = data.ID
-              this.dialog=false
-              router.push({path: `/live/${analysis_id}`})
+              let analysis_id = data.ID;
+              this.dialog=false;
+              router.push({path: `/live/${analysis_id}`});
             }
         });
       }

@@ -22,7 +22,7 @@
           <v-card class="bg-purple-darken-4" style="overflow-y: auto; height:10rem">
               <v-card-title class="align-center pa-md-4">Analyze a new File</v-card-title>
               <v-card-actions class="justify-center align-center" >
-                <StartAnalysisDialog></StartAnalysisDialog>
+              <StartAnalysisDialog/>
             </v-card-actions>
           </v-card>
         </v-col>
@@ -58,12 +58,14 @@
 <script>
 
 
-
 import StartAnalysisDialog from "@/components/StartAnalysisDialog";
-export default {
-  name: 'HomeScreen',
-  components: {StartAnalysisDialog},
 
+export default {
+
+  name: 'HomeScreen',
+  components: {
+    StartAnalysisDialog:StartAnalysisDialog
+  },
   data: () => ({
       reports:[]
   }),

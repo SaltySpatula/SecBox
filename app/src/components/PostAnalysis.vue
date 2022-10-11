@@ -28,12 +28,17 @@
           ></v-list-item>
       </v-list-group>
     </v-list>
+
+        <MalwareCard></MalwareCard>
       </v-navigation-drawer>
   <v-container fluid>
     <v-row>
       <v-col cols="12" md="4" v-for="graph in selected_graphs" v-bind:key="graph.title">
-        <v-card  class="bg-deep-purple-accent-1">
+        <v-card  class="bg-deep-purple-accent-1" >
           <v-card-title >{{ graph.title }}</v-card-title>
+          <v-card-text >
+            This should be a graph
+          </v-card-text>
           <v-card-actions>
             <div class="my-2">
             <v-btn class="bg-red" @click="deleteGraph(graph)">
@@ -50,8 +55,10 @@
 </template>
 
 <script>
+import MalwareCard from "@/components/MalwareCard";
 export default {
   name: "PostAnalysis.vue",
+  components: {MalwareCard},
   data: () => ({
       open: [],
       selected_graphs:[],

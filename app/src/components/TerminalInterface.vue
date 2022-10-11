@@ -5,7 +5,7 @@
             <p
               v-for="line in lines"
               :key="line"
-            >$ {{ line }}<br></p>
+            >{{ line }}<br></p>
           </v-card>
         </v-col>
 </template>

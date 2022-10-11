@@ -40,7 +40,7 @@
         </v-col>
         <v-col cols="12" md="6"  >
           <v-card class="pa-0 bg-deep-purple-accent-1">
-          <LiveTerminal></LiveTerminal>
+          <LiveTerminal :current_id="this.$route.params.id"></LiveTerminal>
             </v-card>
         </v-col>
         <v-col cols="12" md="3">
@@ -68,7 +68,8 @@ export default {
      const current_id = this.$route.params.id
      router.replace({ path: '/analysis/' +current_id}, )
   }
-  }
+  },
+
 }
 </script>
 
