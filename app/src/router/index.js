@@ -3,6 +3,7 @@ import HomeScreen from "@/components/HomeScreen.vue"
 import ReportDashboard from "@/components/ReportDashboard.vue";
 import LiveAnalysis from "@/components/LiveAnalysis.vue";
 import PostAnalysis from "@/components/PostAnalysis";
+import LoginPage from "@/components/LoginPage"
 
 const routes = [
   {
@@ -28,6 +29,10 @@ const routes = [
   {
     path: '/live/:id',
     component: LiveAnalysis
+  },
+  {
+    path:'/login',
+    component: LoginPage
   }
 ];
 
