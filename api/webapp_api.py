@@ -128,6 +128,10 @@ def handle_sys_call(json):
     print(json)
 
 
+@ socketio.on('stats', namespace='/performance')
+def handle_sys_call(json):
+    print(json)
+
 @ socketio.on('sandboxReady', namespace='/sandbox')
 def handle_ready(json):
     print("sandbox ready!")
@@ -143,6 +147,7 @@ def create():
     feedback = handler.start_process()
     start(feedback)
     return feedback
+
 
 @socketio.on("start feedback", namespace="/start")
 def start_feedback(feedback):
