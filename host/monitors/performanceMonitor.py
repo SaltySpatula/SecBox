@@ -12,10 +12,8 @@ class performanceMonitor:
         self.controller = controller
 
     def run(self):
-        #ToDo: pass the actual container object from the sandbox
-        
-        healthy_container= None
-        infected_container = None
+        healthy_container= self.controller.healthyInstance.container
+        infected_container = self.controller.infectedInstance.container
         self.mp = Process(target=self.runInParallel, args=(
             self.monitoring_process, self.monitoring_process, ("healthy", healthy_container), ("infected", infected_container)))
         self.runInParallel(self.monitoring_process, self.monitoring_process,

@@ -71,15 +71,22 @@ class Instance:
         self.sandbox_id = sandbox_id
         self.order_count = 0
 
+        #set up docker networking
+        self.network = self.docker_client.networks.create(str(self.sandbox_id) + infection_status + "network")
+        self.veth_device = None
+
     def stop_instance(self) -> int:
         if self.container is not None:
             self.container.stop()
             self.container = None
+            self.network.remove()
 
     def start_instance(self) -> int:
         if self.container is None:
+
             self.container = self.docker_client.containers.run(
-                self.image, runtime='runsc-trace-'+self.infection_status, detach=True, tty=True)
+                self.image, runtime='runsc-trace-'+self.infection_status, detach=True, tty=True, network=self.network.name)
+            
 
     def execute_command(self, command):
         if self.container is not None:
