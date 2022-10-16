@@ -17,12 +17,11 @@ class systemCallMonitor:
         self.base_command = base_command
         self.sandbox_id = sandbox_id
         self.client = client
+        self.ps = []
 
     def run(self):
-        self.mp = Process(target=self.runInParallel, args=(
-            self.monitoring_process, self.monitoring_process, "healthy", "infected"))
-        self.runInParallel(self.monitoring_process, self.monitoring_process,
-                           "healthy", "infected")
+        self.mp = Process(target=self.runInParallel, args=(self.monitoring_process, self.monitoring_process, "healthy", "infected"))
+        self.mp.start()
 
     def __enter__(self):
         self.run()
@@ -43,7 +42,7 @@ class systemCallMonitor:
         self.process = Popen(command.split(),
                              stdin=PIPE, stdout=PIPE, stderr=STDOUT, cwd=cwd)
         for line in self.process.stdout:
-            ++order_count
+            order_count = order_count+1
             message = {
                 "ID": self.sandbox_id,
                 "infectedStatus": infected_status,

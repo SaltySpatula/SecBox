@@ -1,3 +1,7 @@
+import sys
+import time
+sys.path.append("/home/adrian/Desktop/HS2022/MasterPrject/SecBox")
+
 from flask import Flask, session, request, abort
 from flask_socketio import SocketIO
 from flask_socketio import send, emit, join_room, leave_room
@@ -22,12 +26,13 @@ app.config['MONGODB_SETTINGS'] = {
 db = MongoEngine()
 db.init_app(app)
 
-socketio = SocketIO(app, cors_allowed_origins=['http://localhost:8080', 'http://localhost:5000'])
+socketio = SocketIO(app, cors_allowed_origins=[
+                    'http://localhost:8080', 'http://localhost:5000'])
 login = LoginManager(app)
 
 allowed_users = {
-   'foo': 'bar',
-   'python': 'is-great!',
+    'foo': 'bar',
+    'python': 'is-great!',
 }
 
 
@@ -41,7 +46,7 @@ class User(UserMixin):
         self.id = username
 
 
-@app.route('/login', methods = ['POST'])
+@app.route('/login', methods=['POST'])
 def login():
     username = request.json['username']
     password = request.json['password']
@@ -56,7 +61,6 @@ def login():
 @socketio.on("receive data")
 def send_data():
     emit("receive data", handler.get_reports())
-
 
 
 @socketio.on('my event')
@@ -123,24 +127,40 @@ def greeting():
 def create(data):
     p = models.Process(SHA256=data["SHA256"], selected_os=data["OS"])
     p.save()
-    feedback = handler.start_process(sha=data["SHA256"], selected_os=data["OS"])
+    feedback = handler.start_process(
+        sha=data["SHA256"], selected_os=data["OS"])
+
+
 @ socketio.on('sysCall', namespace='/sysCall')
 def handle_sys_call(json):
-    print(json)
+    with open('syscalls.txt', 'a') as f:
+        print(str(json), file=f)
 
-
-@ socketio.on('stats', namespace='/performance')
-def handle_sys_call(json):
-    print(json)
 
 @ socketio.on('sandboxReady', namespace='/sandbox')
 def handle_ready(json):
     print("sandbox ready!")
 
 
+@ socketio.on('stats', namespace='/performance')
+def handle_stats(json):
+    # ToDo: Handle incoming performance stats
+    with open('performance_stats.txt', 'a') as f:
+        print(str(json), file=f)
+
+
 @ socketio.on('cmdOut', namespace='/cmd')
 def handle_cmdline(json):
-    print(json)
+    # ToDo: Handle incoming cmdOut
+    with open('cmds_logs.txt', 'a') as f:
+        print(str(json), file=f)
+
+
+@ socketio.on('packet', namespace='/network')
+def handle_cmdline(json):
+    # ToDo: Handle incoming network packets
+    with open('packets.txt', 'a') as f:
+        print(str(json), file=f)
 
 
 @app.route("/start", methods=['GET'])

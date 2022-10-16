@@ -1,23 +1,40 @@
-import os
 from subprocess import Popen, PIPE, STDOUT
 from multiprocessing import Process
 import json
 
 
 
-class performanceMonitor:
+class networkMonitor:
     def __init__(self, client, sandbox_id, controller) -> None:
         self.sandbox_id = sandbox_id
         self.client = client
         self.controller = controller
+        self.ps = []
+
+    def monitoring_process(self, infected_status):
+        print("network monitor started")
+        order_count = 0
+        instance = None
+        if infected_status=="healthy":
+            instance = self.controller.healthyInstance
+        else:
+            instance = self.controller.infectedInstance
+        command = "sudo tcpdump -i " + instance.bridge
+        process = Popen(command.split(),
+                             stdin=PIPE, stdout=PIPE, stderr=STDOUT)
+        for packet in process.stdout:
+            order_count = order_count+1
+            message = {
+                "ID": self.sandbox_id,
+                "infectedStatus": infected_status,
+                "orderNo": order_count,
+                "packet": packet.decode('utf-8')
+            }
+            self.client.emit('packet', json.dumps(message), namespace='/network')
 
     def run(self):
-        healthy_instance= self.controller.healthyInstance
-        infected_instance = self.controller.infectedInstance
-        self.mp = Process(target=self.runInParallel, args=(
-            self.monitoring_process, self.monitoring_process, ("healthy", healthy_instance), ("infected", infected_instance)))
-        self.runInParallel(self.monitoring_process, self.monitoring_process,
-                           "healthy", "infected")
+        self.mp = Process(target=self.runInParallel, args=(self.monitoring_process, self.monitoring_process, "healthy", "infected"))
+        self.mp.start()
 
     def __enter__(self):
         self.run()
@@ -28,24 +45,9 @@ class performanceMonitor:
             p.join()
         self.mp.join()
 
-    def monitoring_process(self, infected_status, instance):
-        order_count = 0
-        command = "sudo tcpdump -i " + instance.bridge
-        self.process = Popen(command.split(),
-                             stdin=PIPE, stdout=PIPE, stderr=STDOUT)
-        for packet in self.process.stdout:
-            ++order_count
-            message = {
-                "ID": self.sandbox_id,
-                "infectedStatus": infected_status,
-                "orderNo": order_count,
-                "packet": packet
-            }
-            self.client.emit('packet', json.dumps(message), namespace='/network')
-
     def runInParallel(self, fn1, fn2, args1, args2):
         fns = [fn1, fn2]
-        args = [args1, args2]
+        args = [(args1,), (args2,)]
         procs = []
         for index in range(len(fns)):
             p = Process(target=fns[index], args=args[index])

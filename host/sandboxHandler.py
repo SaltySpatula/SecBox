@@ -1,10 +1,16 @@
-from time import sleep
-from monitors.performanceMonitor import performanceMonitor
-from monitors.systemCallMonitor import systemCallMonitor
-from controller import Controller
+import sys
+import time
+sys.path.append(
+    "/home/adrian/Desktop/HS2022/MasterPrject/SecBox/host/monitors")
 from multiprocessing import Process
+from controller import Controller
+from performanceMonitor import performanceMonitor
+from networkMonitor import networkMonitor
+from systemCallMonitor import systemCallMonitor
+from time import sleep
 
 sandboxes = {}
+
 
 def start_sandbox(json, socketio):
     expected_json = {
@@ -42,10 +48,13 @@ def stop_all():
 def parallel_command(json):
     expected_json = {
         'ID': 123,
-        'CMD': 'sudo apt-get update'
+        'CMD': 'apt-get update'
     }
     sandbox = find_by_id(json['ID'])
     command = json['CMD']
+    print("sandbox"+str(sandbox.sandbox_id))
+    print(sandbox.performanceMonitor)
+    print(sandboxes)
     sandbox.controller.execute_command(command)
 
 
@@ -72,23 +81,26 @@ def healthy_command(json):
 class Sandbox:
     def __init__(self, client, mw_hash, os, sandbox_id) -> None:
         self.sandbox_id = sandbox_id
-        self.controller = None
-        self.syscallMonitor = None
-        self.performanceMonitor = None
 
         self.client = client
         self.mw_hash = mw_hash
         self.os = os
+
+        self.syscallMonitor = systemCallMonitor(self.client, self.sandbox_id)
+        self.controller = Controller(self.client, self.mw_hash, self.os, self.sandbox_id)
+        self.performanceMonitor = performanceMonitor(self.client, self.sandbox_id, self.controller)
+        self.networkMonitor = networkMonitor(self.client, self.sandbox_id, self.controller)
+
 
         self.stopped = False
         self.process = Process(target=self.run)
         self.process.start()
 
     def run(self):
-        with systemCallMonitor(self.client, self.sandbox_id) as syscallMonitor:
-            self.syscallMonitor = syscallMonitor
-            with Controller(self.client, self.mw_hash, self.os, self.sandbox_id) as controller:
-                self.controller = controller
-                with performanceMonitor(self.client, self.sandbox_id, controller):
-                    while not self.stopped:
-                        sleep(1)
+        with self.syscallMonitor as syscallMonitor:
+            with self.controller as controller:
+                with self.performanceMonitor as performanceMonitor:
+                    with self.networkMonitor as networkMonitor:
+                        while not self.stopped:
+                            sleep(1)
+

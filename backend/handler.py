@@ -4,10 +4,6 @@ import subprocess
 
 counter = 0
 
-def start_process():
-    time.sleep(10)
-    return "MQ=="
-
 def start_process(sha, selected_os):
     global counter
     counter = counter + 1
