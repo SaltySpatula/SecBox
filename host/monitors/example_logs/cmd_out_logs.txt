@@ -1,0 +1,73 @@
+{'ID': 123, 'infectedStatus': 'infected', 'orderNo': 0, 'cmdOut': 'Ign:1 http://security.ubuntu.com/ubuntu jammy-security InRelease\nIgn:2 http://archive.ubuntu.com/ubuntu jammy InRelease\n'}
+{'ID': 123, 'infectedStatus': 'infected', 'orderNo': 0, 'cmdOut': 'Ign:3 http://archive.ubuntu.com/ubuntu jammy-updates InRelease\n'}
+{'ID': 123, 'infectedStatus': 'infected', 'orderNo': 0, 'cmdOut': 'Ign:4 http://archive.ubuntu.com/ubuntu jammy-backports InRelease\n'}
+{'ID': 123, 'infectedStatus': 'healthy', 'orderNo': 0, 'cmdOut': 'Ign:1 http://archive.ubuntu.com/ubuntu jammy InRelease\n'}
+{'ID': 123, 'infectedStatus': 'healthy', 'orderNo': 0, 'cmdOut': 'Ign:2 http://security.ubuntu.com/ubuntu jammy-security InRelease\n'}
+{'ID': 123, 'infectedStatus': 'healthy', 'orderNo': 0, 'cmdOut': 'Ign:3 http://archive.ubuntu.com/ubuntu jammy-updates InRelease\n'}
+{'ID': 123, 'infectedStatus': 'healthy', 'orderNo': 0, 'cmdOut': 'Ign:4 http://archive.ubuntu.com/ubuntu jammy-backports InRelease\n'}
+{'ID': 123, 'infectedStatus': 'infected', 'orderNo': 0, 'cmdOut': 'Ign:1 http://security.ubuntu.com/ubuntu jammy-security InRelease\n'}
+{'ID': 123, 'infectedStatus': 'infected', 'orderNo': 0, 'cmdOut': 'Ign:2 http://archive.ubuntu.com/ubuntu jammy InRelease\n'}
+{'ID': 123, 'infectedStatus': 'infected', 'orderNo': 0, 'cmdOut': 'Ign:3 http://archive.ubuntu.com/ubuntu jammy-updates InRelease\n'}
+{'ID': 123, 'infectedStatus': 'infected', 'orderNo': 0, 'cmdOut': 'Ign:4 http://archive.ubuntu.com/ubuntu jammy-backports InRelease\n'}
+{'ID': 123, 'infectedStatus': 'healthy', 'orderNo': 0, 'cmdOut': 'Ign:2 http://security.ubuntu.com/ubuntu jammy-security InRelease\n'}
+{'ID': 123, 'infectedStatus': 'healthy', 'orderNo': 0, 'cmdOut': 'Ign:1 http://archive.ubuntu.com/ubuntu jammy InRelease\n'}
+{'ID': 123, 'infectedStatus': 'healthy', 'orderNo': 0, 'cmdOut': 'Ign:3 http://archive.ubuntu.com/ubuntu jammy-updates InRelease\n'}
+{'ID': 123, 'infectedStatus': 'healthy', 'orderNo': 0, 'cmdOut': 'Ign:4 http://archive.ubuntu.com/ubuntu jammy-backports InRelease\n'}
+{'ID': 123, 'infectedStatus': 'infected', 'orderNo': 0, 'cmdOut': 'Ign:1 http://security.ubuntu.com/ubuntu jammy-security InRelease\n'}
+{'ID': 123, 'infectedStatus': 'infected', 'orderNo': 0, 'cmdOut': 'Ign:2 http://archive.ubuntu.com/ubuntu jammy InRelease\n'}
+{'ID': 123, 'infectedStatus': 'infected', 'orderNo': 0, 'cmdOut': 'Ign:3 http://archive.ubuntu.com/ubuntu jammy-updates InRelease\n'}
+{'ID': 123, 'infectedStatus': 'infected', 'orderNo': 0, 'cmdOut': 'Ign:4 http://archive.ubuntu.com/ubuntu jammy-backports InRelease\n'}
+{'ID': 123, 'infectedStatus': 'healthy', 'orderNo': 0, 'cmdOut': 'Ign:1 http://archive.ubuntu.com/ubuntu jammy InRelease\n'}
+{'ID': 123, 'infectedStatus': 'healthy', 'orderNo': 0, 'cmdOut': 'Ign:2 http://security.ubuntu.com/ubuntu jammy-security InRelease\n'}
+{'ID': 123, 'infectedStatus': 'healthy', 'orderNo': 0, 'cmdOut': 'Ign:3 http://archive.ubuntu.com/ubuntu jammy-updates InRelease\n'}
+{'ID': 123, 'infectedStatus': 'healthy', 'orderNo': 0, 'cmdOut': 'Ign:4 http://archive.ubuntu.com/ubuntu jammy-backports InRelease\n'}
+{'ID': 123, 'infectedStatus': 'infected', 'orderNo': 0, 'cmdOut': "Err:2 http://archive.ubuntu.com/ubuntu jammy InRelease\n  Temporary failure resolving 'archive.ubuntu.com'\n"}
+{'ID': 123, 'infectedStatus': 'infected', 'orderNo': 0, 'cmdOut': "Err:1 http://security.ubuntu.com/ubuntu jammy-security InRelease\n  Temporary failure resolving 'security.ubuntu.com'\n"}
+{'ID': 123, 'infectedStatus': 'infected', 'orderNo': 0, 'cmdOut': 'Err:3 http://archive.ubuntu.com/ubuntu jammy-updates InRelease\n'}
+{'ID': 123, 'infectedStatus': 'infected', 'orderNo': 0, 'cmdOut': "  Temporary failure resolving 'archive.ubuntu.com'\n"}
+{'ID': 123, 'infectedStatus': 'infected', 'orderNo': 0, 'cmdOut': "Err:4 http://archive.ubuntu.com/ubuntu jammy-backports InRelease\n  Temporary failure resolving 'archive.ubuntu.com'\n"}
+{'ID': 123, 'infectedStatus': 'healthy', 'orderNo': 0, 'cmdOut': 'Err:2 http://security.ubuntu.com/ubuntu jammy-security InRelease\n'}
+{'ID': 123, 'infectedStatus': 'healthy', 'orderNo': 0, 'cmdOut': "  Temporary failure resolving 'security.ubuntu.com'\n"}
+{'ID': 123, 'infectedStatus': 'healthy', 'orderNo': 0, 'cmdOut': "Err:1 http://archive.ubuntu.com/ubuntu jammy InRelease\n  Temporary failure resolving 'archive.ubuntu.com'\n"}
+{'ID': 123, 'infectedStatus': 'healthy', 'orderNo': 0, 'cmdOut': 'Err:3 http://archive.ubuntu.com/ubuntu jammy-updates InRelease\n'}
+{'ID': 123, 'infectedStatus': 'healthy', 'orderNo': 0, 'cmdOut': "  Temporary failure resolving 'archive.ubuntu.com'\n"}
+{'ID': 123, 'infectedStatus': 'healthy', 'orderNo': 0, 'cmdOut': "Err:4 http://archive.ubuntu.com/ubuntu jammy-backports InRelease\n  Temporary failure resolving 'archive.ubuntu.com'\n"}
+{'ID': 123, 'infectedStatus': 'infected', 'orderNo': 0, 'cmdOut': 'Reading package lists...'}
+{'ID': 123, 'infectedStatus': 'healthy', 'orderNo': 0, 'cmdOut': 'Reading package lists...'}
+{'ID': 123, 'infectedStatus': 'infected', 'orderNo': 0, 'cmdOut': '\n'}
+{'ID': 123, 'infectedStatus': 'infected', 'orderNo': 0, 'cmdOut': 'W'}
+{'ID': 123, 'infectedStatus': 'infected', 'orderNo': 0, 'cmdOut': ": Failed to fetch http://archive.ubuntu.com/ubuntu/dists/jammy/InRelease  Temporary failure resolving 'archive.ubuntu.com'"}
+{'ID': 123, 'infectedStatus': 'infected', 'orderNo': 0, 'cmdOut': '\n'}
+{'ID': 123, 'infectedStatus': 'infected', 'orderNo': 0, 'cmdOut': 'W'}
+{'ID': 123, 'infectedStatus': 'infected', 'orderNo': 0, 'cmdOut': ': '}
+{'ID': 123, 'infectedStatus': 'infected', 'orderNo': 0, 'cmdOut': "Failed to fetch http://archive.ubuntu.com/ubuntu/dists/jammy-updates/InRelease  Temporary failure resolving 'archive.ubuntu.com'"}
+{'ID': 123, 'infectedStatus': 'infected', 'orderNo': 0, 'cmdOut': '\n'}
+{'ID': 123, 'infectedStatus': 'infected', 'orderNo': 0, 'cmdOut': 'W'}
+{'ID': 123, 'infectedStatus': 'infected', 'orderNo': 0, 'cmdOut': ': '}
+{'ID': 123, 'infectedStatus': 'infected', 'orderNo': 0, 'cmdOut': "Failed to fetch http://archive.ubuntu.com/ubuntu/dists/jammy-backports/InRelease  Temporary failure resolving 'archive.ubuntu.com'\n"}
+{'ID': 123, 'infectedStatus': 'infected', 'orderNo': 0, 'cmdOut': 'W'}
+{'ID': 123, 'infectedStatus': 'infected', 'orderNo': 0, 'cmdOut': ': '}
+{'ID': 123, 'infectedStatus': 'infected', 'orderNo': 0, 'cmdOut': "Failed to fetch http://security.ubuntu.com/ubuntu/dists/jammy-security/InRelease  Temporary failure resolving 'security.ubuntu.com'"}
+{'ID': 123, 'infectedStatus': 'infected', 'orderNo': 0, 'cmdOut': '\n'}
+{'ID': 123, 'infectedStatus': 'infected', 'orderNo': 0, 'cmdOut': 'W'}
+{'ID': 123, 'infectedStatus': 'infected', 'orderNo': 0, 'cmdOut': ': '}
+{'ID': 123, 'infectedStatus': 'infected', 'orderNo': 0, 'cmdOut': 'Some index files failed to download. They have been ignored, or old ones used instead.'}
+{'ID': 123, 'infectedStatus': 'infected', 'orderNo': 0, 'cmdOut': '\n'}
+{'ID': 123, 'infectedStatus': 'healthy', 'orderNo': 0, 'cmdOut': '\n'}
+{'ID': 123, 'infectedStatus': 'healthy', 'orderNo': 0, 'cmdOut': 'W'}
+{'ID': 123, 'infectedStatus': 'healthy', 'orderNo': 0, 'cmdOut': ": Failed to fetch http://archive.ubuntu.com/ubuntu/dists/jammy/InRelease  Temporary failure resolving 'archive.ubuntu.com'\n"}
+{'ID': 123, 'infectedStatus': 'healthy', 'orderNo': 0, 'cmdOut': 'W'}
+{'ID': 123, 'infectedStatus': 'healthy', 'orderNo': 0, 'cmdOut': ': '}
+{'ID': 123, 'infectedStatus': 'healthy', 'orderNo': 0, 'cmdOut': "Failed to fetch http://archive.ubuntu.com/ubuntu/dists/jammy-updates/InRelease  Temporary failure resolving 'archive.ubuntu.com'"}
+{'ID': 123, 'infectedStatus': 'healthy', 'orderNo': 0, 'cmdOut': '\n'}
+{'ID': 123, 'infectedStatus': 'healthy', 'orderNo': 0, 'cmdOut': 'W'}
+{'ID': 123, 'infectedStatus': 'healthy', 'orderNo': 0, 'cmdOut': ': '}
+{'ID': 123, 'infectedStatus': 'healthy', 'orderNo': 0, 'cmdOut': "Failed to fetch http://archive.ubuntu.com/ubuntu/dists/jammy-backports/InRelease  Temporary failure resolving 'archive.ubuntu.com'"}
+{'ID': 123, 'infectedStatus': 'healthy', 'orderNo': 0, 'cmdOut': '\n'}
+{'ID': 123, 'infectedStatus': 'healthy', 'orderNo': 0, 'cmdOut': 'W'}
+{'ID': 123, 'infectedStatus': 'healthy', 'orderNo': 0, 'cmdOut': ': '}
+{'ID': 123, 'infectedStatus': 'healthy', 'orderNo': 0, 'cmdOut': "Failed to fetch http://security.ubuntu.com/ubuntu/dists/jammy-security/InRelease  Temporary failure resolving 'security.ubuntu.com'\n"}
+{'ID': 123, 'infectedStatus': 'healthy', 'orderNo': 0, 'cmdOut': 'W'}
+{'ID': 123, 'infectedStatus': 'healthy', 'orderNo': 0, 'cmdOut': ': '}
+{'ID': 123, 'infectedStatus': 'healthy', 'orderNo': 0, 'cmdOut': 'Some index files failed to download. They have been ignored, or old ones used instead.'}
+{'ID': 123, 'infectedStatus': 'healthy', 'orderNo': 0, 'cmdOut': '\n'}

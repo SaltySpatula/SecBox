@@ -1,0 +1,30 @@
+{'ID': 123, 'infectedStatus': 'healthy', 'orderNo': 1, 'sysCall': "b'WARNING: Invoking Bazel in batch mode since it is not invoked from within a workspace (below a directory having a WORKSPACE file).\\n'"}
+{'ID': 123, 'infectedStatus': 'infected', 'orderNo': 1, 'sysCall': "b'WARNING: Invoking Bazel in batch mode since it is not invoked from within a workspace (below a directory having a WORKSPACE file).\\n'"}
+{'ID': 123, 'infectedStatus': 'infected', 'orderNo': 2, 'sysCall': "b'Another command holds the client lock: \\n'"}
+{'ID': 123, 'infectedStatus': 'infected', 'orderNo': 3, 'sysCall': "b'pid=306036\\n'"}
+{'ID': 123, 'infectedStatus': 'infected', 'orderNo': 4, 'sysCall': "b'owner=client\\n'"}
+{'ID': 123, 'infectedStatus': 'infected', 'orderNo': 5, 'sysCall': "b'cwd=/home/adrian/Desktop/HS2022/MasterPrject/SecBox/host/gvisor-master\\n'"}
+{'ID': 123, 'infectedStatus': 'infected', 'orderNo': 6, 'sysCall': "b'\\n'"}
+{'ID': 123, 'infectedStatus': 'infected', 'orderNo': 7, 'sysCall': "b'Waiting for it to complete...\\n'"}
+{'ID': 123, 'infectedStatus': 'healthy', 'orderNo': 2, 'sysCall': 'b"ERROR: The \'run\' command is only supported from within a workspace (below a directory having a WORKSPACE file).\\n"'}
+{'ID': 123, 'infectedStatus': 'healthy', 'orderNo': 3, 'sysCall': "b'See documentation at https://docs.bazel.build/versions/main/build-ref.html#workspace\\n'"}
+{'ID': 123, 'infectedStatus': 'infected', 'orderNo': 8, 'sysCall': 'b"ERROR: The \'run\' command is only supported from within a workspace (below a directory having a WORKSPACE file).\\n"'}
+{'ID': 123, 'infectedStatus': 'infected', 'orderNo': 9, 'sysCall': "b'See documentation at https://docs.bazel.build/versions/main/build-ref.html#workspace\\n'"}
+{'ID': 123, 'infectedStatus': 'healthy', 'orderNo': 1, 'sysCall': "b'WARNING: Invoking Bazel in batch mode since it is not invoked from within a workspace (below a directory having a WORKSPACE file).\\n'"}
+{'ID': 123, 'infectedStatus': 'infected', 'orderNo': 1, 'sysCall': "b'WARNING: Invoking Bazel in batch mode since it is not invoked from within a workspace (below a directory having a WORKSPACE file).\\n'"}
+{'ID': 123, 'infectedStatus': 'infected', 'orderNo': 2, 'sysCall': "b'Another command holds the client lock: \\n'"}
+{'ID': 123, 'infectedStatus': 'infected', 'orderNo': 3, 'sysCall': "b'pid=306039\\n'"}
+{'ID': 123, 'infectedStatus': 'infected', 'orderNo': 4, 'sysCall': "b'owner=client\\n'"}
+{'ID': 123, 'infectedStatus': 'infected', 'orderNo': 5, 'sysCall': "b'cwd=/home/adrian/Desktop/HS2022/MasterPrject/SecBox/host/gvisor-master\\n'"}
+{'ID': 123, 'infectedStatus': 'infected', 'orderNo': 6, 'sysCall': "b'\\n'"}
+{'ID': 123, 'infectedStatus': 'infected', 'orderNo': 7, 'sysCall': "b'Waiting for it to complete...\\n'"}
+{'ID': 123, 'infectedStatus': 'infected', 'orderNo': 8, 'sysCall': "b'Another command holds the client lock: \\n'"}
+{'ID': 123, 'infectedStatus': 'infected', 'orderNo': 9, 'sysCall': "b'pid=307986\\n'"}
+{'ID': 123, 'infectedStatus': 'infected', 'orderNo': 10, 'sysCall': "b'owner=client\\n'"}
+{'ID': 123, 'infectedStatus': 'infected', 'orderNo': 11, 'sysCall': "b'cwd=/home/adrian/Desktop/HS2022/MasterPrject/SecBox/host/gvisor-master\\n'"}
+{'ID': 123, 'infectedStatus': 'infected', 'orderNo': 12, 'sysCall': "b'\\n'"}
+{'ID': 123, 'infectedStatus': 'infected', 'orderNo': 13, 'sysCall': "b'Waiting for it to complete...\\n'"}
+{'ID': 123, 'infectedStatus': 'healthy', 'orderNo': 2, 'sysCall': 'b"ERROR: The \'run\' command is only supported from within a workspace (below a directory having a WORKSPACE file).\\n"'}
+{'ID': 123, 'infectedStatus': 'healthy', 'orderNo': 3, 'sysCall': "b'See documentation at https://docs.bazel.build/versions/main/build-ref.html#workspace\\n'"}
+{'ID': 123, 'infectedStatus': 'infected', 'orderNo': 14, 'sysCall': 'b"ERROR: The \'run\' command is only supported from within a workspace (below a directory having a WORKSPACE file).\\n"'}
+{'ID': 123, 'infectedStatus': 'infected', 'orderNo': 15, 'sysCall': "b'See documentation at https://docs.bazel.build/versions/main/build-ref.html#workspace\\n'"}
