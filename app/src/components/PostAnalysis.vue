@@ -28,8 +28,36 @@
           ></v-list-item>
       </v-list-group>
     </v-list>
+        <v-container fluid style="position: absolute;bottom:0;">
+    <MalwareCard
+        malwareName="test"
+    ></MalwareCard>
+        <v-btn
+        style="margin-top: 1em"
+                block
+              large
+              color="primary"
+              dark
+            >
+              <v-icon              >
+                mdi-content-save
+              </v-icon>
+              Save & Exit
+       </v-btn>
 
-        <MalwareCard></MalwareCard>
+    <v-btn    style="margin-top: 1em"
+              block
+              color="red"
+              dark
+              tile
+            >
+              <v-icon              >
+                mdi-delete
+              </v-icon>
+              Delete & Quit
+    </v-btn>
+
+  </v-container>
       </v-navigation-drawer>
   <v-container fluid>
     <v-row>

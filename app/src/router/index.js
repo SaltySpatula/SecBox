@@ -4,6 +4,7 @@ import ReportDashboard from "@/components/ReportDashboard.vue";
 import LiveAnalysis from "@/components/LiveAnalysis.vue";
 import PostAnalysis from "@/components/PostAnalysis";
 import LoginPage from "@/components/LoginPage"
+import ReportPage from "@/components/ReportPage"
 
 const routes = [
   {
@@ -31,9 +32,13 @@ const routes = [
     component: LiveAnalysis
   },
   {
-    path:'/login',
+    path:'/report/:id',
     component: LoginPage
-  }
+  },
+  {
+    path:'/login',
+    component: ReportPage
+  },
 ];
 
 const router = createRouter({

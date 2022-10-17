@@ -2,15 +2,6 @@ from flask_mongoengine import Document
 from flask_mongoengine import MongoEngine as db
 
 
-class Process(db().Document):
-    SHA256 = db().StringField()
-    selected_os = db().StringField()
-
-    def to_json(self):
-        return {"SHA256": self.SHA256,
-                "selected_os": self.selected_os}
-
-
 class Malware(db().Document):
     name = db().StringField()
     hash = db().StringField(unique=True)
@@ -28,6 +19,17 @@ class Malware(db().Document):
             "url": self.url,
             "type": self.type,
             "tags": self.tags
+        }
+
+
+class Process(db().Document):
+    SHA256 = db().StringField()
+    malware = db().ReferenceField(Malware, dbref=True)
+    selected_os = db().StringField()
+
+    def to_json(self):
+        return {"SHA256": self.SHA256,
+                "selected_os": self.selected_os
         }
 
 

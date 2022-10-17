@@ -119,7 +119,9 @@ def greeting():
 
 @socketio.on("start request", namespace="/start")
 def create(data):
+    malware = models.Malware.objects(hash=data["SHA256"])[0]
     p = models.Process(SHA256=data["SHA256"], selected_os=data["OS"])
+    p.malware = malware
     p.save()
     feedback = handler.start_process(sha=data["SHA256"], selected_os=data["OS"])
     start(feedback)
