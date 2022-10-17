@@ -1,6 +1,7 @@
 import time
 import json
 import subprocess
+import requests
 
 counter = 0
 
@@ -57,3 +58,27 @@ def get_available_images():
     for item in json.loads(output.stdout)['results']:
         available_images.append("ubuntu:"+item['name'])
     return available_images
+
+def get_available_malware():
+    data = {'query': 'get_file_type', 'file_type': 'elf', 'limit':100}
+    url = "https://mb-api.abuse.ch/api/v1/"
+    response = requests.post(url, data=data)
+    malware_list = []
+    if response.status_code==200:
+        response = response.json()
+        malware_names = []
+        for malware in response["data"]:
+            if malware["signature"] not in malware_names:
+                malware_dict = {
+                "name": malware["signature"],
+                "hash": malware["sha256_hash"],
+                "url": "https://bazaar.abuse.ch/sample/"+str(malware["sha256_hash"])+"/",
+                "type": malware["file_type"],
+                "tags": malware["tags"]
+                }
+                malware_list.append(malware_dict)
+                malware_names.append(malware["signature"])
+            malware["signature"]
+        return malware_list
+    else:
+        print("Invalid Request Response!")
