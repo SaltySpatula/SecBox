@@ -1,15 +1,16 @@
+from flask_login import LoginManager, login_user, current_user, UserMixin
+from flask_mongoengine import MongoEngine
+from backend import handler, models
+import json
+from flask_cors import CORS
+from flask_socketio import send, emit, join_room, leave_room
+from flask_socketio import SocketIO
+from flask import Flask, session, request, abort
 import sys
 import time
-sys.path.append("/home/adrian/Desktop/HS2022/MasterPrject/SecBox")
 
-from flask import Flask, session, request, abort
-from flask_socketio import SocketIO
-from flask_socketio import send, emit, join_room, leave_room
-from flask_cors import CORS
-import json
-from backend import handler, models
-from flask_mongoengine import MongoEngine
-from flask_login import LoginManager, login_user, current_user, UserMixin
+from SecBox.dataManager import networkManager, performanceManager, syscallManager
+sys.path.append("/home/adrian/Desktop/HS2022/MasterPrject/SecBox")
 
 
 app = Flask(__name__)
@@ -29,6 +30,10 @@ db.init_app(app)
 socketio = SocketIO(app, cors_allowed_origins=[
                     'http://localhost:8080', 'http://localhost:5000'])
 login = LoginManager(app)
+
+system_call_manager = syscallManager(socketio, db)
+network_manager = networkManager(socketio, db)
+performance_manager = performanceManager(socketio, db)
 
 allowed_users = {
     'foo': 'bar',
@@ -143,10 +148,8 @@ def handle_ready(json):
 
 
 @ socketio.on('stats', namespace='/performance')
-def handle_stats(json):
-    # ToDo: Handle incoming performance stats
-    with open('performance_stats.txt', 'a') as f:
-        print(str(json), file=f)
+def handle_stats(data):
+    performance_manager.handle_message(json.loads(data))
 
 
 @ socketio.on('cmdOut', namespace='/cmd')
