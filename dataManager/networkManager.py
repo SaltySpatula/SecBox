@@ -1,6 +1,6 @@
-from telnetlib import IP
 from dataManager.dataManager import DataManager
 from scapy.all import *
+from scapy.utils import hexstr
 
 
 class NetworkManager(DataManager):
@@ -11,6 +11,9 @@ class NetworkManager(DataManager):
         pass
 
     def handle_message(self, data):
+        p = import_object(data["packet"][1:-1])
+        p.show()
+
         processed_data = self.process_data(data)
         if not self.save_data(processed_data):
             return False
@@ -19,10 +22,6 @@ class NetworkManager(DataManager):
 
     def process_data(self, data):
         pass
-
-#packet = Ether(data["packet"])
-#data["layers"] = packet.layers
-#return data"""
         
     def save_data(self, data):
         pass

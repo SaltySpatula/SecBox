@@ -1,9 +1,9 @@
 from subprocess import Popen, PIPE, STDOUT
 from multiprocessing import Process
 import json
-import scapy.all as scapy
+from scapy.all import *
 import socketio
-
+import contextlib, io
 
 class networkMonitor:
     def __init__(self, sandbox_id, controller) -> None:
@@ -11,33 +11,41 @@ class networkMonitor:
         self.client = None
         self.controller = controller
         self.ps = []
+        self.order_count = 0
+
+    def handler_wrap(self, infected_status):
+        def handle_packet(packet):
+            self.order_count = self.order_count+1
+            packet.show()
+            f = io.StringIO()
+            with contextlib.redirect_stdout(f):
+                export_object(packet)
+            output = f.getvalue()
+            message = {
+                "ID": self.sandbox_id,
+                "infectedStatus": infected_status,
+                "orderNo": self.order_count,
+                "packet": output
+                }
+            self.client.emit('packet',
+                json.dumps(message), namespace='/network')
+        return handle_packet
 
     def monitoring_process(self, infected_status):
         self.client = socketio.Client()
         self.client.connect('http://localhost:5000', namespaces=['/network'])
         print("network monitor started")
-        order_count = 0
         instance = None
-        if infected_status=="healthy":
+        if infected_status == "healthy":
             instance = self.controller.healthyInstance
         else:
             instance = self.controller.infectedInstance
         print(instance.bridge)
-        command = "sudo tcpdump -i " + instance.bridge
-        process = Popen(command.split(),
-                             stdin=PIPE, stdout=PIPE, stderr=STDOUT)
-        for packet in process.stdout:
-            order_count = order_count+1
-            message = {
-                "ID": self.sandbox_id,
-                "infectedStatus": infected_status,
-                "orderNo": order_count,
-                "packet": (packet.decode('UTF-8'))
-            }
-            self.client.emit('packet', json.dumps(message), namespace='/network')
+        sniff(iface=instance.bridge, prn=self.handler_wrap(infected_status))
 
     def run(self):
-        self.mp = Process(target=self.runInParallel, args=(self.monitoring_process, self.monitoring_process, "healthy", "infected"))
+        self.mp = Process(target=self.runInParallel, args=(
+            self.monitoring_process, self.monitoring_process, "healthy", "infected"))
         self.mp.start()
 
     def __enter__(self):
