@@ -8,12 +8,13 @@ import socketio
 class networkMonitor:
     def __init__(self, sandbox_id, controller) -> None:
         self.sandbox_id = sandbox_id
-        self.client = socketio.Client()
-        self.client.connect('http://localhost:5000', namespaces=['/network'])
+        self.client = None
         self.controller = controller
         self.ps = []
 
     def monitoring_process(self, infected_status):
+        self.client = socketio.Client()
+        self.client.connect('http://localhost:5000', namespaces=['/network'])
         print("network monitor started")
         order_count = 0
         instance = None

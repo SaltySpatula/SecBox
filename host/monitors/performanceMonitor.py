@@ -14,6 +14,8 @@ class performanceMonitor:
         self.ps = []
 
     def monitoring_process(self, infected_status):
+        self.client = socketio.Client()
+        self.client.connect('http://localhost:5000', namespaces=['/network'])
         print("performance monitor started")
         order_count = 0
         container = None

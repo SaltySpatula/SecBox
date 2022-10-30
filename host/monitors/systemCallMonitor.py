@@ -17,8 +17,7 @@ class systemCallMonitor:
     def __init__(self, sandbox_id) -> None:
         self.base_command = base_command
         self.sandbox_id = sandbox_id
-        self.client = socketio.Client()
-        self.client.connect('http://localhost:5000', namespaces=['/sysCall'])
+        self.client = None
         self.ps = []
 
     def run(self):
@@ -35,6 +34,8 @@ class systemCallMonitor:
         self.mp.join()
 
     def monitoring_process(self, infected_status):
+        self.client = socketio.Client()
+        self.client.connect('http://localhost:5000', namespaces=['/sysCall'])
         print("syscall monitor started")
         order_count = 0
         cwd = os.getcwd() + "/host/gvisor-master/"
@@ -55,7 +56,7 @@ class systemCallMonitor:
                 "orderNo": order_count,
                 "sysCall": str(line)
             }
-            #self.client.emit('sysCall', json.dumps(message), namespace='/sysCall')
+            self.client.emit('sysCall', json.dumps(message), namespace='/sysCall')
 
     def runInParallel(self, fn1, fn2, arg1, arg2):
         fns = [fn1, fn2]
