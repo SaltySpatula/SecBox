@@ -4,12 +4,27 @@ import time
 
 socketio = socketio.Client()
 
-@socketio.on("testLog", namespace="/dummy")
-def healthy_command(data):
+
+@socketio.on("cpu_percentages_graph", namespace="/live")
+def cpu_percentages(data):
+    #print(data)
+    pass
+
+
+@socketio.on("pid_graph", namespace="/live")
+def pid_graph(data):
+    #print(data)
+    pass
+
+@socketio.on("packet_graph", namespace="/live")
+def packet_graph(data):
     print(data)
+    pass
+
 
 if __name__ == '__main__':
-    socketio.connect('http://localhost:5000', namespaces=['/dummy', '/cmd'])
+    socketio.connect('http://localhost:5000',
+                     namespaces=['/dummy', '/cmd', '/live'])
     print("Dummy FE running...")
     time.sleep(10)
     data = json.dumps(
@@ -23,6 +38,7 @@ if __name__ == '__main__':
         'ID': 123,
         'CMD': 'sudo apt-get update'
     }
-    socketio.emit("paralellCommand", json.dumps(expected_json), namespace='/cmd')
+    socketio.emit("paralellCommand", json.dumps(
+        expected_json), namespace='/cmd')
     print("Emitted Command")
     socketio.wait()

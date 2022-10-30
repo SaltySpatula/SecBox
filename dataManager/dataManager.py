@@ -1,10 +1,12 @@
+import queue 
+
 class DataManager:
-    def __init__(self, fe_client, db):
+    def __init__(self, socketio, db):
         self.sent_packages = []
         self.db = db
-        self.fe_client = fe_client
+        self.socketio = socketio
         self.windowsize = 1000
-        self.data = {}
+        self.db_queue = queue.Queue(maxsize=1000)
 
     def handle_message(msg):
         pass
@@ -12,5 +14,5 @@ class DataManager:
     def process_data(self, data):
         pass
 
-    def save_data(self, data):
+    def batch_process():
         pass

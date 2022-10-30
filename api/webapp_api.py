@@ -1,17 +1,17 @@
 import sys
 sys.path.append("/home/adrian/Desktop/HS2022/MasterPrject/SecBox")
-from flask_login import LoginManager, login_user, current_user, UserMixin
-from flask_mongoengine import MongoEngine
-from backend import handler, models
-import json
-from flask_cors import CORS
-from flask_socketio import send, emit, join_room, leave_room
-from flask_socketio import SocketIO
-from flask import Flask, session, request, abort
 
-from dataManager.networkManager import NetworkManager
-from dataManager.performanceManager import PerformanceManager
 from dataManager.syscallManager import SysCallManager
+from dataManager.performanceManager import PerformanceManager
+from dataManager.networkManager import NetworkManager
+from flask import Flask, session, request, abort
+from flask_socketio import SocketIO
+from flask_socketio import send, emit, join_room, leave_room
+from flask_cors import CORS
+import json
+from backend import handler, models
+from flask_mongoengine import MongoEngine
+from flask_login import LoginManager, login_user, current_user, UserMixin
 
 
 app = Flask(__name__)
@@ -151,7 +151,6 @@ def handle_ready(json):
 
 @ socketio.on('stats', namespace='/performance')
 def handle_stats(data):
-    print(json.loads(data))
     performance_manager.handle_message(json.loads(data))
 
 
@@ -164,7 +163,6 @@ def handle_cmdline(json):
 
 @ socketio.on('packet', namespace='/network')
 def handle_networkpacket(data):
-    print(json.loads(data))
     network_manager.handle_message(json.loads(data))
 
 

@@ -6,6 +6,7 @@ import json
 socketio = socketio.Client()
 id_counter = 0
 
+
 @socketio.event
 def connect():
     print('connection established')
@@ -43,7 +44,7 @@ def healthy_command(data):
 
 
 @socketio.on("infectedCommand", namespace='/cmd')
-def healthy_command(data):
+def infected_command(data):
     sandboxHandler.infected_command(json.loads(data))
 
 
@@ -52,7 +53,8 @@ def catch_all(event, data):
     socketio.emit('Unknown Event')
 
 
-namespaces = ['/sandbox', '/sysCall', '/network', '/performance', '/cmd', '/dummy']
+namespaces = ['/sandbox', '/sysCall',
+              '/network', '/performance', '/cmd', '/dummy']
 if __name__ == '__main__':
     socketio.connect('http://localhost:5000', namespaces=namespaces)
     print("Host running...")

@@ -8,14 +8,13 @@ import socketio
 class performanceMonitor:
     def __init__(self, sandbox_id, controller) -> None:
         self.sandbox_id = sandbox_id
-        self.client = socketio.Client()
-        self.client.connect('http://localhost:5000', namespaces = ['/performance'])
+        self.client = None
         self.controller = controller
         self.ps = []
 
     def monitoring_process(self, infected_status):
         self.client = socketio.Client()
-        self.client.connect('http://localhost:5000', namespaces=['/network'])
+        self.client.connect('http://localhost:5000', namespaces=['/performance'])
         print("performance monitor started")
         order_count = 0
         container = None
