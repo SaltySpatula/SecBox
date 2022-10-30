@@ -3,7 +3,8 @@ class DataManager:
         self.sent_packages = []
         self.db = db
         self.fe_client = fe_client
-        self.window = 1000
+        self.windowsize = 1000
+        self.data = {}
 
     def handle_message(msg):
         pass

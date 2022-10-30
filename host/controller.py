@@ -1,23 +1,26 @@
 import docker
 from multiprocessing import Process
 import json
+import socketio
+import time
 
 healthy_dockerfile = "./host/healthy/"
 infected_dockerfile = "./host/infected/"
 
 
 class Controller:
-    def __init__(self, client, mw_hash, os, sandbox_id) -> None:
-        self.client = client
+    def __init__(self, mw_hash, os, sandbox_id) -> None:
+        self.client = socketio.Client()
+        self.client.connect('http://localhost:5000', namespaces=['/sandbox'])
         self.mw_hash = mw_hash
         self.os = os
         self.sandbox_id = sandbox_id
 
         # setup healthy and infected instances
         self.healthyInstance = Instance(
-            healthy_dockerfile, "healthy", self.client, self.sandbox_id)
+            healthy_dockerfile, "healthy", self.sandbox_id)
         self.infectedInstance = Instance(
-            infected_dockerfile, "infected", self.client, self.sandbox_id)
+            infected_dockerfile, "infected", self.sandbox_id)
 
     def __enter__(self):
         self.start_instances()
@@ -63,14 +66,16 @@ class Controller:
 
 
 class Instance:
-    def __init__(self, dockerfile, infection_status, client, sandbox_id) -> None:
+    def __init__(self, dockerfile, infection_status, sandbox_id) -> None:
         self.dockerfile = dockerfile
         self.docker_client = docker.from_env()
+        print(dockerfile)
         (self.image, self.logs) = self.docker_client.images.build(path=dockerfile)
 
         self.log_generator = None
         self.infection_status = infection_status
-        self.client = client
+        self.client = socketio.Client()
+        self.client.connect('http://localhost:5000', namespaces=['/cmd'])
         self.sandbox_id = sandbox_id
         self.order_count = 0
 

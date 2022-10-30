@@ -1,13 +1,15 @@
 from subprocess import Popen, PIPE, STDOUT
 from multiprocessing import Process
 import json
-
+import scapy.all as scapy
+import socketio
 
 
 class networkMonitor:
-    def __init__(self, client, sandbox_id, controller) -> None:
+    def __init__(self, sandbox_id, controller) -> None:
         self.sandbox_id = sandbox_id
-        self.client = client
+        self.client = socketio.Client()
+        self.client.connect('http://localhost:5000', namespaces=['/network'])
         self.controller = controller
         self.ps = []
 
@@ -19,6 +21,7 @@ class networkMonitor:
             instance = self.controller.healthyInstance
         else:
             instance = self.controller.infectedInstance
+        print(instance.bridge)
         command = "sudo tcpdump -i " + instance.bridge
         process = Popen(command.split(),
                              stdin=PIPE, stdout=PIPE, stderr=STDOUT)
@@ -28,7 +31,7 @@ class networkMonitor:
                 "ID": self.sandbox_id,
                 "infectedStatus": infected_status,
                 "orderNo": order_count,
-                "packet": packet.decode('utf-8')
+                "packet": (packet.decode('UTF-8'))
             }
             self.client.emit('packet', json.dumps(message), namespace='/network')
 

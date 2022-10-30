@@ -1,13 +1,15 @@
 from subprocess import Popen, PIPE, STDOUT
 from multiprocessing import Process
 import json
+import socketio
 
 
 
 class performanceMonitor:
-    def __init__(self, client, sandbox_id, controller) -> None:
+    def __init__(self, sandbox_id, controller) -> None:
         self.sandbox_id = sandbox_id
-        self.client = client
+        self.client = socketio.Client()
+        self.client.connect('http://localhost:5000', namespaces = ['/performance'])
         self.controller = controller
         self.ps = []
 

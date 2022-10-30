@@ -1,5 +1,4 @@
-from argparse import Namespace
-from dataManager import DataManager
+from dataManager.dataManager import DataManager
 import datetime
 
 
@@ -43,18 +42,16 @@ class PerformanceManager(DataManager):
                 self.pid_counts[sandbox_id][infected_status]["graph"], namespace='/live')
             self.fe_client.emit(
                 self.packet_counts[sandbox_id][infected_status]["graph"], namespace='/live')
-
         return True
 
     def save_data(self, data):
+        #ToDo:
         pass
 
     def extract_pid_count(self, sandbox_id, infected_status, data):
-        instance_history = data[sandbox_id][infected_status]
-
         current_ts = datetime.strptime(
-            instance_history["read"], "%Y-%m-%d %H:%M:%S")
-        current_pid_count = instance_history["pids_stats"]["current"]
+            data["read"], "%Y-%m-%d %H:%M:%S")
+        current_pid_count = data["pids_stats"]["current"]
         self.pid_counts[sandbox_id][infected_status]["graph"].append(
             {"timestamp": current_ts, "pid_count": current_pid_count})
 

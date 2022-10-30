@@ -18,8 +18,7 @@ def disconnect():
 
 @socketio.on("startSandbox", namespace='/sandbox')
 def start_sandbox(data):
-    print(data)
-    sandboxHandler.start_sandbox(json.loads(data), socketio)
+    sandboxHandler.start_sandbox(json.loads(data))
 
 
 @socketio.on("stopSandbox", namespace='/sandbox')
@@ -34,6 +33,7 @@ def stop_all_sandboxes():
 
 @socketio.on("paralellCommand", namespace='/cmd')
 def parallel_command(data):
+    print("received Command")
     sandboxHandler.parallel_command(json.loads(data))
 
 
@@ -52,7 +52,8 @@ def catch_all(event, data):
     socketio.emit('Unknown Event')
 
 
-namespaces = ['/sandbox', '/sysCall', '/network', '/performance', '/cmd']
+namespaces = ['/sandbox', '/sysCall', '/network', '/performance', '/cmd', '/dummy']
 if __name__ == '__main__':
-    socketio.connect('http://localhost:5000', namespaces=['/sandbox', '/sysCall', '/network', '/performance', '/cmd'], wait_timeout=10)
+    socketio.connect('http://localhost:5000', namespaces=namespaces)
+    print("Host running...")
     socketio.wait()
