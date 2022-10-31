@@ -33,11 +33,11 @@ const routes = [
   },
   {
     path:'/report/:id',
-    component: LoginPage
+    component: ReportPage
   },
   {
     path:'/login',
-    component: ReportPage
+    component: LoginPage
   },
 ];
 

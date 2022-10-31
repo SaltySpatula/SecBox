@@ -3,7 +3,7 @@
         floating
         permanent
         width="400"
-        class="bg-deep-purple-darken-1"
+        class="bg-deep-purple-lighten-1"
       >
         <v-list v-model:opened="open"
                 v-for="graph_group in this.graph_data"
@@ -38,6 +38,7 @@
               large
               color="primary"
               dark
+        @click="createReport()"
             >
               <v-icon              >
                 mdi-content-save
@@ -84,6 +85,7 @@
 
 <script>
 import MalwareCard from "@/components/MalwareCard";
+import router from "@/router";
 export default {
   name: "PostAnalysis.vue",
   components: {MalwareCard},
@@ -126,6 +128,10 @@ export default {
           }
         }
     },
+    createReport:function(){
+     const current_id = this.$route.params.id
+     router.replace({ path: '/report/' + current_id}, )
+  },
   }
 }
 </script>
