@@ -1,10 +1,18 @@
+import sys
+sys.path.append("/home/adrian/Desktop/HS2022/MasterPrject/SecBox")
+
+from dataManager.syscallManager import SysCallManager
+from dataManager.performanceManager import PerformanceManager
+from dataManager.networkManager import NetworkManager
 from flask import Flask, session, request, abort
 from flask_socketio import SocketIO
 from flask_socketio import send, emit, join_room, leave_room
 from flask_cors import CORS
+import json
 from backend import handler, models
 from flask_mongoengine import MongoEngine
 from flask_login import LoginManager, login_user, current_user, UserMixin
+
 
 app = Flask(__name__)
 CORS(app)
@@ -20,12 +28,17 @@ app.config['MONGODB_SETTINGS'] = {
 db = MongoEngine()
 db.init_app(app)
 
-socketio = SocketIO(app, cors_allowed_origins=['http://localhost:8080', 'http://localhost:5000'])
+socketio = SocketIO(app, cors_allowed_origins=[
+                    'http://localhost:8080', 'http://localhost:5000', 'http://localhost:5001'])
 login = LoginManager(app)
 
+system_call_manager = SysCallManager(socketio, db)
+network_manager = NetworkManager(socketio, db)
+performance_manager = PerformanceManager(socketio, db)
+
 allowed_users = {
-   'foo': 'bar',
-   'python': 'is-great!',
+    'foo': 'bar',
+    'python': 'is-great!',
 }
 
 
@@ -39,7 +52,7 @@ class User(UserMixin):
         self.id = username
 
 
-@app.route('/login', methods = ['POST'])
+@app.route('/login', methods=['POST'])
 def login():
     username = request.json['username']
     password = request.json['password']
@@ -54,7 +67,6 @@ def login():
 @socketio.on("receive data")
 def send_data():
     emit("receive data", handler.get_reports())
-
 
 
 @socketio.on('my event')
@@ -123,9 +135,45 @@ def create(data):
     p = models.Process(SHA256=data["SHA256"], selected_os=data["OS"])
     p.malware = malware
     p.save()
-    feedback = handler.start_process(sha=data["SHA256"], selected_os=data["OS"])
+    feedback = handler.start_process(
+        sha=data["SHA256"], selected_os=data["OS"])
+
+
+@ socketio.on('sysCall', namespace='/sysCall')
+def handle_sys_call(json):
+    with open('syscalls.txt', 'a') as f:
+        print(str(json), file=f)
+
+
+@ socketio.on('sandboxReady', namespace='/sandbox')
+def handle_ready(json):
+    print(json)
+    print("sandbox ready!")
+
+
+@ socketio.on('stats', namespace='/performance')
+def handle_stats(data):
+    performance_manager.handle_message(json.loads(data))
+
+
+@ socketio.on('cmdOut', namespace='/cmd')
+def handle_cmdline(json):
+    # ToDo: Handle incoming cmdOut
+    with open('cmds_logs.txt', 'a') as f:
+        print(str(json), file=f)
+
+
+@ socketio.on('packet', namespace='/network')
+def handle_networkpacket(data):
+    print(data)
+    network_manager.handle_message(json.loads(data))
+
+
+@app.route("/start", methods=['GET'])
+def create():
+    feedback = handler.start_process()
     start(feedback)
-    start_feedback(feedback)
+    return feedback
 
 
 @socketio.on("start feedback", namespace="/start")
@@ -148,10 +196,12 @@ def get_malware():
     return {"malwares": malwares, "oss": oss}
 
 
-@socketio.on('startSandbox')
+@socketio.on("startSandbox", namespace="/dummy")
 def start(data):
-    print("trying to start with", data)
-    socketio.emit("startSandbox", data)
+    print(data)
+    data = json.dumps(
+        {"ID": 123, "SHA256": "094fd325049b8a9cf6d3e5ef2a6d4cc6a567d7d49c35f8bb8dd9e3c6acf3d78d", "OS": "ubuntu:latest"})
+    socketio.emit("startSandbox", data, namespace='/sandbox')
 
 
 if __name__ == '__main__':

@@ -1,10 +1,10 @@
-from controller import Controller
-from monitors.systemCallMonitor import systemCallMonitor
+import time
 import socketio
-import SecBox.host.sandboxHandler as sandboxHandler
+import sandboxHandler
 import json
 
 socketio = socketio.Client()
+id_counter = 0
 
 
 @socketio.event
@@ -19,11 +19,11 @@ def disconnect():
 
 @socketio.on("startSandbox", namespace='/sandbox')
 def start_sandbox(data):
-    sandboxHandler.start_sandbox(json.loads(data), socketio)
+    sandboxHandler.start_sandbox(json.loads(data))
 
 
 @socketio.on("stopSandbox", namespace='/sandbox')
-def start_sandbox(data):
+def stop_sandbox(data):
     sandboxHandler.stop_sandbox(json.loads(data))
 
 
@@ -34,6 +34,7 @@ def stop_all_sandboxes():
 
 @socketio.on("paralellCommand", namespace='/cmd')
 def parallel_command(data):
+    print("received Command")
     sandboxHandler.parallel_command(json.loads(data))
 
 
@@ -43,7 +44,7 @@ def healthy_command(data):
 
 
 @socketio.on("infectedCommand", namespace='/cmd')
-def healthy_command(data):
+def infected_command(data):
     sandboxHandler.infected_command(json.loads(data))
 
 
@@ -52,7 +53,9 @@ def catch_all(event, data):
     socketio.emit('Unknown Event')
 
 
+namespaces = ['/sandbox', '/sysCall',
+              '/network', '/performance', '/cmd', '/dummy']
 if __name__ == '__main__':
-    socketio.connect('http://localhost:5000',
-                     namespaces=['/sandbox', '/sysCall', '/network', '/performance', '/cmd'])
+    socketio.connect('http://localhost:5000', namespaces=namespaces)
+    print("Host running...")
     socketio.wait()

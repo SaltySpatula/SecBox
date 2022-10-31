@@ -41,3 +41,4 @@ class Report(Document):
     def __str__(self):
         return self.title
 
+

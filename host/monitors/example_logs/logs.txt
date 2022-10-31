@@ -1,0 +1,4 @@
+123healthy_network network created 
+123infected_network network created 
+123healthy_network network created 
+123infected_network network created 
