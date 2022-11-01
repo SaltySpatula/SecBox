@@ -40,7 +40,7 @@
         </v-col>
         <v-col cols="12" md="6"  >
           <v-card class="pa-0 bg-deep-purple-accent-1">
-          <LiveTerminal :current_id="this.$route.params.id"></LiveTerminal>
+          <LiveTerminal :current_id="this.$route.params.id" :socket="this.socket"></LiveTerminal>
             </v-card>
         </v-col>
         <v-col cols="12" md="3">
@@ -55,13 +55,22 @@
 <script>
 import LiveTerminal from "@/components/LiveTerminal";
 import router from  "@/router/index"
+import io from "socket.io-client";
 export default {
   name: "LiveAnalysis",
   components: {LiveTerminal},
   props:{
 
   },
-  created: async function(){
+  created(){
+        // joining room
+    this.socket = io("ws://localhost:5000/live");
+    this.socket.emit('join room', {"room":this.$route.params.id}, function(){
+        // console.log("joined ", data);
+    });
+    this.socket.on("cpu_percentages_graph", function (data){
+        console.log("data", data)
+      });
   },
   methods:{
   postAnalyze:function(){

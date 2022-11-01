@@ -2,10 +2,13 @@ import docker
 from multiprocessing import Process
 import json
 import socketio
+import os
 import time
 
-healthy_dockerfile = "./host/healthy/"
-infected_dockerfile = "./host/infected/"
+
+path = "/home/raf/PycharmProjects/SecBox"
+healthy_dockerfile = path + "/host/healthy/"
+infected_dockerfile = path + "/host/infected/"
 
 
 class Controller:
@@ -83,8 +86,9 @@ class Instance:
         self.network = self.docker_client.networks.create(
             str(self.sandbox_id) + infection_status + "_network")
         self.bridge = "br-" + self.network.short_id
-
         # set up docker container
+        print(self.image)
+        print(self.network.name)
         self.container = self.docker_client.containers.run(
             self.image, runtime='runsc-trace-'+self.infection_status, detach=True, tty=True, network=self.network.name)
 

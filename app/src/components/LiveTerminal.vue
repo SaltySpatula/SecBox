@@ -58,17 +58,17 @@
 
 <script>
 import TerminalInterface from "@/components/TerminalInterface";
-import io from "socket.io-client";
+//import io from "socket.io-client";
 
 
 export default {
   name: "LiveTerminal",
     components: {TerminalInterface},
   props:{
-    current_id: String
+    current_id: String,
+    socket: Object,
   },
   data: () =>({
-    socket:null,
     cli_text:"",
     cli_text_infected:"",
     cli_text_clean:"",
@@ -77,12 +77,7 @@ export default {
     combined_cli : true,
       }),
   created() {
-    // testing connection
-    this.socket = io("ws://localhost:5000/live", {query:"foo=bar"});
-    this.socket.emit('join room', {"room":this.current_id}, function(data){
-        console.log(data);   //should output 'hello world'
-    });
-    let ref = this
+   let ref = this
     this.socket.on("cli feedback", function (data){
       ref.add_feedback(data)
     });
@@ -96,6 +91,7 @@ export default {
 
   },
   onEnter:function(){
+      console.log(this.socket)
       if (this.combined_cli){
         this.clean_lines.push("$ " + this.cli_text);
         this.infected_lines.push("$ " +this.cli_text);

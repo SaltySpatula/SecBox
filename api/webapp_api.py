@@ -1,5 +1,5 @@
-import sys
-sys.path.append("/home/adrian/Desktop/HS2022/MasterPrject/SecBox")
+# import sys
+# sys.path.append("/home/adrian/Desktop/HS2022/MasterPrject/SecBox")
 
 from dataManager.syscallManager import SysCallManager
 from dataManager.performanceManager import PerformanceManager
@@ -111,6 +111,7 @@ def connected():
 
 @socketio.on('join room', namespace='/live')
 def join(data):
+    print("join room:", data)
     room = data["room"]
     join_room(room)
     print("Client Connected to room", room)
@@ -131,12 +132,15 @@ def greeting():
 
 @socketio.on("start request", namespace="/start")
 def create(data):
-    malware = models.Malware.objects(hash=data["SHA256"])[0]
-    p = models.Process(SHA256=data["SHA256"], selected_os=data["OS"])
-    p.malware = malware
-    p.save()
-    feedback = handler.start_process(
-        sha=data["SHA256"], selected_os=data["OS"])
+    # malware = models.Malware.objects(hash=data["SHA256"])[0]
+    # p = models.Process(SHA256=data["SHA256"], selected_os=data["OS"])
+    # p.malware = malware
+    # p.save()
+    # feedback2 = handler.start_process(sha=data["SHA256"], selected_os=data["OS"])
+    feedback = start(data)
+    print(type(feedback))
+    start_feedback(feedback)
+    # emit("start feedback", feedback, namespace="/start")
 
 
 @ socketio.on('sysCall', namespace='/sysCall')
@@ -168,13 +172,13 @@ def handle_networkpacket(data):
     print(data)
     network_manager.handle_message(json.loads(data))
 
-
+"""
 @app.route("/start", methods=['GET'])
 def create():
     feedback = handler.start_process()
     start(feedback)
     return feedback
-
+"""
 
 @socketio.on("start feedback", namespace="/start")
 def start_feedback(feedback):
@@ -189,8 +193,8 @@ def get_reports():
 
 @app.route("/getStartData")
 def get_malware():
-    # malwares = handler.get_available_malwares()
-    malwares = models.Malware.objects.to_json()
+    malwares = handler.get_available_malwares()
+    # malwares = models.Malware.objects.to_json()
     oss = handler.get_available_os()
 
     return {"malwares": malwares, "oss": oss}
@@ -198,12 +202,13 @@ def get_malware():
 
 @socketio.on("startSandbox", namespace="/dummy")
 def start(data):
-    print(data)
+    # TODO: use data above
     data = json.dumps(
         {"ID": 123, "SHA256": "094fd325049b8a9cf6d3e5ef2a6d4cc6a567d7d49c35f8bb8dd9e3c6acf3d78d", "OS": "ubuntu:latest"})
     socketio.emit("startSandbox", data, namespace='/sandbox')
+    return data
 
 
 if __name__ == '__main__':
-    socketio.run(app, port=5000)
+    socketio.run(app, port=5000, allow_unsafe_werkzeug=True)
     app.run()

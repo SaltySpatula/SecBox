@@ -36,11 +36,12 @@ class PerformanceManager(DataManager):
                 sandbox_id, infected_status, data["stats"])
 
             self.socketio.emit("cpu_percentages_graph",
-                               self.cpu_percentages[sandbox_id][infected_status]["graph"], namespace='/live')
+                               self.cpu_percentages[sandbox_id][infected_status]["graph"],
+                               namespace='/live', room=sandbox_id)
             self.socketio.emit("pid_graph",
-                               self.pid_counts[sandbox_id][infected_status]["graph"], namespace='/live')
+                               self.pid_counts[sandbox_id][infected_status]["graph"], namespace='/live', room=sandbox_id)
             self.socketio.emit("packet_graph",
-                               self.packet_counts[sandbox_id][infected_status]["graph"], namespace='/live')
+                               self.packet_counts[sandbox_id][infected_status]["graph"], namespace='/live', room=sandbox_id)
             self.order_nos[sandbox_id][infected_status] = data["orderNo"]
         self.db_queue.put(data)
         return True
