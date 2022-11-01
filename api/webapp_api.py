@@ -4,6 +4,7 @@
 from dataManager.syscallManager import SysCallManager
 from dataManager.performanceManager import PerformanceManager
 from dataManager.networkManager import NetworkManager
+from dataManager.cmdOutManager import CmdOutManager
 from flask import Flask, session, request, abort
 from flask_socketio import SocketIO
 from flask_socketio import send, emit, join_room, leave_room
@@ -37,6 +38,7 @@ login = LoginManager(app)
 system_call_manager = SysCallManager(socketio, db)
 network_manager = NetworkManager(socketio, db)
 performance_manager = PerformanceManager(socketio, db)
+command_output_manager = CmdOutManager(socketio, db)
 
 allowed_users = {
     'foo': 'bar',
@@ -163,10 +165,8 @@ def handle_stats(data):
 
 
 @ socketio.on('cmdOut', namespace='/cmd')
-def handle_cmdline(json):
-    # ToDo: Handle incoming cmdOut
-    with open('cmds_logs.txt', 'a') as f:
-        print(str(json), file=f)
+def handle_cmdline(data):
+    command_output_manager.handle_message(json.loads(data))
 
 
 @ socketio.on('packet', namespace='/network')
