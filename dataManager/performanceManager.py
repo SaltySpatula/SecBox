@@ -35,13 +35,32 @@ class PerformanceManager(DataManager):
             self.extract_packet_count(
                 sandbox_id, infected_status, data["stats"])
 
+            cpu_percentage_trimmed = self.cpu_percentages[sandbox_id][infected_status]["graph"]
+
+            if len(cpu_percentage_trimmed) >= 60:
+                cpu_percentage_trimmed = cpu_percentage_trimmed[:60]
+
+            times = []
+            percentages = []
+            for t in cpu_percentage_trimmed:
+                times.append(t["timestamp"])
+                percentages.append(t["cpu_percentage"])
+
+            response_cpu_percentage = {
+                "infected_status":infected_status,
+                "data":{
+                "timestamps":times,
+                "percentages":percentages
+                }
+            }
+
             self.socketio.emit("cpu_percentages_graph",
-                               self.cpu_percentages[sandbox_id][infected_status]["graph"],
-                               namespace='/live', room=sandbox_id)
+                               response_cpu_percentage,
+                               namespace='/live', room=str(sandbox_id))
             self.socketio.emit("pid_graph",
-                               self.pid_counts[sandbox_id][infected_status]["graph"], namespace='/live', room=sandbox_id)
+                               self.pid_counts[sandbox_id][infected_status]["graph"], namespace='/live', room=str(sandbox_id))
             self.socketio.emit("packet_graph",
-                               self.packet_counts[sandbox_id][infected_status]["graph"], namespace='/live', room=sandbox_id)
+                               self.packet_counts[sandbox_id][infected_status]["graph"], namespace='/live', room=str(sandbox_id))
             self.order_nos[sandbox_id][infected_status] = data["orderNo"]
         self.db_queue.put(data)
         return True
@@ -49,6 +68,7 @@ class PerformanceManager(DataManager):
     def save_data(self, data):
         # ToDo:
         pass
+
 
     def extract_pid_count(self, sandbox_id, infected_status, data):
         current_ts = parser.parse(data["read"])

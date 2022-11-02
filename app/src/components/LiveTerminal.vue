@@ -91,7 +91,6 @@ export default {
 
   },
   onEnter:function(){
-      console.log(this.socket)
       if (this.combined_cli){
         this.clean_lines.push("$ " + this.cli_text);
         this.infected_lines.push("$ " +this.cli_text);
@@ -100,7 +99,6 @@ export default {
         this.$refs.CLI_text_field.reset();
       }
       else{
-        console.log(this.cli_text_clean, this.cli_text_infected)
         if(this.cli_text_clean){
           this.clean_lines.push(this.cli_text_clean);
         }

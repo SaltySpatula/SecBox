@@ -35,7 +35,7 @@
         <v-row style="margin:0">
         <v-col cols="12" md="3">
           <v-card class="bg-deep-purple-accent-1" style="overflow-y: auto; height:50rem">
-              <button v-on:click="login('hello')">Send Message</button>
+              <CPUPercentages :socket="this.socket"/>
           </v-card>
         </v-col>
         <v-col cols="12" md="6"  >
@@ -54,23 +54,28 @@
 
 <script>
 import LiveTerminal from "@/components/LiveTerminal";
-import router from  "@/router/index"
+import router from  "@/router/index";
+import CPUPercentages from "@/components/graphs/CPUPercentages";
 import io from "socket.io-client";
 export default {
   name: "LiveAnalysis",
-  components: {LiveTerminal},
+  components: {LiveTerminal, CPUPercentages},
+  data: () => ({
+    healthy_cpu_data:[],
+    infected_cpu_data:[]
+  }),
   props:{
 
   },
   created(){
         // joining room
     this.socket = io("ws://localhost:5000/live");
+
     this.socket.emit('join room', {"room":this.$route.params.id}, function(){
         // console.log("joined ", data);
     });
-    this.socket.on("cpu_percentages_graph", function (data){
-        console.log("data", data)
-      });
+
+
   },
   methods:{
   postAnalyze:function(){

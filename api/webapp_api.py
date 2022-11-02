@@ -12,10 +12,12 @@ import json
 from backend import handler, models
 from flask_mongoengine import MongoEngine
 from flask_login import LoginManager, login_user, current_user, UserMixin
-
+import logging
 
 app = Flask(__name__)
 CORS(app)
+log = logging.getLogger("werkzeug")
+log.setLevel(logging.ERROR)
 
 app.config['SECRET_KEY'] = 'secret!'
 
@@ -114,7 +116,7 @@ def join(data):
     print("join room:", data)
     room = data["room"]
     join_room(room)
-    print("Client Connected to room", room)
+    print("Client Connected to room", room, print(type(room)))
     emit("Successfully connected to live analysis room " + room, to=room)
 
 
