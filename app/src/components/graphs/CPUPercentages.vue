@@ -1,13 +1,15 @@
 <template>
-  <div>
+  <v-card class="bg-black" style="margin:10px">
+    <v-card-title style="align:center">CPU Usage</v-card-title>
       <apexchart
       type="line"
-      ref="cpuChart"
+      ref="cpuChartHealthy"
       :options="chartOptions"
       :series="series"
       :background="background"
-    ></apexchart>{{this.healthy}}
-    </div>
+      :height="300"
+    ></apexchart>
+    </v-card>
 </template>
 
 <script>
@@ -19,59 +21,76 @@ export default {
 
   },
   created() {
-    this.healthy = {"timestamps":[],"percentages":[]}
     let ref = this;
     this.socket.on("cpu_percentages_graph", function (data){
       if (data["infected_status"] === "healthy"){
-            let healthy_data = data["data"];
-            ref.$refs.cpuChart.updateSeries([{
-      name: 'Series 1',
-      data: healthy_data["percentages"] //ie [1,2,3,4]
-          }])
-
-          ref.$refs.cpuChart.updateOptions({
+          let healthy_data = data["data"];
+          ref.$refs.cpuChartHealthy.updateOptions({
                 xaxis: {
-                  categories: healthy_data["timestamps"] //ie ["a","b","c","d"]
-                }
+                  categories: healthy_data["timestamps"], //ie ["a","b","c","d"]
+                  tickAmount: 15,
+                },
+            series:[{
+            name: 'healthy',
+            data: healthy_data["percentages"] //ie [1,2,3,4]
+          },{
+                  name:"infected",
+                  data:ref.infected_cpu_data
+            },],
+
+                colors:["#207f10", "#d31313"],
           })
+        ref.healthy_cpu_data = data["data"]["percentages"]
           }
       else if (data["infected_status"] === "infected"){
-            ref.infected = data["data"];
-          }
+        let infected_data = data["data"];
+          ref.$refs.cpuChartHealthy.updateOptions({
+                xaxis: {
+                  categories: infected_data["timestamps"], //ie ["a","b","c","d"]
+                  tickAmount: 15,
+                },
+            series:[{
+            name: 'healthy',
+            data: ref.healthy_cpu_data //ie [1,2,3,4]
+          },{
+                  name:"infected",
+                  data:infected_data["percentages"]
+            },],
 
+                colors:["#207f10", "#d31313"],
+          })
+        ref.infected_cpu_data = data["data"]["percentages"]
+          }
       });
 
   },
   data: function() {
     return {
       background:"#000000",
-      infected:{},
+      infected_cpu_data:[],
+      healthy_cpu_data:[],
       chartOptions: {
         chart: {
+                      foreColor: '#ffffff',
               animations: {
-                enabled: true,
-                easing: 'linear',
-                dynamicAnimation: {
-                  speed: 1000
-                }
+                enabled: false,
+
               },
               toolbar: {
                 show: false
               },
               zoom: {
                 enabled: false
-              }
+              },
             },
         xaxis: {
+
           categories: [],
         },
-        colors:['#207f10'],
-
       },
-
       series: [
         {
-          name: "series-1",
+          name: "healthy",
           data: [],
         },
       ],
