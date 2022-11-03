@@ -35,7 +35,7 @@
         <v-row style="margin:0">
         <v-col cols="12" md="3">
           <v-card class="bg-deep-purple-accent-1" style="overflow-y: auto; height:50rem">
-              <CPUPercentages :socket="this.socket"/>
+              <CPUPercentages :socket="this.socket" />
           </v-card>
         </v-col>
         <v-col cols="12" md="6"  >
@@ -59,7 +59,7 @@ import CPUPercentages from "@/components/graphs/CPUPercentages";
 import io from "socket.io-client";
 export default {
   name: "LiveAnalysis",
-  components: {LiveTerminal, CPUPercentages},
+  components: {LiveTerminal, CPUPercentages:CPUPercentages},
   data: () => ({
     healthy_cpu_data:[],
     infected_cpu_data:[]

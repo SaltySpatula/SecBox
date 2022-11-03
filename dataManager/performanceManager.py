@@ -1,7 +1,6 @@
 from dataManager.dataManager import DataManager
 from dateutil import parser
-
-
+from datetime import datetime
 class PerformanceManager(DataManager):
     def __init__(self, socketio, db):
         super().__init__(socketio, db)
@@ -35,16 +34,18 @@ class PerformanceManager(DataManager):
             self.extract_packet_count(
                 sandbox_id, infected_status, data["stats"])
 
+            # TODO: Create function for preppring data
             cpu_percentage_trimmed = self.cpu_percentages[sandbox_id][infected_status]["graph"]
 
             if len(cpu_percentage_trimmed) >= 60:
-                cpu_percentage_trimmed = cpu_percentage_trimmed[:60]
+                cpu_percentage_trimmed = cpu_percentage_trimmed[-61:]
 
             times = []
             percentages = []
             for t in cpu_percentage_trimmed:
-                times.append(t["timestamp"])
-                percentages.append(t["cpu_percentage"])
+                time = datetime.strptime(t["timestamp"], "%m/%d/%Y, %H:%M:%S.%f%Z")
+                times.append(datetime.strftime(time, "%H:%M:%S"))
+                percentages.append(round(t["cpu_percentage"], 2))
 
             response_cpu_percentage = {
                 "infected_status":infected_status,

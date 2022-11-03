@@ -1,67 +1,85 @@
 <template>
-  <apexchart type="line" height="350" :options="chartOptions" :series="series"></apexchart>
   <div>
-    {{this.healthy}}
-  </div>
+      <apexchart
+      type="line"
+      ref="cpuChart"
+      :options="chartOptions"
+      :series="series"
+      :background="background"
+    ></apexchart>{{this.healthy}}
+    </div>
 </template>
 
 <script>
-import VueApexCharts from "vue3-apexcharts"
 
 export default {
   name: "CPUPercentages",
   props:{
-    socket:Object
-  },
-  components: {
-    apexchart: VueApexCharts,
-  },
+    socket:Object,
 
+  },
   created() {
-    let ref = this
+    this.healthy = {"timestamps":[],"percentages":[]}
+    let ref = this;
     this.socket.on("cpu_percentages_graph", function (data){
-
-
-
-      console.log(data)
       if (data["infected_status"] === "healthy"){
-            ref.healthy = data["data"];
+            let healthy_data = data["data"];
+            ref.$refs.cpuChart.updateSeries([{
+      name: 'Series 1',
+      data: healthy_data["percentages"] //ie [1,2,3,4]
+          }])
+
+          ref.$refs.cpuChart.updateOptions({
+                xaxis: {
+                  categories: healthy_data["timestamps"] //ie ["a","b","c","d"]
+                }
+          })
           }
-      if (data["infected_status"] === "infected"){
+      else if (data["infected_status"] === "infected"){
             ref.infected = data["data"];
           }
-      console.log(ref.infected, ref.healthy)
-
 
       });
+
   },
-  data: () => ({
-    infected:[],
-    healthy:[],
+  data: function() {
+    return {
+      background:"#000000",
+      infected:{},
       chartOptions: {
         chart: {
-          height: 350,
-          type: 'line',
-          zoom: {
-            enabled: false
-          }
-        },
+              animations: {
+                enabled: true,
+                easing: 'linear',
+                dynamicAnimation: {
+                  speed: 1000
+                }
+              },
+              toolbar: {
+                show: false
+              },
+              zoom: {
+                enabled: false
+              }
+            },
         xaxis: {
-          categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
-        }
-      }
-      ,
-      series: [{
-        name: "Desktops",
-        data: [10, 41, 35, 51, 49, 62, 69, 91, 148]
-      }]
+          categories: [],
+        },
+        colors:['#207f10'],
 
+      },
 
-    })
+      series: [
+        {
+          name: "series-1",
+          data: [],
+        },
+      ],
 
+    };
+  },
 }
 </script>
-import ApexCharts from "apexcharts"
 
 <style scoped>
 
