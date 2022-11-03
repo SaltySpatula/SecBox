@@ -124,8 +124,8 @@ export default {
         this.sent_request = true;
         this.dialog=false;
         this.socket.on('start feedback', function(data){
-            console.log(data);
             if (data){
+              data = JSON.parse(data)
               let analysis_id = data.ID;
               this.dialog=false;
               router.push({path: `/live/${analysis_id}`});

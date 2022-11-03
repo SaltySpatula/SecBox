@@ -12,7 +12,7 @@ class NetworkManager(DataManager):
 
     def handle_message(self, data):
         p = import_object(data["packet"][1:-1])
-        p.show()
+        # p.show()
 
         processed_data = self.process_data(data)
         if not self.save_data(processed_data):

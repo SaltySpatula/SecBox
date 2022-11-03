@@ -1,19 +1,19 @@
 from http import client
 import sys
 import time
-sys.path.append(
-    "/home/adrian/Desktop/HS2022/MasterPrject/SecBox/host/monitors")
+# sys.path.append("/home/adrian/Desktop/HS2022/MasterPrject/SecBox/host/monitors")
 from multiprocessing import Process
 from controller import Controller
-from performanceMonitor import performanceMonitor
-from networkMonitor import networkMonitor
-from systemCallMonitor import systemCallMonitor
+from monitors import performanceMonitor
+from monitors import networkMonitor
+from monitors import systemCallMonitor
 from time import sleep
 
 sandboxes = {}
 
 
 def start_sandbox(json):
+    print(json)
     expected_json = {
         'ID': 123,
         'SHA256': '094fd325049b8a9cf6d3e5ef2a6d4cc6a567d7d49c35f8bb8dd9e3c6acf3d78d',
@@ -85,10 +85,10 @@ class Sandbox:
         self.mw_hash = mw_hash
         self.os = os
 
-        self.syscallMonitor = systemCallMonitor(self.sandbox_id)
+        self.syscallMonitor = systemCallMonitor.systemCallMonitor(self.sandbox_id)
         self.controller = Controller(self.mw_hash, self.os, self.sandbox_id)
-        self.performanceMonitor = performanceMonitor(self.sandbox_id, self.controller)
-        self.networkMonitor = networkMonitor(self.sandbox_id, self.controller)
+        self.performanceMonitor = performanceMonitor.performanceMonitor(self.sandbox_id, self.controller)
+        self.networkMonitor = networkMonitor.networkMonitor(self.sandbox_id, self.controller)
 
 
         self.stopped = False
