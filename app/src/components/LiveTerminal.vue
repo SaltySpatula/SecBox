@@ -95,7 +95,7 @@ export default {
         this.clean_lines.push("$ " + this.cli_text);
         this.infected_lines.push("$ " +this.cli_text);
 
-        this.socket.emit('cli command', { "room":this.current_id, "clean_cmd": this.cli_text, "infected_cmd": this.cli_text});
+        this.socket.emit('cli command', { "room":this.current_id, "healthy_cmd": this.cli_text, "infected_cmd": this.cli_text});
         this.$refs.CLI_text_field.reset();
       }
       else{
@@ -105,13 +105,13 @@ export default {
         if(this.cli_text_infected){
           this.infected_lines.push(this.cli_text_infected)
         }
-        this.socket.emit('cli command', { "room":this.current_id, "clean_cmd": this.cli_text_clean, "infected_cmd": this.cli_text_infected});
+        this.socket.emit('cli command', { "room":this.current_id, "healthy_cmd": this.cli_text_clean, "infected_cmd": this.cli_text_infected});
         this.$refs.CLI_text_field_clean.reset("");
         this.$refs.CLI_text_field_infected.reset("");
       }
   },
     add_feedback(data){
-      this.clean_lines.push(data["clean_cmd"])
+      this.clean_lines.push(data["healthy_cmd"])
       this.infected_lines.push(data["infected_cmd"])
     }
   },

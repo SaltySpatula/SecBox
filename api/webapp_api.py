@@ -14,6 +14,7 @@ from backend import handler, models
 from flask_mongoengine import MongoEngine
 from flask_login import LoginManager, login_user, current_user, UserMixin
 import logging
+import json
 
 app = Flask(__name__)
 CORS(app)
@@ -80,18 +81,21 @@ def handle_my_custom_event(json, methods=['GET', 'POST']):
 
 
 @socketio.on("cli command", namespace='/live')
-def post_command(json):
-    print("received command", json)
-    get_command(json)
-
-
-@socketio.on("cli feedback", namespace='/live')
-def get_command(cmd):
-    print("Echo: ", cmd)
-    room = cmd["room"]
-    cmd["clean_cmd"] = "echo " + cmd["clean_cmd"]
-    cmd["infected_cmd"] = "echo " + cmd["infected_cmd"]
-    emit("cli feedback", cmd, to=room)
+def post_command(data):
+    #TODO: save executed command to DB
+    print("received command", data)
+    if data["healthy_cmd"] != "" or data["healthy_cmd"] is not None:
+        healthy = {
+        'ID': int(data["room"]),
+        'CMD': data["healthy_cmd"]
+        }
+        socketio.emit("healthyCommand", json.dumps(healthy),namespace='/cmd')
+    if data["infected_cmd"] != "" or data["infected_cmd"] is not None:
+        infected = {
+        'ID': int(data["room"]),
+        'CMD': data["healthy_cmd"]
+        }
+        socketio.emit("infectedCommand", json.dumps(infected),namespace='/cmd')
 
 
 @socketio.on('disconnect', namespace='/live')
