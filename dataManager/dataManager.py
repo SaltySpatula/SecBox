@@ -7,6 +7,7 @@ class DataManager:
         self.socketio = socketio
         self.windowsize = 1000
         self.db_queue = queue.Queue(maxsize=1000)
+        self.order_nos = {}
 
     def handle_message(msg):
         pass
