@@ -171,7 +171,6 @@ def handle_cmdline(json):
 
 @ socketio.on('packet', namespace='/network')
 def handle_networkpacket(data):
-    print(data)
     network_manager.handle_message(json.loads(data))
 
 """

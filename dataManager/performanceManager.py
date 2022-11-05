@@ -38,7 +38,11 @@ class PerformanceManager(DataManager):
             cpu_percentage_trimmed = self.cpu_percentages[sandbox_id][infected_status]["graph"]
 
             if len(cpu_percentage_trimmed) >= 60:
-                cpu_percentage_trimmed = cpu_percentage_trimmed[-61:]
+                cpu_percentage_trimmed = cpu_percentage_trimmed[-60:]
+            else:
+                length_dummy_data = 60 - len(cpu_percentage_trimmed)
+                dummy_data = length_dummy_data * [cpu_percentage_trimmed[0]]
+                cpu_percentage_trimmed = dummy_data + cpu_percentage_trimmed
 
             times = []
             percentages = []
@@ -46,6 +50,7 @@ class PerformanceManager(DataManager):
                 time = datetime.strptime(t["timestamp"], "%m/%d/%Y, %H:%M:%S.%f%Z")
                 times.append(datetime.strftime(time, "%H:%M:%S"))
                 percentages.append(round(t["cpu_percentage"], 2))
+
 
             response_cpu_percentage = {
                 "infected_status":infected_status,
@@ -60,13 +65,32 @@ class PerformanceManager(DataManager):
                                namespace='/live', room=str(sandbox_id))
 
             trimmed_pid_counts = self.pid_counts[sandbox_id][infected_status]["graph"]
-            trimmed_pid_counts = trimmed_pid_counts[-1]
-            self.socketio.emit("pid_graph",
-                               trimmed_pid_counts, namespace='/live', room=str(sandbox_id))
+
+
+            if len(self.pid_counts[sandbox_id][infected_status]["graph"]) >= 2:
+                # if a new value appears, we send it to the front end (we also send every 50th
+                if trimmed_pid_counts[-1]["pid_count"] != trimmed_pid_counts[-2]["pid_count"] or len(trimmed_pid_counts) % 50 == 0:
+                    response_pid = {
+                        "infected_status": infected_status,
+                        "data": {
+                            "pid_count": trimmed_pid_counts[-1]
+                        }
+                    }
+                    self.socketio.emit("pid_graph",
+                                       response_pid, namespace='/live', room=str(sandbox_id))
+
+
+            else:
+                response_pid = {
+                    "infected_status": infected_status,
+                    "data": {
+                        "pid_count": trimmed_pid_counts[-1]
+                    }
+                }
+                self.socketio.emit("pid_graph",
+                                   response_pid, namespace='/live', room=str(sandbox_id))
 
             packets_trimmed = self.packet_counts[sandbox_id][infected_status]["graph"][-1:]
-
-            times = []
 
             response_packets = {
                 "infected_status": infected_status,
@@ -108,7 +132,7 @@ class PerformanceManager(DataManager):
                 self.cpu_percentages[sandbox_id][infected_status]["previous_ts"])
 
             nanoseconds_delta = (previous_ts - current_ts).microseconds * 1000
-            percentage = current_ns / nanoseconds_delta * 100
+            percentage = (current_ns-previous_ns) / nanoseconds_delta * 100
 
             self.cpu_percentages[sandbox_id][infected_status]["graph"].append(
                 {"timestamp": current_ts.strftime("%m/%d/%Y, %H:%M:%S.%f%Z"), "cpu_percentage": percentage})
