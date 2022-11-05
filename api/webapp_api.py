@@ -200,8 +200,7 @@ def get_reports():
 def get_start_data():
     oss = json.dumps(handler.get_available_images())
     malwares = json.dumps(handler.get_available_malware())
-    print(oss)
-    print(malwares)
+
 
     return {"malwares": malwares, "oss": oss}
 

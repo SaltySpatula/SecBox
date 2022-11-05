@@ -2,7 +2,7 @@
  <v-container fluid class="ma-0 pa-0">
             <v-row align="center" class="ma-2">
               <TerminalInterface ref="infected_terminal" type="infected" color="#d917bf" :lines=this.infected_lines></TerminalInterface>
-              <TerminalInterface type="clean" color="#13d3b6" :lines=this.clean_lines></TerminalInterface>
+              <TerminalInterface ref="healthy_terminal" type="clean" color="#13d3b6" :lines=this.clean_lines></TerminalInterface>
               <v-col v-if="this.combined_cli" class="pa-1 " cols="12" md="12">
                 <v-text-field
                               v-if="this.combined_cli"
@@ -78,8 +78,8 @@ export default {
       }),
   created() {
    let ref = this
-    this.socket.on("cli feedback", function (data){
-      ref.add_feedback(data)
+    this.socket.on("terminalOutput", function (data){
+      ref.add_feedback(JSON.parse(data))
     });
   },
 
@@ -111,8 +111,16 @@ export default {
       }
   },
     add_feedback(data){
-      this.clean_lines.push(data["healthy_cmd"])
-      this.infected_lines.push(data["infected_cmd"])
+      console.log(data)
+      if (data["infectedStatus"] === "infected") {
+        this.infected_lines.push(data["cmdOut"]);
+        //time out to let everything render
+        setTimeout(() => {this.$refs.infected_terminal.scrollToElement();}, 5);
+      }
+      else if (data["infectedStatus"] === "healthy") {
+        this.clean_lines.push(data["cmdOut"]);
+        setTimeout(() => {this.$refs.healthy_terminal.scrollToElement();}, 5);
+      }
     }
   },
   beforeUnmount: function() {
