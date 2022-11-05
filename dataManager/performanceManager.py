@@ -48,7 +48,7 @@ class PerformanceManager(DataManager):
             for t in cpu_percentage_trimmed:
                 time = datetime.strptime(t["timestamp"], "%m/%d/%Y, %H:%M:%S.%f%Z")
                 times.append(datetime.strftime(time, "%H:%M:%S"))
-                percentages.append(round(t["cpu_percentage"], 2))
+                percentages.append(round(t["cpu_percentage"], 4))
 
 
             response_cpu_percentage = {
@@ -67,8 +67,8 @@ class PerformanceManager(DataManager):
 
 
             if len(self.pid_counts[sandbox_id][infected_status]["graph"]) >= 2:
-                # if a new value appears, we send it to the front end (we also send every 50th
-                if trimmed_pid_counts[-1]["pid_count"] != trimmed_pid_counts[-2]["pid_count"] or len(trimmed_pid_counts) % 50 == 0:
+                # if a new value appears, we send it to the front end (we also send every 20th
+                if trimmed_pid_counts[-1]["pid_count"] != trimmed_pid_counts[-2]["pid_count"] or len(trimmed_pid_counts) % 20 == 0:
                     response_pid = {
                         "infected_status": infected_status,
                         "data": {
