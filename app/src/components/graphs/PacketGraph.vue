@@ -59,7 +59,7 @@ export default {
         xaxis: {
           categories: ['healthy', 'infected'],
         },
-        colors:["#26d3b4", "#0e34d3"]
+        colors:["#2fc964", "#644db4"]
       },
         series: [{
           name: 'Packets sent',

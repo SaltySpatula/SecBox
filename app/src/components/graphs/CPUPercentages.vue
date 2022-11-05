@@ -37,7 +37,6 @@ export default {
                   data:ref.infected_cpu_data
             },],
 
-                colors:["#207f10", "#d31313"],
           })
         ref.healthy_cpu_data = data["data"]["percentages"]
           }
@@ -55,8 +54,7 @@ export default {
                   name:"infected",
                   data:infected_data["percentages"]
             },],
-
-                colors:["#207f10", "#d31313"],
+            colors:["#d917bf", "#13d3b6"]
           })
         ref.infected_cpu_data = data["data"]["percentages"]
           }

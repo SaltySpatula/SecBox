@@ -1,6 +1,6 @@
 <template>
   <v-card class="bg-black" style="margin:10px">
-    <v-card-title style="align:center">Process Counts</v-card-title>
+    <v-card-title style="align:center">Number of Processes</v-card-title>
   <apexchart
       ref="PIDGraph"
       :options="chartOptions"
@@ -28,7 +28,6 @@ export default {
       }
 
       ref.$refs.PIDGraph.updateSeries(ref.pid_count)
-
       });
 
 
@@ -36,8 +35,20 @@ export default {
   data: function() {
     return {
       pid_count : [0, 0],
-      pid_count_old : [0, 0],
       chartOptions: {
+        pie: {
+        donut: {
+          labels: {
+            show: true,
+            name: {
+              show: true
+            },
+            value: {
+              show:true
+            }
+          }
+        }
+      },
                chart: {
         labels:["healthy", "infected"],
 
@@ -48,10 +59,11 @@ export default {
                 show: false
               },
       },
+        labels:["healthy", "infected"],
         legend: {position: "bottom"},
-        colors:["#207f10", "#d31313"],
+        colors:["#d917bf", "#13d3b6"],
       },
-        series: [0, 0]
+        series: [1, 1]
     };
   },
 }
