@@ -6,7 +6,6 @@
       ref="cpuChartHealthy"
       :options="chartOptions"
       :series="series"
-      :background="background"
       :height="300"
     ></apexchart>
     </v-card>
@@ -66,7 +65,6 @@ export default {
   },
   data: function() {
     return {
-      background:"#000000",
       infected_cpu_data:[],
       healthy_cpu_data:[],
       chartOptions: {

@@ -58,10 +58,25 @@ class PerformanceManager(DataManager):
             self.socketio.emit("cpu_percentages_graph",
                                response_cpu_percentage,
                                namespace='/live', room=str(sandbox_id))
+
+            trimmed_pid_counts = self.pid_counts[sandbox_id][infected_status]["graph"]
+            trimmed_pid_counts = trimmed_pid_counts[-1]
             self.socketio.emit("pid_graph",
-                               self.pid_counts[sandbox_id][infected_status]["graph"], namespace='/live', room=str(sandbox_id))
+                               trimmed_pid_counts, namespace='/live', room=str(sandbox_id))
+
+            packets_trimmed = self.packet_counts[sandbox_id][infected_status]["graph"][-1:]
+
+            times = []
+
+            response_packets = {
+                "infected_status": infected_status,
+                "data": {
+                    "packets": packets_trimmed
+                }
+            }
+
             self.socketio.emit("packet_graph",
-                               self.packet_counts[sandbox_id][infected_status]["graph"], namespace='/live', room=str(sandbox_id))
+                               response_packets, namespace='/live', room=str(sandbox_id))
             self.order_nos[sandbox_id][infected_status] = data["orderNo"]
         self.db_queue.put(data)
         return True
