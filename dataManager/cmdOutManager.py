@@ -1,4 +1,5 @@
 from dataManager.dataManager import DataManager
+import json
 
 class CmdOutManager(DataManager):
     def __init__(self,fe_client, db):
@@ -19,7 +20,7 @@ class CmdOutManager(DataManager):
                 "infectedStatus": infected_status,
                 "cmdOut": data["cmdOut"]
             }
-            self.socketio.emit("terminalOutput", json.dumps(message) ,namespace="/live", to=sandbox_id)
+            self.socketio.emit("terminalOutput", json.dumps(message) ,namespace="/live", to=str(sandbox_id))
             self.order_nos[sandbox_id][infected_status] = data["orderNo"]
         self.db_queue.put(data)
         return True
