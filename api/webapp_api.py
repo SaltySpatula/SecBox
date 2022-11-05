@@ -197,10 +197,11 @@ def get_reports():
 
 
 @app.route("/getStartData")
-def get_malware():
-    malwares = handler.get_available_malwares()
-    # malwares = models.Malware.objects.to_json()
-    oss = handler.get_available_os()
+def get_start_data():
+    oss = json.dumps(handler.get_available_images())
+    malwares = json.dumps(handler.get_available_malware())
+    print(oss)
+    print(malwares)
 
     return {"malwares": malwares, "oss": oss}
 
