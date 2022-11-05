@@ -4,6 +4,7 @@
 from dataManager.syscallManager import SysCallManager
 from dataManager.performanceManager import PerformanceManager
 from dataManager.networkManager import NetworkManager
+from dataManager.cmdOutManager import CmdOutManager
 from flask import Flask, session, request, abort
 from flask_socketio import SocketIO
 from flask_socketio import send, emit, join_room, leave_room
@@ -13,6 +14,7 @@ from backend import handler, models
 from flask_mongoengine import MongoEngine
 from flask_login import LoginManager, login_user, current_user, UserMixin
 import logging
+import json
 
 app = Flask(__name__)
 CORS(app)
@@ -37,6 +39,7 @@ login = LoginManager(app)
 system_call_manager = SysCallManager(socketio, db)
 network_manager = NetworkManager(socketio, db)
 performance_manager = PerformanceManager(socketio, db)
+command_output_manager = CmdOutManager(socketio, db)
 
 allowed_users = {
     'foo': 'bar',
@@ -78,18 +81,21 @@ def handle_my_custom_event(json, methods=['GET', 'POST']):
 
 
 @socketio.on("cli command", namespace='/live')
-def post_command(json):
-    print("received command", json)
-    get_command(json)
-
-
-@socketio.on("cli feedback", namespace='/live')
-def get_command(cmd):
-    print("Echo: ", cmd)
-    room = cmd["room"]
-    cmd["clean_cmd"] = "echo " + cmd["clean_cmd"]
-    cmd["infected_cmd"] = "echo " + cmd["infected_cmd"]
-    emit("cli feedback", cmd, to=room)
+def post_command(data):
+    #TODO: save executed command to DB
+    print("received command", data)
+    if data["healthy_cmd"] != "" or data["healthy_cmd"] is not None:
+        healthy = {
+        'ID': int(data["room"]),
+        'CMD': data["healthy_cmd"]
+        }
+        socketio.emit("healthyCommand", json.dumps(healthy),namespace='/cmd')
+    if data["infected_cmd"] != "" or data["infected_cmd"] is not None:
+        infected = {
+        'ID': int(data["room"]),
+        'CMD': data["healthy_cmd"]
+        }
+        socketio.emit("infectedCommand", json.dumps(infected),namespace='/cmd')
 
 
 @socketio.on('disconnect', namespace='/live')
@@ -163,10 +169,8 @@ def handle_stats(data):
 
 
 @ socketio.on('cmdOut', namespace='/cmd')
-def handle_cmdline(json):
-    # ToDo: Handle incoming cmdOut
-    with open('cmds_logs.txt', 'a') as f:
-        print(str(json), file=f)
+def handle_cmdline(data):
+    command_output_manager.handle_message(json.loads(data))
 
 
 @ socketio.on('packet', namespace='/network')

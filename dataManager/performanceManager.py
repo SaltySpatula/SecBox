@@ -6,7 +6,6 @@ class PerformanceManager(DataManager):
         super().__init__(socketio, db)
         self.cpu_percentages = {}
         self.pid_counts = {}
-        self.order_nos = {}
         self.packet_counts = {}
 
     def setup_data_structures(self, sandbox_id, infected_status, data):
