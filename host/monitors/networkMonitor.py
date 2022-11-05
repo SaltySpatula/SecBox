@@ -16,7 +16,6 @@ class networkMonitor:
     def handler_wrap(self, infected_status):
         def handle_packet(packet):
             self.order_count = self.order_count+1
-            packet.show()
             f = io.StringIO()
             with contextlib.redirect_stdout(f):
                 export_object(packet)
