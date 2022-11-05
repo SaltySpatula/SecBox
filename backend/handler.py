@@ -5,6 +5,7 @@ import requests
 
 counter = 0
 
+
 def start_process(sha, selected_os):
     global counter
     counter = counter + 1
@@ -53,32 +54,33 @@ def get_available_malwares():
 
 def get_available_images():
     output = subprocess.run(
-        ['curl', '-L', '-s', 'https://registry.hub.docker.com/v2/repositories/library/ubuntu/tags?page_size=40'], text=True, capture_output=True)
+        ['curl', '-L', '-s', 'https://registry.hub.docker.com/v2/repositories/library/ubuntu/tags?page_size=40'],
+        text=True, capture_output=True)
     available_images = []
     for item in json.loads(output.stdout)['results']:
-        available_images.append("ubuntu:"+item['name'])
+        available_images.append("ubuntu:" + item['name'])
     return available_images
 
+
 def get_available_malware():
-    data = {'query': 'get_file_type', 'file_type': 'elf', 'limit':100}
+    data = {'query': 'get_file_type', 'file_type': 'elf', 'limit': 100}
     url = "https://mb-api.abuse.ch/api/v1/"
     response = requests.post(url, data=data)
     malware_list = []
-    if response.status_code==200:
+    if response.status_code == 200:
         response = response.json()
         malware_names = []
         for malware in response["data"]:
-            if malware["signature"] not in malware_names:
+            if malware["signature"] not in malware_names and malware["signature"] is not None:
                 malware_dict = {
-                "name": malware["signature"],
-                "hash": malware["sha256_hash"],
-                "url": "https://bazaar.abuse.ch/sample/"+str(malware["sha256_hash"])+"/",
-                "type": malware["file_type"],
-                "tags": malware["tags"]
+                    "name": malware["signature"],
+                    "hash": malware["sha256_hash"],
+                    "url": "https://bazaar.abuse.ch/sample/" + str(malware["sha256_hash"]) + "/",
+                    "type": malware["file_type"],
+                    "tags": malware["tags"]
                 }
                 malware_list.append(malware_dict)
                 malware_names.append(malware["signature"])
-            malware["signature"]
         return malware_list
     else:
         print("Invalid Request Response!")

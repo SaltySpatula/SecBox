@@ -23,7 +23,7 @@
             <v-row>
               <v-col cols="12">
                 <v-select
-                  :items="osData"
+                  :items="oss"
                   label="Select OS"
                   v-model="picked_os"
                   required
@@ -49,7 +49,7 @@
                   </thead>
                   <tbody>
                     <tr
-                      v-for="item in this.mwData"
+                      v-for="item in malwares"
                       :key="item.name"
                     >
                       <td>
@@ -96,6 +96,10 @@ import router from "@/router";
 
 export default {
   name: "StartAnalysisDialog",
+  props:{
+    oss:Array,
+    malwares:Array
+  },
   data: () => ({
       dialog: false,
       processId:"",
@@ -106,12 +110,7 @@ export default {
       reports:null,
       sent_request:false
     }),
-  created: async function(){
-      const gResponse = await fetch("http://localhost:5000/getStartData");
-      const gObject = await gResponse.json();
-      this.osData = JSON.parse(gObject.oss)
-      this.mwData = JSON.parse(gObject.malwares)
-  },
+
   methods:{
     start: async function(){
       if  (this.picked_malware == null || this.picked_os == null){

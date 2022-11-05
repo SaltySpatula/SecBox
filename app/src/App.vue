@@ -24,7 +24,7 @@
       </v-btn>
       </router-link>
 
-      <StartAnalysisDialog/>
+      <StartAnalysisDialog :oss="this.osData" :malwares="this.mwData"/>
 
       <v-app-bar-title>
         <p>{{ greeting }} - {{ flaskGreeting }}</p>
@@ -61,12 +61,20 @@ export default {
 
   data: () => ({
       greeting: 'SecBox',
-      flaskGreeting: ''
+      flaskGreeting: '',
+    osData:[],
+    mwData:[]
   }),
   created: async function(){
         const gResponse = await fetch("http://localhost:5000/greeting");
         const gObject = await gResponse.json();
         this.flaskGreeting = gObject.greeting;
+
+        const startData = await fetch("http://localhost:5000/getStartData");
+        const startObj = await startData.json();
+        this.osData = JSON.parse(startObj.oss)
+        this.mwData = JSON.parse(startObj.malwares)
+        console.log(this.osData, this.mwData)
     }
 }
 </script>
