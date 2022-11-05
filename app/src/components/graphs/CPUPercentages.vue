@@ -2,7 +2,7 @@
   <v-card class="bg-black" style="margin:10px">
     <v-card-title style="align:center">CPU Usage</v-card-title>
       <apexchart
-      type="line"
+      type="area"
       ref="cpuChartHealthy"
       :options="chartOptions"
       :series="series"
@@ -23,41 +23,25 @@ export default {
     let ref = this;
     this.socket.on("cpu_percentages_graph", function (data){
       if (data["infected_status"] === "healthy"){
-          let healthy_data = data["data"];
-          ref.$refs.cpuChartHealthy.updateOptions({
+        ref.healthy_cpu_data = data["data"]
+          }
+      else if (data["infected_status"] === "infected"){
+        ref.infected_cpu_data = data["data"]
+          }
+                ref.$refs.cpuChartHealthy.updateOptions({
                 xaxis: {
-                  categories: healthy_data["timestamps"], //ie ["a","b","c","d"]
+                  categories: data["data"]["timestamps"], //ie ["a","b","c","d"]
                   tickAmount: 15,
                 },
             series:[{
             name: 'healthy',
-            data: healthy_data["percentages"] //ie [1,2,3,4]
+            data: ref.healthy_cpu_data["percentages"] //ie [1,2,3,4]
           },{
                   name:"infected",
-                  data:ref.infected_cpu_data
+                  data:ref.infected_cpu_data["percentages"]
             },],
 
           })
-        ref.healthy_cpu_data = data["data"]["percentages"]
-          }
-      else if (data["infected_status"] === "infected"){
-        let infected_data = data["data"];
-          ref.$refs.cpuChartHealthy.updateOptions({
-                xaxis: {
-                  categories: infected_data["timestamps"], //ie ["a","b","c","d"]
-                  tickAmount: 15,
-                },
-            series:[{
-            name: 'healthy',
-            data: ref.healthy_cpu_data //ie [1,2,3,4]
-          },{
-                  name:"infected",
-                  data:infected_data["percentages"]
-            },],
-            colors:["#d917bf", "#13d3b6"]
-          })
-        ref.infected_cpu_data = data["data"]["percentages"]
-          }
       });
 
   },
@@ -66,7 +50,14 @@ export default {
       infected_cpu_data:[],
       healthy_cpu_data:[],
       chartOptions: {
+         tooltip: {
+           enabled:false
+         },
+        dataLabels: {
+          enabled: false
+        },
         chart: {
+           type: 'area',
                       foreColor: '#ffffff',
               animations: {
                 enabled: false,
@@ -79,6 +70,7 @@ export default {
                 enabled: false
               },
             },
+        colors:["#d917bf", "#13d3b6"],
         xaxis: {
 
           categories: [],

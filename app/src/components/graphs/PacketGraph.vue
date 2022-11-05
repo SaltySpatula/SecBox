@@ -48,6 +48,9 @@ export default {
       packets_received:[],
       packets_sent:[],
       chartOptions: {
+        tooltip: {
+           enabled:false
+         },
         chart: {
         type: 'bar',
           stacked:true,
