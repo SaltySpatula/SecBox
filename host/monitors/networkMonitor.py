@@ -39,8 +39,8 @@ class networkMonitor:
             instance = self.controller.healthyInstance
         else:
             instance = self.controller.infectedInstance
-        print(instance.bridge)
-        sniff(iface=instance.bridge, prn=self.handler_wrap(infected_status))
+        print("Listening on docker0 for " + str(instance.ip))
+        sniff(iface="docker0", filter="host "+str(instance.ip), prn=self.handler_wrap(infected_status))
 
     def run(self):
         self.mp = Process(target=self.runInParallel, args=(
