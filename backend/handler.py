@@ -5,7 +5,6 @@ import requests
 
 counter = 0
 
-
 def start_process(sha, selected_os):
     global counter
     counter = counter + 1
