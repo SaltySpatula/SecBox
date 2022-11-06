@@ -142,12 +142,16 @@ def greeting():
 def create(data):
     # malware = models.Malware.objects(hash=data["SHA256"])[0]
     p = models.Process(SHA256=data["SHA256"], selected_os=data["OS"])
-    print(p)
     # p.malware = malware
     p.save()
     start_data = handler.start_process(sha=data["SHA256"], selected_os=data["OS"])
     feedback = start(start_data)
     emit("start feedback", json.dumps(feedback), namespace="/start")
+
+@socketio.on("stop request", namespace="/live")
+def stopAnalysis(data):
+    print("Stopping sandbox", data["ID"])
+    stop(data)
 
 
 @ socketio.on('sysCall', namespace='/sysCall')
@@ -204,7 +208,10 @@ def get_start_data():
 def start(data):
     socketio.emit("startSandbox", json.dumps(data), namespace='/sandbox')
     return data
-
+@socketio.on("stopSandbox", namespace="/sandbox")
+def stop(data):
+    socketio.emit("stopSandbox", json.dumps(data), namespace="/sandbox")
+    return data
 
 if __name__ == '__main__':
     socketio.run(app, port=5000, allow_unsafe_werkzeug=True)

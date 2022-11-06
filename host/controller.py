@@ -94,7 +94,7 @@ class Instance:
         if self.container is not None:
             self.container.stop()
             self.container = None
-            self.network.remove()
+
 
     def execute_command(self, command):
         message = {

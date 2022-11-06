@@ -28,9 +28,12 @@ def find_by_id(sandbox_id):
 
 
 def stop_sandbox(json):
-    sandbox = find_by_id(json['ID'])
+    # ToDo: handle integer casting
+    print(json)
+    sandbox = find_by_id(int(json['ID']))
     sandbox.stopped = True
     sandbox.process.terminate()
+    sandbox.controller.stop_instances()
 
 
 def stop_all():

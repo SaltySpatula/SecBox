@@ -43,16 +43,6 @@
                 v-on:keyup.enter="onEnter"
           ></v-text-field>
             </v-col>
-              <v-col align="center">
-              <v-btn
-              icon
-
-              color="black"
-               @click="this.combined_cli = !this.combined_cli"
-            >
-              <v-icon>mdi-cached</v-icon>
-            </v-btn>
-                </v-col>
             </v-row>
           </v-container>
 </template>
@@ -68,6 +58,7 @@ export default {
   props:{
     current_id: String,
     socket: Object,
+    combined_cli: Boolean
   },
   data: () =>({
     ref : this,
@@ -78,7 +69,7 @@ export default {
     clean_lines:[],
     can_send_cmd_healthy:true,
     can_send_cmd_infected:true,
-    combined_cli : true,
+
       }),
   created() {
    let ref = this
