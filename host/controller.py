@@ -6,9 +6,8 @@ import os
 import time
 
 
-path = "/home/raf/PycharmProjects/SecBox"
-healthy_dockerfile = path + "/host/healthy/"
-infected_dockerfile = path + "/host/infected/"
+healthy_dockerfile = "./healthy/"
+infected_dockerfile = "./infected/"
 
 
 class Controller:
@@ -101,26 +100,27 @@ class Instance:
             self.network.remove()
 
     def execute_command(self, command):
+        message = {
+            "ID": self.sandbox_id,
+            "infectedStatus": self.infection_status,
+            "orderNo": self.order_count,
+            "isLast": False,
+            "cmdOut": self.current_path+" $ "+command
+        }
+        self.client.emit('cmdOut', json.dumps(message), namespace='/cmd')
         if self.container is not None:
-            if command[:2]=="cd":
+            if command[:2] == "cd":
                 wd = command.split()[1]
                 if wd[-1] != "/":
                     wd += "/"
                 self.current_path += wd
                 command = "bash -c " + command
-            console_output = self.container.exec_run(command, stream=True, workdir=self.current_path).output
-            message = {
-                        "ID": self.sandbox_id,
-                        "infectedStatus": self.infection_status,
-                        "orderNo": self.order_count,
-                        "isLast": False,
-                        "cmdOut": self.current_path+" $ "+command
-                    }
-            self.client.emit('cmdOut', json.dumps(message), namespace='/cmd')
+            console_output = self.container.exec_run(
+                command, stream=True, workdir=self.current_path).output
             while True:
                 try:
-                    line = console_output.next()
-                    self.order_count = self.order_count +1 
+                    line = next(console_output)
+                    self.order_count = self.order_count + 1
                     message = {
                         "ID": self.sandbox_id,
                         "infectedStatus": self.infection_status,
@@ -128,15 +128,19 @@ class Instance:
                         "isLast": False,
                         "cmdOut": line.decode('utf-8')
                     }
-                    self.client.emit('cmdOut', json.dumps(message), namespace='/cmd')
-                except:
-                    self.order_count = self.order_count +1 
+                    self.client.emit('cmdOut', json.dumps(
+                        message), namespace='/cmd')
+                    print(message)
+                except StopIteration:
+                    self.order_count = self.order_count + 1
                     message = {
                         "ID": self.sandbox_id,
                         "infectedStatus": self.infection_status,
                         "orderNo": self.order_count,
                         "isLast": True,
-                        "cmdOut": line.decode('utf-8')
+                        "cmdOut": ""
                     }
-                    self.client.emit('cmdOut', json.dumps(message), namespace='/cmd')
+                    self.client.emit('cmdOut', json.dumps(
+                        message), namespace='/cmd')
+                    print(message)
                     break
