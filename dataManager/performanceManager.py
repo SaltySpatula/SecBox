@@ -33,7 +33,7 @@ class PerformanceManager(DataManager):
             self.extract_packet_count(
                 sandbox_id, infected_status, data["stats"])
 
-            # TODO: Create function for preppring data
+            # TODO: Create function for prepping data
             cpu_percentage_trimmed = self.cpu_percentages[sandbox_id][infected_status]["graph"]
 
             if len(cpu_percentage_trimmed) >= 60:

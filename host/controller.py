@@ -83,15 +83,12 @@ class Instance:
         self.order_count = 0
         self.current_path = ""
 
-        # set up docker networking
-        self.network = self.docker_client.networks.create(
-            str(self.sandbox_id) + infection_status + "_network")
-        self.bridge = "br-" + self.network.short_id
         # set up docker container
-        print(self.image)
-        print(self.network.name)
         self.container = self.docker_client.containers.run(
-            self.image, runtime='runsc-trace-'+self.infection_status, detach=True, tty=True, network=self.network.name)
+            self.image, runtime='runsc-trace-'+self.infection_status, detach=True, tty=True)
+        # set up docker networking
+        self.ip = self.container.attrs['NetworkSettings']['IPAddress']
+        print(self.ip)
 
     def stop_instance(self) -> int:
         if self.container is not None:
@@ -130,7 +127,6 @@ class Instance:
                     }
                     self.client.emit('cmdOut', json.dumps(
                         message), namespace='/cmd')
-                    print(message)
                 except StopIteration:
                     self.order_count = self.order_count + 1
                     message = {
@@ -142,5 +138,4 @@ class Instance:
                     }
                     self.client.emit('cmdOut', json.dumps(
                         message), namespace='/cmd')
-                    print(message)
                     break
