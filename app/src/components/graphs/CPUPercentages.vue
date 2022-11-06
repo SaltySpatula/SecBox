@@ -75,6 +75,13 @@ export default {
 
           categories: [],
         },
+        yaxis:{
+           labels: {
+             formatter: (value) => {
+               return value.toFixed(2) + "%"
+             },
+           }
+        }
       },
       series: [
         {
