@@ -39,7 +39,7 @@ class networkMonitor:
             instance = self.controller.healthyInstance
         else:
             instance = self.controller.infectedInstance
-        print("Listening on docker0 for " + str(instance.ip))
+        print("sniffing for "+ "host "+str(instance.ip))
         sniff(iface="docker0", filter="host "+str(instance.ip), prn=self.handler_wrap(infected_status))
 
     def run(self):

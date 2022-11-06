@@ -49,9 +49,6 @@ def parallel_command(json):
     }
     sandbox = find_by_id(json['ID'])
     command = json['CMD']
-    print("sandbox"+str(sandbox.sandbox_id))
-    print(sandbox.performanceMonitor)
-    print(sandboxes)
     sandbox.controller.execute_command(command)
 
 
@@ -100,4 +97,3 @@ class Sandbox:
                         self.client.emit('sandboxReady',"ready!", namespace='/sandbox')
                         while not self.stopped:
                             sleep(1)
-

@@ -92,11 +92,11 @@ class Instance:
         self.current_path = ""
 
         # set up docker container
-        self.container = self.docker_client.containers.run(
-            self.image, runtime='runsc-trace-'+self.infection_status, detach=True, tty=True)
+        self.container = self.docker_client.containers.run(self.image, runtime='runsc-trace-'+self.infection_status, detach=True, tty=True)
+        time.sleep(1)
+        self.container = self.docker_client.containers.get(self.container.name)
         # set up docker networking
         self.ip = self.container.attrs['NetworkSettings']['IPAddress']
-        print(self.ip)
 
     def stop_instance(self) -> int:
         if self.container is not None:
