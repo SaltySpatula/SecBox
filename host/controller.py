@@ -108,15 +108,35 @@ class Instance:
                     wd += "/"
                 self.current_path += wd
                 command = "bash -c " + command
-            console_output = self.container.exec_run(
-                command, stream=True, workdir=self.current_path).output
-            for line in console_output:
-                self.order_count = self.order_count +1 
-                message = {
-                    "ID": self.sandbox_id,
-                    "infectedStatus": self.infection_status,
-                    "orderNo": self.order_count,
-                    "cmdOut": line.decode('utf-8')
-                }
-                self.client.emit('cmdOut', json.dumps(
-                    message), namespace='/cmd')
+            console_output = self.container.exec_run(command, stream=True, workdir=self.current_path).output
+            message = {
+                        "ID": self.sandbox_id,
+                        "infectedStatus": self.infection_status,
+                        "orderNo": self.order_count,
+                        "isLast": False,
+                        "cmdOut": self.current_path+" $ "+command
+                    }
+            self.client.emit('cmdOut', json.dumps(message), namespace='/cmd')
+            while True:
+                try:
+                    line = console_output.next()
+                    self.order_count = self.order_count +1 
+                    message = {
+                        "ID": self.sandbox_id,
+                        "infectedStatus": self.infection_status,
+                        "orderNo": self.order_count,
+                        "isLast": False,
+                        "cmdOut": line.decode('utf-8')
+                    }
+                    self.client.emit('cmdOut', json.dumps(message), namespace='/cmd')
+                except:
+                    self.order_count = self.order_count +1 
+                    message = {
+                        "ID": self.sandbox_id,
+                        "infectedStatus": self.infection_status,
+                        "orderNo": self.order_count,
+                        "isLast": True,
+                        "cmdOut": line.decode('utf-8')
+                    }
+                    self.client.emit('cmdOut', json.dumps(message), namespace='/cmd')
+                    break
