@@ -9,9 +9,8 @@ counter = 0
 def start_process(sha, selected_os):
     global counter
     counter = counter + 1
-    random_id = counter
     dictionary = {
-        "ID": random_id,
+        "ID": counter,
         "SHA256": sha,
         "OS": selected_os,
     }

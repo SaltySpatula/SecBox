@@ -38,7 +38,7 @@ class systemCallMonitor:
         self.client.connect('http://localhost:5000', namespaces=['/sysCall'])
         print("syscall monitor started")
         order_count = 0
-        cwd = os.getcwd() + "/host/gvisor-master/"
+        cwd = os.getcwd() + "/gvisor-master/"
         command = self.base_command + " /tmp/" + \
             infected_status + "_gvisor_events.sock"
         print(command)

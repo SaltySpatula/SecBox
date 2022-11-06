@@ -144,11 +144,9 @@ def create(data):
     # p = models.Process(SHA256=data["SHA256"], selected_os=data["OS"])
     # p.malware = malware
     # p.save()
-    # feedback2 = handler.start_process(sha=data["SHA256"], selected_os=data["OS"])
-    feedback = start(data)
-    print(type(feedback))
-    start_feedback(feedback)
-    # emit("start feedback", feedback, namespace="/start")
+    start_data = handler.start_process(sha=data["SHA256"], selected_os=data["OS"])
+    feedback = start(start_data)
+    emit("start feedback", json.dumps(feedback), namespace="/start")
 
 
 @ socketio.on('sysCall', namespace='/sysCall')
@@ -185,10 +183,6 @@ def create():
     return feedback
 """
 
-@socketio.on("start feedback", namespace="/start")
-def start_feedback(feedback):
-    emit("start feedback", feedback, namespace="/start")
-
 
 @app.route("/getReports")
 def get_reports():
@@ -207,10 +201,7 @@ def get_start_data():
 
 @socketio.on("startSandbox", namespace="/dummy")
 def start(data):
-    # TODO: use data above
-    data = json.dumps(
-        {"ID": 123, "SHA256": "094fd325049b8a9cf6d3e5ef2a6d4cc6a567d7d49c35f8bb8dd9e3c6acf3d78d", "OS": "ubuntu:latest"})
-    socketio.emit("startSandbox", data, namespace='/sandbox')
+    socketio.emit("startSandbox", json.dumps(data), namespace='/sandbox')
     return data
 
 
