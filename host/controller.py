@@ -21,11 +21,11 @@ class Controller:
         # setup healthy and infected instances
         # TODO: Parse OS and Malware & build correct dockerfile
         healthy_args = {
-            "os_image":self.os
+            "os_image": self.os
         }
         infected_args = {
-            "os_image":self.os
-            #"malware_hash":self.mw_hash
+            "os_image": self.os
+            # "malware_hash":self.mw_hash
         }
 
         self.healthyInstance = Instance(
@@ -81,7 +81,8 @@ class Instance:
         self.dockerfile = dockerfile
         self.docker_client = docker.from_env()
         print(build_arguments)
-        (self.image, self.logs) = self.docker_client.images.build(path=dockerfile, buildargs=build_arguments)
+        (self.image, self.logs) = self.docker_client.images.build(
+            path=dockerfile, buildargs=build_arguments)
 
         self.log_generator = None
         self.infection_status = infection_status
@@ -92,7 +93,8 @@ class Instance:
         self.current_path = ""
 
         # set up docker container
-        self.container = self.docker_client.containers.run(self.image, runtime='runsc-trace-'+self.infection_status, detach=True, tty=True)
+        self.container = self.docker_client.containers.run(
+            self.image, runtime='runsc-trace-'+self.infection_status, detach=True, tty=True)
         time.sleep(1)
         self.container = self.docker_client.containers.get(self.container.name)
         # set up docker networking
@@ -109,6 +111,7 @@ class Instance:
             "ID": self.sandbox_id,
             "infectedStatus": self.infection_status,
             "orderNo": self.order_count,
+            "isFirst": True,
             "isLast": False,
             "cmdOut": self.current_path+" $ "+command
         }
@@ -130,6 +133,7 @@ class Instance:
                         "ID": self.sandbox_id,
                         "infectedStatus": self.infection_status,
                         "orderNo": self.order_count,
+                        "isFirst": False,
                         "isLast": False,
                         "cmdOut": line.decode('utf-8')
                     }
@@ -141,6 +145,7 @@ class Instance:
                         "ID": self.sandbox_id,
                         "infectedStatus": self.infection_status,
                         "orderNo": self.order_count,
+                        "isFirst": False,
                         "isLast": True,
                         "cmdOut": ""
                     }
