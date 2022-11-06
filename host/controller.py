@@ -20,10 +20,18 @@ class Controller:
 
         # setup healthy and infected instances
         # TODO: Parse OS and Malware & build correct dockerfile
+        healthy_args = {
+            "os_image":self.os
+        }
+        infected_args = {
+            "os_image":self.os
+            #"malware_hash":self.mw_hash
+        }
+
         self.healthyInstance = Instance(
-            healthy_dockerfile, "healthy", self.sandbox_id)
+            healthy_dockerfile, "healthy", self.sandbox_id, healthy_args)
         self.infectedInstance = Instance(
-            infected_dockerfile, "infected", self.sandbox_id)
+            infected_dockerfile, "infected", self.sandbox_id, infected_args)
 
     def __enter__(self):
         self.start_instances()
@@ -69,11 +77,11 @@ class Controller:
 
 
 class Instance:
-    def __init__(self, dockerfile, infection_status, sandbox_id) -> None:
+    def __init__(self, dockerfile, infection_status, sandbox_id, build_arguments) -> None:
         self.dockerfile = dockerfile
         self.docker_client = docker.from_env()
-        print(dockerfile)
-        (self.image, self.logs) = self.docker_client.images.build(path=dockerfile)
+        print(build_arguments)
+        (self.image, self.logs) = self.docker_client.images.build(path=dockerfile, buildargs=build_arguments)
 
         self.log_generator = None
         self.infection_status = infection_status
