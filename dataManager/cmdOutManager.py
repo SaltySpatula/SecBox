@@ -18,7 +18,8 @@ class CmdOutManager(DataManager):
         if self.order_nos[sandbox_id][infected_status] <= data["orderNo"]:
             message = {
                 "infectedStatus": infected_status,
-                "cmdOut": data["cmdOut"]
+                "cmdOut": data["cmdOut"],
+                "isLast": data["isLast"]
             }
             self.socketio.emit("terminalOutput", json.dumps(message) ,namespace="/live", to=str(sandbox_id))
             self.order_nos[sandbox_id][infected_status] = data["orderNo"]

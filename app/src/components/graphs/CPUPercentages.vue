@@ -1,7 +1,8 @@
 <template>
   <v-card class="bg-black" style="margin:10px">
-    <v-card-title style="align:center">CPU Usage</v-card-title>
+    <v-card-title  style="align:center">CPU Usage</v-card-title>
       <apexchart
+          v-if="this.healthy_cpu_data && this.infected_cpu_data"
       type="area"
       ref="cpuChartHealthy"
       :options="chartOptions"
@@ -83,12 +84,9 @@ export default {
            }
         }
       },
-      series: [
-        {
-          name: "healthy",
-          data: [],
-        },
-      ],
+      series: [{
+          data: []
+        }]
 
     };
   },

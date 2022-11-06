@@ -25,7 +25,7 @@ app.config['SECRET_KEY'] = 'secret!'
 
 app.config['MONGODB_SETTINGS'] = {
     'db': 'SecBoxDB',
-    'host': 'localhost',
+    'host': 'mongodb+srv://raf:SecBox22@secbox.1hcrjgd.mongodb.net/test',
     'port': 27017
 }
 
@@ -141,9 +141,10 @@ def greeting():
 @socketio.on("start request", namespace="/start")
 def create(data):
     # malware = models.Malware.objects(hash=data["SHA256"])[0]
-    # p = models.Process(SHA256=data["SHA256"], selected_os=data["OS"])
+    p = models.Process(SHA256=data["SHA256"], selected_os=data["OS"])
+    print(p)
     # p.malware = malware
-    # p.save()
+    p.save()
     start_data = handler.start_process(sha=data["SHA256"], selected_os=data["OS"])
     feedback = start(start_data)
     emit("start feedback", json.dumps(feedback), namespace="/start")

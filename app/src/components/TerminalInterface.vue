@@ -1,7 +1,7 @@
 <template>
-        <v-col class="pa-1" cols="6" md="6">
-          <v-card id="to_be_scrolled" ref="scroller" class="bg-black rounded-0" style="overflow-y: auto; height:40rem; border:1px solid white;">
-            <v-card-title :style="{color:color}" >{{type}}</v-card-title>
+        <v-col cols="6" md="6" class="pa-1 bg-black rounded-0" style="border:1px solid white;">
+          <h2 :style="{color:color}"  >{{type}}</h2>
+          <v-card id="to_be_scrolled" ref="scroller" class="bg-black rounded-0" style="overflow-y: auto; height:40rem">
             <p
               v-for="line in lines"
               :key="line"
@@ -13,7 +13,7 @@
 <script>
 export default {
   name: "TerminalInterface",
-  props: ['type', 'color', 'lines'],
+  props: ['type', 'color', 'lines', 'sent_cmd'],
   methods:{
     scrollToElement(){
       let container = this.$el.querySelector("#to_be_scrolled");
@@ -32,4 +32,8 @@ p{
   font-family: "Courier New";
   margin-left: 10px;
 }
+h2{
+  text-align: center;
+}
+
 </style>

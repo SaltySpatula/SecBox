@@ -2,6 +2,7 @@
   <v-card class="bg-black" style="margin:10px">
     <v-card-title style="align:center">Packets Transmitted</v-card-title>
       <apexchart
+          v-if="this.packets_sent && this.packets_received"
       ref="packetGraph"
       :options="chartOptions"
       :series="series"
@@ -22,13 +23,13 @@ export default {
     this.socket.on("packet_graph", function (data){
       if (data["infected_status"] === "healthy"){
           let healthy_data = data["data"]["packets"][0];
-          ref.packets_received[0] = healthy_data["received_packages"]
-          ref.packets_sent[0] = healthy_data["transmitted_packages"]
+          ref.packets_received[1] = healthy_data["received_packages"]
+          ref.packets_sent[1] = healthy_data["transmitted_packages"]
       }
       else if (data["infected_status"] === "infected"){
         let healthy_data = data["data"]["packets"][0];
-          ref.packets_received[1] = healthy_data["received_packages"]
-          ref.packets_sent[1] = healthy_data["transmitted_packages"]
+          ref.packets_received[0] = healthy_data["received_packages"]
+          ref.packets_sent[0] = healthy_data["transmitted_packages"]
       }
       ref.$refs.packetGraph.updateSeries(
           [{
@@ -60,16 +61,12 @@ export default {
               },
       },
         xaxis: {
-          categories: ['healthy', 'infected'],
+          categories: ['infected', 'healthy'],
         },
         colors:["#2fc964", "#644db4"]
       },
         series: [{
-          name: 'Packets sent',
-          data: [0, 0]
-        }, {
-          name: 'Packets received',
-          data: [0, 0]
+          data: []
         }]
     };
   },
