@@ -127,7 +127,6 @@ class Instance:
                     }
                     self.client.emit('cmdOut', json.dumps(
                         message), namespace='/cmd')
-                    print(message)
                 except StopIteration:
                     self.order_count = self.order_count + 1
                     message = {
@@ -139,5 +138,4 @@ class Instance:
                     }
                     self.client.emit('cmdOut', json.dumps(
                         message), namespace='/cmd')
-                    print(message)
                     break
