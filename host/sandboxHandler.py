@@ -13,12 +13,6 @@ sandboxes = {}
 
 
 def start_sandbox(json):
-    print(json)
-    expected_json = {
-        'ID': 123,
-        'SHA256': '094fd325049b8a9cf6d3e5ef2a6d4cc6a567d7d49c35f8bb8dd9e3c6acf3d78d',
-        'OS': 'ubuntu:latest',
-    }
     sandbox_id = json['ID']
     mw_hash = json['SHA256']
     os = json['OS']

@@ -20,6 +20,7 @@ class Controller:
         self.sandbox_id = sandbox_id
 
         # setup healthy and infected instances
+        # TODO: Parse OS and Malware & build correct dockerfile
         self.healthyInstance = Instance(
             healthy_dockerfile, "healthy", self.sandbox_id)
         self.infectedInstance = Instance(
@@ -81,6 +82,7 @@ class Instance:
         self.client.connect('http://localhost:5000', namespaces=['/cmd'])
         self.sandbox_id = sandbox_id
         self.order_count = 0
+        self.current_path = ""
 
         # set up docker networking
         self.network = self.docker_client.networks.create(
@@ -100,8 +102,14 @@ class Instance:
 
     def execute_command(self, command):
         if self.container is not None:
+            if command[:2]=="cd":
+                wd = command.split()[1]
+                if wd[-1] != "/":
+                    wd += "/"
+                self.current_path += wd
+                command = "bash -c " + command
             console_output = self.container.exec_run(
-                command, stream=True).output
+                command, stream=True, workdir=self.current_path).output
             for line in console_output:
                 self.order_count = self.order_count +1 
                 message = {
