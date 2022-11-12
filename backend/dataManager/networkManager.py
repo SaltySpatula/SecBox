@@ -1,4 +1,4 @@
-from dataManager.dataManager import DataManager
+from backend.dataManager.dataManager import DataManager
 from scapy.all import *
 from scapy.utils import hexstr
 
@@ -12,7 +12,6 @@ class NetworkManager(DataManager):
 
     def handle_message(self, data):
         p = import_object(data["packet"][1:-1])
-        p.summary()
         processed_data = self.process_data(data)
         if not self.save_data(processed_data):
             return False

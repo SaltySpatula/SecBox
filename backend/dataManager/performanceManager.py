@@ -1,4 +1,4 @@
-from dataManager.dataManager import DataManager
+from backend.dataManager.dataManager import DataManager
 from dateutil import parser
 from datetime import datetime
 class PerformanceManager(DataManager):

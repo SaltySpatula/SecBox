@@ -1,7 +1,7 @@
 from os import system
 import system_calls
 import platform
-from dataManager.dataManager import DataManager
+from backend.dataManager.dataManager import DataManager
 
 class SysCallManager(DataManager):
     def __init__(self,fe_client, db):

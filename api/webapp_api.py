@@ -1,10 +1,10 @@
-# import sys
-# sys.path.append("/home/adrian/Desktop/HS2022/MasterPrject/SecBox")
+import sys
+sys.path.append("/home/adrian/Desktop/HS2022/MasterPrject/SecBox")
 
-from dataManager.syscallManager import SysCallManager
-from dataManager.performanceManager import PerformanceManager
-from dataManager.networkManager import NetworkManager
-from dataManager.cmdOutManager import CmdOutManager
+from backend.dataManager.syscallManager import SysCallManager
+from backend.dataManager.performanceManager import PerformanceManager
+from backend.dataManager.networkManager import NetworkManager
+from backend.dataManager.cmdOutManager import CmdOutManager
 from flask import Flask, session, request, abort
 from flask_socketio import SocketIO
 from flask_socketio import send, emit, join_room, leave_room
@@ -214,5 +214,5 @@ def stop(data):
     return data
 
 if __name__ == '__main__':
-    socketio.run(app, port=5000, allow_unsafe_werkzeug=True)
+    socketio.run(app, port=5000)
     app.run()

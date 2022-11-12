@@ -1,4 +1,4 @@
-from dataManager.dataManager import DataManager
+from backend.dataManager.dataManager import DataManager
 import json
 
 class CmdOutManager(DataManager):
