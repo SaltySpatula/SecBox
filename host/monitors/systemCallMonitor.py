@@ -30,8 +30,8 @@ class systemCallMonitor:
 
     def __exit__(self, exc_type, exc_value, traceback):
         for p in self.ps:
-            p.join()
-        self.mp.join()
+            p.kill()
+        self.mp.kill()
 
     def monitoring_process(self, infected_status):
         self.client = socketio.Client()

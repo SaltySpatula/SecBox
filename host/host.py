@@ -24,6 +24,7 @@ def start_sandbox(data):
 
 @socketio.on("stopSandbox", namespace='/sandbox')
 def stop_sandbox(data):
+    print("stop request received")
     sandboxHandler.stop_sandbox(json.loads(data))
 
 

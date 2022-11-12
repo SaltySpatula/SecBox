@@ -2,6 +2,7 @@ from http import client
 import sys
 import time
 # sys.path.append("/home/adrian/Desktop/HS2022/MasterPrject/SecBox/host/monitors")
+import socketio
 from multiprocessing import Process
 from controller import Controller
 from monitors import performanceMonitor
@@ -31,15 +32,14 @@ def stop_sandbox(json):
     # ToDo: handle integer casting
     print(json)
     sandbox = find_by_id(int(json['ID']))
-    sandbox.stopped = True
-    sandbox.process.terminate()
-    sandbox.controller.stop_instances()
+    print(sandbox)
+    sandbox.stop()
 
 
 def stop_all():
     for sandbox in sandboxes.values():
         sandbox.stopped = True
-    sandbox.process.terminate()
+    sandbox.stop()
 
 
 def parallel_command(json):
@@ -83,7 +83,8 @@ class Sandbox:
         self.controller = Controller(self.mw_hash, self.os, self.sandbox_id)
         self.performanceMonitor = performanceMonitor.performanceMonitor(self.sandbox_id, self.controller)
         self.networkMonitor = networkMonitor.networkMonitor(self.sandbox_id, self.controller)
-
+        self.client = socketio.Client()
+        self.client.connect('http://localhost:5000', namespaces=['/sandbox'])
 
         self.stopped = False
         self.process = Process(target=self.run)
@@ -97,3 +98,10 @@ class Sandbox:
                         self.client.emit('sandboxReady',"ready!", namespace='/sandbox')
                         while not self.stopped:
                             sleep(1)
+    
+    def stop(self):
+        print(self.process)
+        self.process.kill()
+        print("process killed")
+        self.stopped=True
+        print("Sandbox stopped, processes joined")

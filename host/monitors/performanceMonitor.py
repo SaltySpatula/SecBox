@@ -42,8 +42,8 @@ class performanceMonitor:
 
     def __exit__(self, exc_type, exc_value, traceback):
         for p in self.ps:
-            p.join()
-        self.mp.join()
+            p.kill()
+        self.mp.kill()
 
     def runInParallel(self, fn1, fn2, args1, args2):
         fns = [fn1, fn2]

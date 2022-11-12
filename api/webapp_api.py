@@ -210,6 +210,7 @@ def start(data):
     return data
 @socketio.on("stopSandbox", namespace="/sandbox")
 def stop(data):
+    print("Stop function called")
     socketio.emit("stopSandbox", json.dumps(data), namespace="/sandbox")
     return data
 
