@@ -21,17 +21,18 @@ class systemCallMonitor:
         self.ps = []
 
     def run(self):
-        self.mp = Process(target=self.runInParallel, args=(self.monitoring_process, self.monitoring_process, "healthy", "infected"))
-        self.mp.start()
+        p = Process(target=self.runInParallel, args=(
+            self.monitoring_process, self.monitoring_process, "healthy", "infected"))
+        p.start()
+        self.ps.append(p)
 
-    def __enter__(self):
+    def start(self):
         self.run()
         return self
 
-    def __exit__(self, exc_type, exc_value, traceback):
+    def stop(self):
         for p in self.ps:
             p.kill()
-        self.mp.kill()
 
     def monitoring_process(self, infected_status):
         self.client = socketio.Client()
@@ -42,12 +43,11 @@ class systemCallMonitor:
         command = self.base_command + " /tmp/" + \
             infected_status + "_gvisor_events.sock"
         print(command)
-        # ToDo: rename self.process
-        self.process = Popen(command.split(),
+        running_command = Popen(command.split(),
                              stdin=PIPE, stdout=PIPE, stderr=STDOUT, cwd=cwd)
         print("Running cmd in ")
         print(cwd)
-        for line in self.process.stdout:
+        for line in running_command.stdout:
             print(line)
             order_count = order_count+1
             message = {
@@ -65,5 +65,4 @@ class systemCallMonitor:
         for index in range(len(fns)):
             p = Process(target=fns[index], args=(args[index],))
             p.start()
-            procs.append(p)
-        self.ps = procs
+            self.ps.append(p)

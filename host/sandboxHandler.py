@@ -79,10 +79,17 @@ class Sandbox:
         self.mw_hash = mw_hash
         self.os = os
 
-        self.syscallMonitor = systemCallMonitor.systemCallMonitor(self.sandbox_id)
+        self.syscallMonitor = systemCallMonitor.systemCallMonitor(
+            self.sandbox_id)
+        self.syscallMonitor.start()
+        sleep(10)
         self.controller = Controller(self.mw_hash, self.os, self.sandbox_id)
-        self.performanceMonitor = performanceMonitor.performanceMonitor(self.sandbox_id, self.controller)
-        self.networkMonitor = networkMonitor.networkMonitor(self.sandbox_id, self.controller)
+
+        self.perfMonitor = performanceMonitor.performanceMonitor(
+            self.sandbox_id, self.controller)
+        self.netMonitor = networkMonitor.networkMonitor(
+            self.sandbox_id, self.controller)
+
         self.client = socketio.Client()
         self.client.connect('http://localhost:5000', namespaces=['/sandbox'])
 
@@ -91,17 +98,16 @@ class Sandbox:
         self.process.start()
 
     def run(self):
-        with self.syscallMonitor as syscallMonitor:
-            with self.controller as controller:
-                with self.performanceMonitor as performanceMonitor:
-                    with self.networkMonitor as networkMonitor:
-                        self.client.emit('sandboxReady',"ready!", namespace='/sandbox')
-                        while not self.stopped:
-                            sleep(1)
-    
+        self.perfMonitor.run()
+        self.netMonitor.run()
+        self.client.emit('sandboxReady', "ready!", namespace='/sandbox')
+
     def stop(self):
-        print(self.process)
+        self.syscallMonitor.stop()
+        self.perfMonitor.stop()
+        self.netMonitor.stop()
+        self.controller.stop_instances()
         self.process.kill()
         print("process killed")
-        self.stopped=True
+        self.stopped = True
         print("Sandbox stopped, processes joined")

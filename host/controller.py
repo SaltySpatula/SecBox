@@ -2,7 +2,6 @@ import docker
 from multiprocessing import Process
 import json
 import socketio
-import os
 import time
 
 
@@ -18,23 +17,20 @@ class Controller:
         self.os = os
         self.sandbox_id = sandbox_id
 
-        # setup healthy and infected instances
-        # TODO: Parse OS and Malware & build correct dockerfile
         healthy_args = {
             "os_image": self.os
         }
         infected_args = {
-            "os_image": self.os
-            # "malware_hash":self.mw_hash
+            "os_image": self.os,
+            "malware_hash":self.mw_hash
         }
-
         self.healthyInstance = Instance(
             healthy_dockerfile, "healthy", self.sandbox_id, healthy_args)
         self.infectedInstance = Instance(
             infected_dockerfile, "infected", self.sandbox_id, infected_args)
 
+
     def __enter__(self):
-        self.start_instances()
         return self
 
     def __exit__(self, exc_type, exc_value, traceback):
@@ -46,15 +42,6 @@ class Controller:
             self.infectedInstance.stop_instance()
         self.healthyInstance = None
         self.infectedInstance = None
-
-    def start_instances(self) -> None:
-        if self.healthyInstance is None and self.infectedInstance is None:
-            # start instances
-            self.healthyInstance.start_instance()
-            self.infectedInstance.start_instance()
-            self.client.emit('sandboxReady', json.dumps(
-                {"ID": self.sandbox_id}), namespace='/sandbox')
-            print("Sandbox Ready")
 
     def runInParallel(self, healthyfn, infectedfn, command):
         fns = [healthyfn, infectedfn]
