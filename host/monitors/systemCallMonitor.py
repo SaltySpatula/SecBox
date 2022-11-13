@@ -3,6 +3,7 @@ from subprocess import Popen, PIPE, STDOUT
 from multiprocessing import Process
 import json
 import socketio
+import platform
 
 healthy_server_address = "/tmp/healthy_gvisor_events.sock"
 infected_server_address = "/tmp/infected_gvisor_events.sock"
@@ -19,6 +20,7 @@ class systemCallMonitor:
         self.sandbox_id = sandbox_id
         self.client = None
         self.ps = []
+        self.arch = platform.processor()
 
     def run(self):
         p = Process(target=self.runInParallel, args=(
@@ -52,6 +54,7 @@ class systemCallMonitor:
             order_count = order_count+1
             message = {
                 "ID": self.sandbox_id,
+                "architecture": self.arch,
                 "infectedStatus": infected_status,
                 "orderNo": order_count,
                 "sysCall": str(line)

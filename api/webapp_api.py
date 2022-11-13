@@ -155,9 +155,8 @@ def stopAnalysis(data):
 
 
 @ socketio.on('sysCall', namespace='/sysCall')
-def handle_sys_call(json):
-    with open('syscalls.txt', 'a') as f:
-        print(str(json), file=f)
+def handle_sys_call(data):
+    system_call_manager.handle_message(json.loads(data))
 
 
 @ socketio.on('sandboxReady', namespace='/sandbox')

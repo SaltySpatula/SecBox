@@ -74,6 +74,9 @@ def healthy_command(json):
 
 class Sandbox:
     def __init__(self, mw_hash, os, sandbox_id) -> None:
+        self.client = socketio.Client()
+        self.client.connect('http://localhost:5000', namespaces=['/sandbox'])
+
         self.sandbox_id = sandbox_id
 
         self.mw_hash = mw_hash
@@ -89,9 +92,6 @@ class Sandbox:
             self.sandbox_id, self.controller)
         self.netMonitor = networkMonitor.networkMonitor(
             self.sandbox_id, self.controller)
-
-        self.client = socketio.Client()
-        self.client.connect('http://localhost:5000', namespaces=['/sandbox'])
 
         self.stopped = False
         self.process = Process(target=self.run)
