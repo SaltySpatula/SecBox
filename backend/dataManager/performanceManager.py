@@ -131,7 +131,10 @@ class PerformanceManager(DataManager):
                 self.cpu_percentages[sandbox_id][infected_status]["previous_ts"])
 
             nanoseconds_delta = (previous_ts - current_ts).microseconds * 1000
-            percentage = (current_ns-previous_ns) / nanoseconds_delta * 100
+            if nanoseconds_delta:
+                percentage = (current_ns-previous_ns) / nanoseconds_delta * 100
+            else:
+                percentage = 0
 
             self.cpu_percentages[sandbox_id][infected_status]["graph"].append(
                 {"timestamp": current_ts.strftime("%m/%d/%Y, %H:%M:%S.%f%Z"), "cpu_percentage": percentage})
