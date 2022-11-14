@@ -22,10 +22,9 @@ log = logging.getLogger("werkzeug")
 log.setLevel(logging.ERROR)
 
 app.config['SECRET_KEY'] = 'secret!'
-
 app.config['MONGODB_SETTINGS'] = {
     'db': 'SecBoxDB',
-    'host': 'mongodb+srv://raf:SecBox22@secbox.1hcrjgd.mongodb.net/test',
+    'host': 'mongodb://localhost',
     'port': 27017
 }
 
@@ -141,9 +140,9 @@ def greeting():
 @socketio.on("start request", namespace="/start")
 def create(data):
     # malware = models.Malware.objects(hash=data["SHA256"])[0]
-    p = models.Process(SHA256=data["SHA256"], selected_os=data["OS"])
+    # p = models.Process(SHA256=data["SHA256"], selected_os=data["OS"])
     # p.malware = malware
-    p.save()
+    # p.save()
     start_data = handler.start_process(sha=data["SHA256"], selected_os=data["OS"])
     feedback = start(start_data)
     emit("start feedback", json.dumps(feedback), namespace="/start")
@@ -214,5 +213,5 @@ def stop(data):
     return data
 
 if __name__ == '__main__':
-    socketio.run(app, port=5000)
+    socketio.run(app, port=5000, allow_unsafe_werkzeug=True)
     app.run()

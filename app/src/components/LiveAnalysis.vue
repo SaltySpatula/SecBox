@@ -71,7 +71,6 @@
       <v-col cols="12" md="3">
         <v-card class="bg-deep-purple-lighten-3" style="overflow-y: auto; height:50rem">
           <PIDCountGraph :socket="this.socket"></PIDCountGraph>
-          <PIDCountGraph :socket="this.socket"></PIDCountGraph>
           <v-btn
                 block
               large

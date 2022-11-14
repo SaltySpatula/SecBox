@@ -79,6 +79,14 @@ def get_available_malware():
                 }
                 malware_list.append(malware_dict)
                 malware_names.append(malware["signature"])
+        malware_list.append({
+            "name": "DarkRadiation",
+            "hash": "89a694bea1970c2d66aec04c3e530508625d4b28cc6f3fc996e7ba99f1c37841",
+            "url": "https://bazaar.abuse.ch/sample/" + "89a694bea1970c2d66aec04c3e530508625d4b28cc6f3fc996e7ba99f1c37841" + "/",
+            "type": "sh",
+            "tags": ["DarkRadiation", "Ransomware", "sh"]
+            }
+        )
         return malware_list
     else:
         print("Invalid Request Response!")
