@@ -91,6 +91,7 @@ class Instance:
     def stop_instance(self) -> int:
         if self.container is not None:
             self.container.stop()
+            self.container.remove(force=True)
             self.container = None
 
 
