@@ -1,38 +1,14 @@
 <template>
+  <v-overlay :model-value="loading" class="align-center justify-center">
+      <v-progress-circular
+        indeterminate
+        size="64"
+        color="primary"
+        persistent
+        opacity="0.75"
+      ></v-progress-circular>
+    </v-overlay>
   <v-container fluid>
-
-    <!--v-row align="center" class="ma-2 bg-deep-purple-accent-1" style="margin:0">
-      <v-col cols="12" md="8">
-          <h1 style="font-family:'Courier New';font-size:2em">Live Analysis</h1>
-      </v-col>
-      <v-col cols="12" md="2">
-          <v-btn
-            block
-            color="red"
-            dark
-            tile
-          >
-            <v-icon              >
-              mdi-delete
-            </v-icon>
-            Delete & Quit
-          </v-btn>
-      </v-col>
-      <v-col cols="12" md="2">
-          <v-btn
-              block
-            large
-            color="primary"
-            dark
-            @click="postAnalyze"
-          >
-            <v-icon              >
-              mdi-content-save
-            </v-icon>
-            Save & Exit
-          </v-btn>
-      </v-col>
-      </v-row-->
     <v-row style="margin:0">
       <v-col cols="12" md="3">
         <v-card class="bg-deep-purple-lighten-3" style="overflow-y: auto">
@@ -71,6 +47,7 @@
       <v-col cols="12" md="3">
         <v-card class="bg-deep-purple-lighten-3" style="overflow-y: auto; height:50rem">
           <PIDCountGraph :socket="this.socket"></PIDCountGraph>
+          <ReadWriteGraph :socket="this.socket"></ReadWriteGraph>
           <v-btn
                 block
               large
@@ -97,23 +74,31 @@ import router from "@/router/index";
 import CPUPercentages from "@/components/graphs/CPUPercentages";
 import PacketGraph from "@/components/graphs/PacketGraph";
 import PIDCountGraph from "@/components/graphs/PIDCountGraph";
+import ReadWriteGraph from "@/components/graphs/ReadWriteGraph";
 import io from "socket.io-client";
 
 export default {
   name: "LiveAnalysis",
-  components: {LiveTerminal, PacketGraph, PIDCountGraph, CPUPercentages: CPUPercentages},
+  components: {LiveTerminal, PacketGraph, PIDCountGraph, CPUPercentages: CPUPercentages, ReadWriteGraph},
   data: () => ({
+    loading: true,
     combined_cli: true,
   }),
   props: {},
   created() {
+    let ref = this;
     // joining room
     this.socket = io("ws://localhost:5000/live");
 
     this.socket.emit('join room', {"room": this.$route.params.id}, function () {
       // console.log("joined ", data);
     });
-
+    if (ref.loading){
+        this.socket.on("pid_graph", function (){
+          console.log(ref.loading)
+          ref.loading = false
+        })
+      }
 
   },
   methods: {

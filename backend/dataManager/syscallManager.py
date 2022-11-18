@@ -29,7 +29,7 @@ class SysCallManager(DataManager):
 
                 #Call extract functions here
                 self.extract_reads_v_writes(sandbox_id, infected_status, processed_data)
-
+                print(self.reads_vs_writes)
                 #Call emit fucntions here
                 self.socketio.emit("reads_vs_writes_graph",
                                 self.reads_vs_writes,

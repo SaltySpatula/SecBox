@@ -12,7 +12,7 @@
 
 <script>
 export default {
-  name: "PacketGraph",
+  name: "PIDGraph",
   props:{
     socket:Object,
   },

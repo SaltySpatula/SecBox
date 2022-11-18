@@ -5,8 +5,8 @@ import socketio
 import time
 
 
-healthy_dockerfile = "./healthy/"
-infected_dockerfile = "./infected/"
+healthy_dockerfile = "/home/raf/PycharmProjects/SecBox/host/healthy/"
+infected_dockerfile = "/home/raf/PycharmProjects/SecBox/host/infected/"
 
 
 class Controller:
@@ -24,6 +24,7 @@ class Controller:
             "os_image": self.os,
             "malware_hash":self.mw_hash
         }
+
         self.healthyInstance = Instance(
             healthy_dockerfile, "healthy", self.sandbox_id, healthy_args)
         self.infectedInstance = Instance(
@@ -67,7 +68,7 @@ class Instance:
     def __init__(self, dockerfile, infection_status, sandbox_id, build_arguments) -> None:
         self.dockerfile = dockerfile
         self.docker_client = docker.from_env()
-        print(build_arguments)
+
         (self.image, self.logs) = self.docker_client.images.build(
             path=dockerfile, buildargs=build_arguments)
 
