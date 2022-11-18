@@ -1,7 +1,7 @@
 <template>
         <v-col cols="6" md="6" class="pa-1 bg-black rounded-0" style="border:1px solid white;">
           <h2 :style="{color:color}"  >{{type}}</h2>
-          <v-card id="to_be_scrolled" ref="scroller" class="bg-black rounded-0" style="overflow-y: auto; height:40rem">
+          <v-card id="to_be_scrolled" ref="scroller" class="bg-black rounded-0" style="overflow-y: auto; height:604px">
             <p
               v-for="line in lines"
               :key="line"

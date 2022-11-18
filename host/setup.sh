@@ -43,7 +43,7 @@ cd gvisor-master
 mkdir -p bin
 make copy TARGETS=runsc DESTINATION=bin/
 sudo cp ./bin/runsc /usr/local/bin
-
+cd ../
 sudo /usr/local/bin/runsc install
 sudo systemctl reload docker
 

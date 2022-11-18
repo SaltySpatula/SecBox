@@ -11,7 +11,7 @@
   <v-container fluid>
     <v-row style="margin:0">
       <v-col cols="12" md="3">
-        <v-card class="bg-deep-purple-lighten-3" style="overflow-y: auto">
+        <v-card class="bg-deep-purple-lighten-3">
           <CPUPercentages :socket="this.socket"/>
           <PacketGraph :socket="this.socket"/>
           <v-btn
@@ -45,7 +45,7 @@
         </v-card>
       </v-col>
       <v-col cols="12" md="3">
-        <v-card class="bg-deep-purple-lighten-3" style="overflow-y: auto; height:50rem">
+        <v-card class="bg-deep-purple-lighten-3" >
           <PIDCountGraph :socket="this.socket"></PIDCountGraph>
           <ReadWriteGraph :socket="this.socket"></ReadWriteGraph>
           <v-btn
@@ -54,7 +54,7 @@
               color="deep-purple darken-4"
               dark
                 min-height="5em"
-                style="position:absolute;bottom:0"
+                style="position:relative;bottom:0"
               @click="postAnalyze"
             >
               <v-icon              >
@@ -95,7 +95,6 @@ export default {
     });
     if (ref.loading){
         this.socket.on("pid_graph", function (){
-          console.log(ref.loading)
           ref.loading = false
         })
       }
