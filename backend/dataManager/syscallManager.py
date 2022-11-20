@@ -41,8 +41,7 @@ class SysCallManager(DataManager):
                 # Call extract functions here
                 self.extract_reads_v_writes(
                     sandbox_id, infected_status, processed_data)
-                print(self.reads_vs_writes)
-                # Call emit fucntions here
+                # Call emit functions here
                 self.socketio.emit("reads_vs_writes_graph",
                                    self.reads_vs_writes,
                                    namespace='/live', room=str(sandbox_id))
@@ -62,6 +61,7 @@ class SysCallManager(DataManager):
 
         if components[0] in ["b'E", "b'X"]:
             if not syscall.__contains__("sysno"):
+                print(syscall)
                 components.insert(16, "sysno:")
                 components.insert(17, "0")
             args = []
@@ -97,7 +97,6 @@ class SysCallManager(DataManager):
         pass
 
     def extract_reads_v_writes(self, sandbox_id, infected_status, data):
-        print(data)
         for syscall in data["sysCalls"]:
             if syscall["sysname"] == "read":
                 self.reads_vs_writes[sandbox_id][infected_status]["graph"][

@@ -49,7 +49,7 @@ class systemCallMonitor:
         buf = []
         for line in running_command.stdout:
             buf.append(str(line))
-            if len(buf)>= 20:
+            if len(buf)>= 50:
                 order_count = order_count+1
                 message = {
                     "ID": self.sandbox_id,
@@ -58,8 +58,8 @@ class systemCallMonitor:
                     "orderNo": order_count,
                     "sysCalls": buf
                 }
+                #self.client.emit('sysCall', json.dumps(message), namespace='/sysCall')
                 buf = []
-                self.client.emit('sysCall', json.dumps(message), namespace='/sysCall')
 
     def runInParallel(self, fn1, fn2, arg1, arg2):
         fns = [fn1, fn2]
