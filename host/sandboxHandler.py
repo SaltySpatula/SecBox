@@ -31,7 +31,7 @@ def find_by_id(sandbox_id):
 def stop_sandbox(json):
     # ToDo: handle integer casting
     print(json)
-    sandbox = find_by_id(int(json['ID']))
+    sandbox = find_by_id(json['ID'])
     print(sandbox)
     sandbox.stop()
 
