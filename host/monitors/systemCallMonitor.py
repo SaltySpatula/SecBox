@@ -44,22 +44,22 @@ class systemCallMonitor:
         cwd = os.getcwd() + "/gvisor-master/"
         command = self.base_command + " /tmp/" + \
             infected_status + "_gvisor_events.sock"
-        print(command)
         running_command = Popen(command.split(),
                              stdin=PIPE, stdout=PIPE, stderr=STDOUT, cwd=cwd)
-        print("Running cmd in ")
-        print(cwd)
+        buf = []
         for line in running_command.stdout:
-            print(line)
-            order_count = order_count+1
-            message = {
-                "ID": self.sandbox_id,
-                "architecture": self.arch,
-                "infectedStatus": infected_status,
-                "orderNo": order_count,
-                "sysCall": str(line)
-            }
-            self.client.emit('sysCall', json.dumps(message), namespace='/sysCall')
+            buf.append(str(line))
+            if len(buf)>= 20:
+                order_count = order_count+1
+                message = {
+                    "ID": self.sandbox_id,
+                    "architecture": self.arch,
+                    "infectedStatus": infected_status,
+                    "orderNo": order_count,
+                    "sysCalls": buf
+                }
+                buf = []
+                self.client.emit('sysCall', json.dumps(message), namespace='/sysCall')
 
     def runInParallel(self, fn1, fn2, arg1, arg2):
         fns = [fn1, fn2]
