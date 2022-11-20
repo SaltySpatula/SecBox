@@ -1,10 +1,8 @@
-import time
 import socketio
 import sandboxHandler
 import json
 
 socketio = socketio.Client()
-id_counter = 0
 
 
 @socketio.event
