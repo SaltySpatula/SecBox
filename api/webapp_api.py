@@ -85,13 +85,13 @@ def post_command(data):
     print("received command", data)
     if data["healthy_cmd"] != "" or data["healthy_cmd"] is not None:
         healthy = {
-        'ID': int(data["room"]),
+        'ID': data["room"],
         'CMD': data["healthy_cmd"]
         }
         socketio.emit("healthyCommand", json.dumps(healthy),namespace='/cmd')
     if data["infected_cmd"] != "" or data["infected_cmd"] is not None:
         infected = {
-        'ID': int(data["room"]),
+        'ID': data["room"],
         'CMD': data["infected_cmd"]
         }
         socketio.emit("infectedCommand", json.dumps(infected),namespace='/cmd')

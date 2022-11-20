@@ -106,12 +106,17 @@ class Instance:
         }
         self.client.emit('cmdOut', json.dumps(message), namespace='/cmd')
         if self.container is not None:
+            wd = ""
             if command[:2] == "cd":
                 wd = command.split()[1]
                 if wd[-1] != "/":
                     wd += "/"
                 self.current_path += wd
                 command = "bash -c " + command
+                if self.container.exec_run(command, workdir=self.current_path).exit_code:
+                    #Remove failed cd from path
+                    end_index = len(wd)
+                    self.current_path = self.current_path[:-end_index]
             console_output = self.container.exec_run(
                 command, stream=True, workdir=self.current_path).output
             while True:
