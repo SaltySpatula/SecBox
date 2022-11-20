@@ -3,15 +3,6 @@
     "name": "Default",
     "points": [
       {
-        "name": "container/start"
-      },
-      {
-        "name": "sentry/clone"
-      },
-      {
-        "name": "sentry/task_exit"
-      },
-      {
         "name": "syscall/sysno/0/enter",
         "context_fields": [
           "time",
@@ -23,6 +14,4346 @@
       },
       {
         "name": "syscall/sysno/1/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/2/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/3/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/4/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/5/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/6/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/7/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/8/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/9/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/10/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/11/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/12/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/13/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/14/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/15/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/16/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/17/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/18/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/19/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/20/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/21/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/22/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/23/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/24/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/25/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/26/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/27/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/28/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/29/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/30/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/31/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/32/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/33/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/34/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/35/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/36/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/37/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/38/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/39/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/40/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/41/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/42/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/43/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/44/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/45/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/46/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/47/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/48/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/49/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/50/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/51/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/52/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/53/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/54/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/55/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/56/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/57/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/58/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/59/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/60/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/61/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/62/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/63/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/64/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/65/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/66/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/67/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/68/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/69/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/70/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/71/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/72/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/73/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/74/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/75/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/76/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/77/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/78/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/79/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/80/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/81/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/82/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/83/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/84/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/85/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/86/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/87/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/88/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/89/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/90/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/91/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/92/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/93/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/94/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/95/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/96/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/97/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/98/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/99/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/100/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/101/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/102/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/103/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/104/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/105/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/106/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/107/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/108/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/109/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/110/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/111/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/112/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/113/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/114/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/115/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/116/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/117/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/118/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/119/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/120/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/121/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/122/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/123/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/124/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/125/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/126/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/127/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/128/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/129/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/130/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/131/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/132/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/133/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/134/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/135/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/136/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/137/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/138/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/139/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/140/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/141/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/142/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/143/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/144/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/145/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/146/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/147/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/148/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/149/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/150/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/151/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/152/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/153/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/154/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/155/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/156/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/157/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/158/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/159/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/160/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/161/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/162/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/163/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/164/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/165/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/166/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/167/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/168/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/169/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/170/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/171/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/172/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/173/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/174/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/175/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/176/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/177/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/178/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/179/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/180/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/181/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/182/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/183/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/184/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/185/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/186/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/187/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/188/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/189/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/190/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/191/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/192/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/193/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/194/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/195/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/196/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/197/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/198/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/199/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/200/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/201/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/202/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/203/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/204/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/205/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/206/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/207/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/208/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/209/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/210/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/211/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/212/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/213/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/214/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/215/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/216/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/217/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/218/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/219/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/220/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/221/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/222/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/223/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/224/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/225/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/226/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/227/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/228/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/229/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/230/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/231/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/232/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/233/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/234/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/235/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/236/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/237/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/238/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/239/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/240/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/241/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/242/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/243/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/244/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/245/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/246/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/247/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/248/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/249/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/250/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/251/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/252/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/253/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/254/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/255/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/256/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/257/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/258/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/259/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/260/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/261/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/262/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/263/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/264/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/265/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/266/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/267/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/268/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/269/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/270/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/271/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/272/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/273/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/274/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/275/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/276/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/277/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/278/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/279/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/280/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/281/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/282/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/283/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/284/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/285/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/286/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/287/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/288/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/289/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/290/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/291/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/292/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/293/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/294/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/295/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/296/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/297/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/298/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/299/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/300/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/301/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/302/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/303/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/304/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/305/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/306/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/307/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/308/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/309/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/310/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/311/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/312/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/313/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/314/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/315/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/316/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/317/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/318/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/319/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/320/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/321/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/322/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/323/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/324/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/325/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/326/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/327/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/328/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/329/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/330/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/331/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/332/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/333/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/334/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/335/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/336/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/337/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/338/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/339/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/340/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/341/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/342/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/343/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/344/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/345/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/346/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/347/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/348/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/349/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/350/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/351/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/352/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/353/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/354/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/355/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/356/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/357/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/358/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/359/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/360/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/361/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/362/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/363/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/364/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/365/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/366/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/367/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/368/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/369/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/370/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/371/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/372/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/373/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/374/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/375/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/376/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/377/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/378/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/379/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/380/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/381/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/382/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/383/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/384/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/385/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/386/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/387/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/388/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/389/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/390/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/391/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/392/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/393/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/394/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/395/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/396/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/397/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/398/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/399/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/400/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/401/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/402/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/403/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/404/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/405/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/406/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/407/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/408/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/409/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/410/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/411/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/412/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/413/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/414/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/415/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/416/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/417/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/418/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/419/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/420/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/421/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/422/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/423/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/424/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/425/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/426/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/427/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/428/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/429/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/430/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/431/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/432/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/433/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/434/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      },
+      {
+        "name": "syscall/sysno/435/enter",
         "context_fields": [
           "time",
           "container_id",

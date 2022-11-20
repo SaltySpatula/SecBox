@@ -85,7 +85,7 @@ class Sandbox:
         self.syscallMonitor = systemCallMonitor.systemCallMonitor(
             self.sandbox_id)
         self.syscallMonitor.start()
-        sleep(10)
+        sleep(8)
         self.controller = Controller(self.mw_hash, self.os, self.sandbox_id)
 
         self.perfMonitor = performanceMonitor.performanceMonitor(
