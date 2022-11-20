@@ -141,3 +141,16 @@ class Instance:
                     self.client.emit('cmdOut', json.dumps(
                         message), namespace='/cmd')
                     break
+                except:
+                    self.order_count = self.order_count + 1
+                    message = {
+                        "ID": self.sandbox_id,
+                        "infectedStatus": self.infection_status,
+                        "orderNo": self.order_count,
+                        "isFirst": False,
+                        "isLast": True,
+                        "cmdOut": "Invalid Input"
+                    }
+                    self.client.emit('cmdOut', json.dumps(
+                        message), namespace='/cmd')
+                    break
