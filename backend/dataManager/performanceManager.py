@@ -110,6 +110,7 @@ class PerformanceManager(DataManager):
     def save_data(self, data):
         print("Saving Data: ", data["ID"])
         i = data["ID"]
+
         pm = models.PerformanceModel(
             ID=i,
             pid_counts=json.dumps(self.pid_counts[i]),
@@ -118,7 +119,7 @@ class PerformanceManager(DataManager):
         )
 
         pm.save()
-        # ToDo:
+        print("saved performance data from", i)
         pass
 
 

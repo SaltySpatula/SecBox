@@ -85,13 +85,13 @@ def post_command(data):
     print("received command", data)
     if data["healthy_cmd"] != "" or data["healthy_cmd"] is not None:
         healthy = {
-        'ID': int(data["room"]),
+        'ID': data["room"],
         'CMD': data["healthy_cmd"]
         }
         socketio.emit("healthyCommand", json.dumps(healthy),namespace='/cmd')
     if data["infected_cmd"] != "" or data["infected_cmd"] is not None:
         infected = {
-        'ID': int(data["room"]),
+        'ID': data["room"],
         'CMD': data["infected_cmd"]
         }
         socketio.emit("infectedCommand", json.dumps(infected),namespace='/cmd')
@@ -118,11 +118,14 @@ def connected():
 
 @socketio.on('join room', namespace='/live')
 def join(data):
-    print("join room:", data)
     room = data["room"]
     join_room(room)
-    print("Client Connected to room", room, print(type(room)))
+    print("Client Connected to room", room)
     emit("Successfully connected to live analysis room " + room, to=room)
+
+@socketio.on('join analysis room', namespace="/analysis")
+def join_analysis(data):
+    join_room(data["room"])
 
 
 @socketio.on('leave room', namespace='/live')
@@ -131,6 +134,21 @@ def leave(data):
     leave_room(room)
     print("Client left room", room)
 
+@socketio.on("stop request", namespace="/live")
+def stopAnalysis(data):
+    print("Stopping sandbox", data["ID"])
+    stop(data)
+
+@socketio.on("get CPU Memory", namespace="/analysis")
+def getCPUMemory(data):
+    sandbox_id = data["ID"]
+    objects = json.loads(models.PerformanceModel.objects(ID__exact=sandbox_id).to_json())
+    # assert len(objects) == 1, "Multiple (or no) objects have been found in the DB"
+
+    response = {
+        "data": json.loads(objects[0]["cpu_percentages"])
+    }
+    socketio.emit("CPU Memory", json.dumps(response), namespace="/analysis", room=objects[0]["ID"])
 
 @app.route("/greeting")
 def greeting():
@@ -147,10 +165,7 @@ def create(data):
     feedback = start(start_data)
     emit("start feedback", json.dumps(feedback), namespace="/start")
 
-@socketio.on("stop request", namespace="/live")
-def stopAnalysis(data):
-    print("Stopping sandbox", data["ID"])
-    stop(data)
+
 
 
 @ socketio.on('sysCall', namespace='/sysCall')
