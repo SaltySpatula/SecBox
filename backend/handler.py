@@ -2,14 +2,12 @@ import time
 import json
 import subprocess
 import requests
+import uuid
 
-counter = 0
 
 def start_process(sha, selected_os):
-    global counter
-    counter = counter + 1
     dictionary = {
-        "ID": counter,
+        "ID": uuid.uuid4().hex,
         "SHA256": sha,
         "OS": selected_os,
     }

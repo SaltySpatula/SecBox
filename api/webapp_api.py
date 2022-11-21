@@ -24,7 +24,7 @@ log.setLevel(logging.ERROR)
 app.config['SECRET_KEY'] = 'secret!'
 app.config['MONGODB_SETTINGS'] = {
     'db': 'SecBoxDB',
-    'host': 'mongodb://localhost',
+    'host': "mongodb+srv://raf:qZ6911b0fKwEuLWN@secbox.1hcrjgd.mongodb.net/test",
     'port': 27017
 }
 
@@ -209,6 +209,7 @@ def start(data):
 @socketio.on("stopSandbox", namespace="/sandbox")
 def stop(data):
     print("Stop function called")
+    performance_manager.save_data(data)
     socketio.emit("stopSandbox", json.dumps(data), namespace="/sandbox")
     return data
 

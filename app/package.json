@@ -22,7 +22,8 @@
     "vue3-apexcharts": "^1.4.1",
     "vue3-plotly": "^0.0.5",
     "vuetify": "^3.0.0-beta.0",
-    "webfontloader": "^1.0.0"
+    "webfontloader": "^1.0.0",
+    "yarn": "^1.22.19"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",

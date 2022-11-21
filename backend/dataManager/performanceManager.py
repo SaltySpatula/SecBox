@@ -1,6 +1,9 @@
 from backend.dataManager.dataManager import DataManager
 from dateutil import parser
 from datetime import datetime
+import json
+from backend import models
+
 class PerformanceManager(DataManager):
     def __init__(self, socketio, db):
         super().__init__(socketio, db)
@@ -21,7 +24,7 @@ class PerformanceManager(DataManager):
             "healthy": {"graph": []}, "infected": {"graph": []}}
 
     def handle_message(self, data):
-        sandbox_id = data["ID"]
+        sandbox_id = str(data["ID"]) #todo: remove string casting
         infected_status = data["infectedStatus"]
 
         if sandbox_id not in self.order_nos.keys():
@@ -105,12 +108,23 @@ class PerformanceManager(DataManager):
         return True
 
     def save_data(self, data):
+        print("Saving Data: ", data["ID"])
+        i = data["ID"]
+        pm = models.PerformanceModel(
+            ID=i,
+            pid_counts=json.dumps(self.pid_counts[i]),
+            cpu_percentages=json.dumps(self.cpu_percentages[i]),
+            packet_counts=json.dumps(self.packet_counts[i])
+        )
+
+        pm.save()
         # ToDo:
         pass
 
 
     def extract_pid_count(self, sandbox_id, infected_status, data):
         current_ts = parser.parse(data["read"])
+        # Todo: Fix error after shutdown
         current_pid_count = data["pids_stats"]["current"]
         self.pid_counts[sandbox_id][infected_status]["graph"].append(
             {"timestamp": current_ts.strftime("%m/%d/%Y, %H:%M:%S.%f%Z"), "pid_count": current_pid_count})
