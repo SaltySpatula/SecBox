@@ -32,7 +32,7 @@ db = MongoEngine()
 db.init_app(app)
 
 socketio = SocketIO(app, cors_allowed_origins=[
-                    'http://localhost:8080', 'http://localhost:5000', 'http://localhost:5001'])
+                    'http://localhost:8080', 'http://localhost:5000', 'http://localhost:5001'], ping_timeout=300)
 login = LoginManager(app)
 
 system_call_manager = SysCallManager(socketio, db)

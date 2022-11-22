@@ -5,8 +5,8 @@ import socketio
 import time
 
 
-healthy_dockerfile = "/home/raf/PycharmProjects/SecBox/host/healthy/"
-infected_dockerfile = "/home/raf/PycharmProjects/SecBox/host/infected/"
+healthy_dockerfile = "./healthy/"
+infected_dockerfile = "./infected/"
 
 
 class Controller:
@@ -68,7 +68,7 @@ class Instance:
     def __init__(self, dockerfile, infection_status, sandbox_id, build_arguments) -> None:
         self.dockerfile = dockerfile
         self.docker_client = docker.from_env()
-
+        print(dockerfile)
         (self.image, self.logs) = self.docker_client.images.build(
             path=dockerfile, buildargs=build_arguments)
 
@@ -91,6 +91,7 @@ class Instance:
     def stop_instance(self) -> int:
         if self.container is not None:
             self.container.stop()
+            self.container.remove(force=True)
             self.container = None
 
 
@@ -105,12 +106,17 @@ class Instance:
         }
         self.client.emit('cmdOut', json.dumps(message), namespace='/cmd')
         if self.container is not None:
+            wd = ""
             if command[:2] == "cd":
                 wd = command.split()[1]
                 if wd[-1] != "/":
                     wd += "/"
                 self.current_path += wd
                 command = "bash -c " + command
+                if self.container.exec_run(command, workdir=self.current_path).exit_code:
+                    #Remove failed cd from path
+                    end_index = len(wd)
+                    self.current_path = self.current_path[:-end_index]
             console_output = self.container.exec_run(
                 command, stream=True, workdir=self.current_path).output
             while True:
@@ -136,6 +142,19 @@ class Instance:
                         "isFirst": False,
                         "isLast": True,
                         "cmdOut": ""
+                    }
+                    self.client.emit('cmdOut', json.dumps(
+                        message), namespace='/cmd')
+                    break
+                except:
+                    self.order_count = self.order_count + 1
+                    message = {
+                        "ID": self.sandbox_id,
+                        "infectedStatus": self.infection_status,
+                        "orderNo": self.order_count,
+                        "isFirst": False,
+                        "isLast": True,
+                        "cmdOut": "Invalid Input"
                     }
                     self.client.emit('cmdOut', json.dumps(
                         message), namespace='/cmd')

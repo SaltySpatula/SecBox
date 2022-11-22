@@ -3,15 +3,6 @@
     "name": "Default",
     "points": [
       {
-        "name": "container/start"
-      },
-      {
-        "name": "sentry/clone"
-      },
-      {
-        "name": "sentry/task_exit"
-      },
-      {
         "name": "syscall/sysno/0/enter",
         "context_fields": [
           "time",
@@ -36,7 +27,7 @@
       {
         "name": "remote",
         "config": {
-          "endpoint": "/tmp/healthy_gvisor_events.sock",
+          "endpoint": "/tmp/infected_gvisor_events.sock",
           "retries": 3
         },
         "ignore_setup_error": true

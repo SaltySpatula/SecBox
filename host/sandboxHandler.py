@@ -31,7 +31,7 @@ def find_by_id(sandbox_id):
 def stop_sandbox(json):
     # ToDo: handle integer casting
     print(json)
-    sandbox = find_by_id(int(json['ID']))
+    sandbox = find_by_id(json['ID'])
     print(sandbox)
     sandbox.stop()
 
@@ -85,7 +85,7 @@ class Sandbox:
         self.syscallMonitor = systemCallMonitor.systemCallMonitor(
             self.sandbox_id)
         self.syscallMonitor.start()
-        sleep(10)
+        sleep(8)
         self.controller = Controller(self.mw_hash, self.os, self.sandbox_id)
 
         self.perfMonitor = performanceMonitor.performanceMonitor(

@@ -3,15 +3,6 @@
     "name": "Default",
     "points": [
       {
-        "name": "container/start"
-      },
-      {
-        "name": "sentry/clone"
-      },
-      {
-        "name": "sentry/task_exit"
-      },
-      {
         "name": "syscall/sysno/0/enter",
         "context_fields": [
           "time",
