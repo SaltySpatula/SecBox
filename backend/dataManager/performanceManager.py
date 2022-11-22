@@ -4,12 +4,14 @@ from datetime import datetime
 import json
 from backend import models
 
+
 class PerformanceManager(DataManager):
     def __init__(self, socketio, db):
         super().__init__(socketio, db)
         self.cpu_percentages = {}
         self.pid_counts = {}
         self.packet_counts = {}
+        self.raw_perf_data = {}
 
     def setup_data_structures(self, sandbox_id, infected_status, data):
         self.order_nos[sandbox_id] = {"healthy": 1, "infected": 1}
@@ -23,8 +25,10 @@ class PerformanceManager(DataManager):
         self.packet_counts[sandbox_id] = {
             "healthy": {"graph": []}, "infected": {"graph": []}}
 
+        self.raw_perf_data[sandbox_id] = {"healthy": [], "infected": []}
+
     def handle_message(self, data):
-        sandbox_id = str(data["ID"]) #todo: remove string casting
+        sandbox_id = str(data["ID"])  # todo: remove string casting
         infected_status = data["infectedStatus"]
 
         if sandbox_id not in self.order_nos.keys():
@@ -49,16 +53,16 @@ class PerformanceManager(DataManager):
             times = []
             percentages = []
             for t in cpu_percentage_trimmed:
-                time = datetime.strptime(t["timestamp"], "%m/%d/%Y, %H:%M:%S.%f%Z")
+                time = datetime.strptime(
+                    t["timestamp"], "%m/%d/%Y, %H:%M:%S.%f%Z")
                 times.append(datetime.strftime(time, "%H:%M:%S"))
                 percentages.append(round(t["cpu_percentage"], 4))
 
-
             response_cpu_percentage = {
-                "infected_status":infected_status,
-                "data":{
-                "timestamps":times,
-                "percentages":percentages
+                "infected_status": infected_status,
+                "data": {
+                    "timestamps": times,
+                    "percentages": percentages
                 }
             }
 
@@ -67,7 +71,6 @@ class PerformanceManager(DataManager):
                                namespace='/live', room=str(sandbox_id))
 
             trimmed_pid_counts = self.pid_counts[sandbox_id][infected_status]["graph"]
-
 
             if len(self.pid_counts[sandbox_id][infected_status]["graph"]) >= 2:
                 # if a new value appears, we send it to the front end (we also send every 20th
@@ -80,7 +83,6 @@ class PerformanceManager(DataManager):
                     }
                     self.socketio.emit("pid_graph",
                                        response_pid, namespace='/live', room=str(sandbox_id))
-
 
             else:
                 response_pid = {
@@ -104,23 +106,20 @@ class PerformanceManager(DataManager):
             self.socketio.emit("packet_graph",
                                response_packets, namespace='/live', room=str(sandbox_id))
             self.order_nos[sandbox_id][infected_status] = data["orderNo"]
-        self.db_queue.put(data)
+            self.raw_perf_data[sandbox_id][infected_status].append(data["stats"])
         return True
 
     def save_data(self, data):
-        print("Saving Data: ", data["ID"])
+        print("Saving Performance Data: ", data["ID"])
         i = data["ID"]
         pm = models.PerformanceModel(
             ID=i,
             pid_counts=json.dumps(self.pid_counts[i]),
             cpu_percentages=json.dumps(self.cpu_percentages[i]),
-            packet_counts=json.dumps(self.packet_counts[i])
+            packet_counts=json.dumps(self.packet_counts[i]),
+            raw_perf_data=json.dumps(self.raw_perf_data[i])
         )
-
         pm.save()
-        # ToDo:
-        pass
-
 
     def extract_pid_count(self, sandbox_id, infected_status, data):
         current_ts = parser.parse(data["read"])
