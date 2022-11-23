@@ -47,7 +47,7 @@
       <v-col cols="12" md="3">
         <v-card class="bg-deep-purple-lighten-3" >
           <PIDCountGraph :socket="this.socket"></PIDCountGraph>
-          <ReadWriteGraph :socket="this.socket"></ReadWriteGraph>
+          <ProtocolGraph :socket="this.socket"></ProtocolGraph>
           <v-btn
                 block
               large
@@ -57,7 +57,7 @@
                 style="position:relative;bottom:0"
               @click="postAnalyze"
             >
-              <v-icon              >
+              <v-icon>
                 mdi-content-save
               </v-icon>
               Save & Exit
@@ -74,12 +74,12 @@ import router from "@/router/index";
 import CPUPercentages from "@/components/graphs/CPUPercentages";
 import PacketGraph from "@/components/graphs/PacketGraph";
 import PIDCountGraph from "@/components/graphs/PIDCountGraph";
-import ReadWriteGraph from "@/components/graphs/ReadWriteGraph";
+import ProtocolGraph from "@/components/graphs/ProtocolGraph";
 import io from "socket.io-client";
 
 export default {
   name: "LiveAnalysis",
-  components: {LiveTerminal, PacketGraph, PIDCountGraph, CPUPercentages: CPUPercentages, ReadWriteGraph},
+  components: {LiveTerminal, PacketGraph, PIDCountGraph, CPUPercentages: CPUPercentages, ProtocolGraph},
   data: () => ({
     loading: true,
     combined_cli: true,

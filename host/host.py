@@ -39,11 +39,13 @@ def parallel_command(data):
 
 @socketio.on("healthyCommand", namespace='/cmd')
 def healthy_command(data):
+    print("healthy command", data)
     sandboxHandler.healthy_command(json.loads(data))
 
 
 @socketio.on("infectedCommand", namespace='/cmd')
 def infected_command(data):
+    print("infected command", data)
     sandboxHandler.infected_command(json.loads(data))
 
 

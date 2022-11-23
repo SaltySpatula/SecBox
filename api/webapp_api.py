@@ -83,13 +83,13 @@ def handle_my_custom_event(json, methods=['GET', 'POST']):
 def post_command(data):
     #TODO: save executed command to DB
     print("received command", data)
-    if data["healthy_cmd"] != "" or data["healthy_cmd"] is not None:
+    if data["healthy_cmd"] != "":
         healthy = {
         'ID': data["room"],
         'CMD': data["healthy_cmd"]
         }
         socketio.emit("healthyCommand", json.dumps(healthy),namespace='/cmd')
-    if data["infected_cmd"] != "" or data["infected_cmd"] is not None:
+    if data["infected_cmd"] != "":
         infected = {
         'ID': data["room"],
         'CMD': data["infected_cmd"]

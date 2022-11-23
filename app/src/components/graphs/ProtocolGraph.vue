@@ -12,27 +12,26 @@
 
 <script>
 export default {
-  name: "ReadWriteGraph",
+  name: "ProtocolGraph",
   props: {
     socket: Object,
   },
   created() {
-    //let ref = this
-    this.socket.on("reads_vs_writes_graph", function (data) {
-      console.log(data)
+    let ref = this
+    const id = ref.$route.params.id
+    this.socket.on("layer_counts_graph", function (data) {
 
-      /* {'healthy': {'graph': {'reads': 0, 'writes': 0}}, 'infected': {'graph': {'reads': 0, 'writes': 0}}}}
-      let updated_data = [
-        {
-          name: 'healthy',
-          data: [data["healthy"]["reads"], data["healthy"]["writes"]]
-      },
-        {
-          name: 'infected',
-          data: [data["infected"]["reads"], data["infected"]["writes"]]
+      const hd = data[id]["healthy"]["graph"]
+      const infd = data[id]["infected"]["graph"]
+
+      const updated_series = []
+
+      for (const [key, value] of Object.entries(hd)) {
+        if (key === "TCP" || key === "UDP" || key === "SCTP"){
+          updated_series.push({name: key, data:[value, infd[key]]})
+          }
       }
-      ]*/
-      //ref.$refs.RWGraph.updateSeries(updated_data)
+      ref.$refs.RWGraph.updateSeries(updated_series)
     });
   },
   data: function () {
@@ -50,9 +49,9 @@ export default {
           },
         },
         xaxis: {
-          categories: ['infected', 'healthy'],
+          categories: ['healthy', 'infected'],
         },
-        colors: ["#2fc964", "#644db4"],
+        colors: ["#2fc964", "#644db4", "#d09c3f"],
         plotOptions: {
           bar: {
             horizontal: true,
@@ -69,13 +68,15 @@ export default {
           },
         },
       },
-      series: [{
-        name: 'healthy',
-        data: [0, 0]
-      }, {
-        name: 'infected',
-        data: [0, 0]
-      }]
+      series: [
+    {
+      name: 'TCP',
+      data: [0, 0]
+    },
+      {
+      name: 'UDP',
+      data: [0, 0]
+    }]
     };
   },
 }
