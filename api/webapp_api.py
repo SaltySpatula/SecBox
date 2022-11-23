@@ -16,6 +16,11 @@ from flask_login import LoginManager, login_user, current_user, UserMixin
 import logging
 import json
 
+# Hosted DB:
+# admin
+# HmxrjkxTwd0etI6Y
+# mongodb+srv://admin:<password>@secboxmongodb.nhcx1ch.mongodb.net/?retryWrites=true&w=majority
+
 app = Flask(__name__)
 CORS(app)
 log = logging.getLogger("werkzeug")
@@ -24,7 +29,7 @@ log.setLevel(logging.ERROR)
 app.config['SECRET_KEY'] = 'secret!'
 app.config['MONGODB_SETTINGS'] = {
     'db': 'SecBoxDB',
-    'host': "mongodb+srv://raf:qZ6911b0fKwEuLWN@secbox.1hcrjgd.mongodb.net/test",
+    'host': "mongodb+srv://admin:HmxrjkxTwd0etI6Y@secboxmongodb.nhcx1ch.mongodb.net/?retryWrites=true&w=majority",
     'port': 27017
 }
 
@@ -225,6 +230,7 @@ def start(data):
 def stop(data):
     print("Stop function called")
     performance_manager.save_data(data)
+    network_manager.save_data(data)
     socketio.emit("stopSandbox", json.dumps(data), namespace="/sandbox")
     return data
 

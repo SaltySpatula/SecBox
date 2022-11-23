@@ -1,18 +1,24 @@
 from backend.dataManager.dataManager import DataManager
 from scapy.all import *
 from scapy.utils import hexstr
+import json
+from backend import models
+import contextlib, io
 
 
 class NetworkManager(DataManager):
     def __init__(self, fe_client, db):
         super().__init__(fe_client, db)
         self.layer_counts = {}
+        self.raw_packet_data = {}
 
     def setup_data_structures(self, sandbox_id, infected_status, data):
         self.order_nos[sandbox_id] = {"healthy": 1, "infected": 1}
 
         self.layer_counts[sandbox_id] = {
             "healthy": {"graph": {}}, "infected": {"graph": {}}}
+        
+        self.raw_packet_data[sandbox_id] = {"healthy": [], "infected": []}
 
     def handle_message(self, data):
         processed_data = self.process_data(data)
@@ -29,10 +35,11 @@ class NetworkManager(DataManager):
                 sandbox_id, infected_status, processed_data)
             # Call emit functions here
             self.socketio.emit("layer_counts_graph", self.layer_counts, namespace='/live', room=str(sandbox_id))
-            #Add order no. to history
+            print(self.layer_counts)
+            # Add order no. to history
             self.order_nos[sandbox_id][infected_status] = processed_data["orderNo"]
-
-        self.db_queue.put(processed_data)
+            
+            self.raw_packet_data[sandbox_id][infected_status].append(processed_data["packet"])
         return True
 
     def process_data(self, data):
@@ -41,10 +48,14 @@ class NetworkManager(DataManager):
         try:
             for index in range(50):
                 layer = p[index]
-                dict[layer.name] = layer.fields
+                dict[layer.name] = str(layer.fields)
         except IndexError:
             pass
-        dict["export"] = ""
+        f = io.StringIO()
+        with contextlib.redirect_stdout(f):
+            export_object(p)
+        output = f.getvalue()
+        dict["export"] = output
         data["packet"] = dict
         return data
 
@@ -57,4 +68,14 @@ class NetworkManager(DataManager):
                     self.layer_counts[sandbox_id][infected_status]["graph"][layer] += 1
 
     def save_data(self, data):
-        pass
+        try:
+            print("Saving Network Data: ", data["ID"])
+            i = data["ID"]
+            pm = models.NetworkModel(
+                ID=i,
+                layer_counts=json.dumps(self.layer_counts[i]),
+                raw_packet_data=json.dumps(self.raw_packet_data[i])
+            )
+            pm.save()
+        except KeyError:
+            print("No network data to save, proceeding...")

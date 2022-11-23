@@ -37,14 +37,27 @@ class PerformanceModel(Document):
     pid_counts = db().StringField()
     cpu_percentages = db().StringField()
     packet_counts = db().StringField()
+    raw_perf_data = db().StringField()
 
     def to_json(self):
         return {"ID": self.ID,
                 "pid_counts": self.pid_counts,
                 "cpu_percentages":self.cpu_percentages,
-                "packet_counts":self.packet_counts
+                "packet_counts":self.packet_counts,
+                "raw_perf_data":self.raw_perf_data
         }
 
+class NetworkModel(Document):
+    ID = db().StringField()
+    layer_counts = db().StringField()
+
+    raw_packet_data = db().StringField()
+
+    def to_json(self):
+        return {"ID": self.ID,
+                "layer_counts": self.layer_counts,
+                "raw_packet_data":self.raw_packet_data
+        }
 
 
 class Report(Document):
