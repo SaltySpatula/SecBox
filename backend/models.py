@@ -59,6 +59,18 @@ class NetworkModel(Document):
                 "IP_frequency":self.IP_frequency
         }
 
+class SystemCallModel(Document):
+    ID = db().StringField()
+    reads_vs_writes = db().StringField()
+    directory_frequency = db().StringField()
+
+
+    def to_json(self):
+        return {"ID": self.ID,
+                "reads_vs_writes": self.reads_vs_writes,
+                "directory_frequency":self.directory_frequency
+        }
+
 
 
 
