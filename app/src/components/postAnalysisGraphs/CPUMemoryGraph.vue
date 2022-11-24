@@ -11,7 +11,7 @@
 <script>
 export default {
   name: "CPUMemoryGraph",
-  props: {socket: Object, graph_title: String, data: Object, },
+  props: {graph_title: String, data: Object, },
   created() {
 
   },

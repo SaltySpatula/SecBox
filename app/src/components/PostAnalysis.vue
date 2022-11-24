@@ -65,7 +65,7 @@
       <v-col cols="12" md="4" v-for="graph in selected_graphs" v-bind:key="graph.title">
         <v-card class="bg-deep-purple-lighten-5">
         <v-card-title>{{ graph.title }}</v-card-title>
-          <PAGraphWrapper :socket="this.socket" :graph_title="graph.title"/>
+          <PAGraphWrapper :socket="this.socket" :graph_title="graph.title" :graph_get="graph.get"/>
           <v-card-actions>
             <div class="my-2">
               <v-btn class="bg-red" @click="deleteGraph(graph)">
@@ -106,24 +106,24 @@ export default {
         "title": "Network",
         "icon": "mdi-wan",
         "graphs": [
-          {"title": 'Network Layers', "icon": 'mdi-nas', "disabled": false},
-          {"title": 'IP addresses', "icon": 'mdi-map-marker', "disabled": false},
+          {"title": 'Network Layers', "get":"get Network Layers", "icon": 'mdi-nas', "disabled": false},
+          {"title": 'IP Addresses', "get":"get IP Addresses", "icon": 'mdi-map-marker', "disabled": false},
         ]
       },
       "syscall_graphs": {
         "title": "System Calls",
         "icon": "mdi-console-network",
         "graphs": [
-          {"title": 'Rule violations', "icon": 'mdi-alert-octagon', "disabled": false,},
-          {"title": 'Direct Comparison', "icon": 'mdi-ab-testing', "disabled": false},
+          {"title": 'Rule violations',"get":"get Rule violations", "icon": 'mdi-alert-octagon', "disabled": false,},
+          {"title": 'Direct Comparison',"get":"get Direct Comparison", "icon": 'mdi-ab-testing', "disabled": false},
         ]
       },
       "performance_graphs": {
         "title": "Performance",
         "icon": "mdi-poll",
         "graphs": [
-          {"title": 'CPU Usage', "icon": 'mdi-cpu-64-bit', "disabled": false},
-          {"title": 'RAM', "icon": 'mdi-memory', "disabled": false},
+          {"title": 'CPU Usage', "get":"get CPU Usage", "icon": 'mdi-cpu-64-bit', "disabled": false},
+          {"title": 'RAM', "get":"get RAM", "icon": 'mdi-memory', "disabled": false},
         ]
       },
     }

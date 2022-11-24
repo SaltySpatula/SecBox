@@ -11,9 +11,8 @@
 <script>
 export default {
   name: "NetworkLayerGraph",
-  props: {socket: Object, graph_title: String, data: Object, colors: Object},
+  props: {graph_title: String, data: Object, colors: Object},
   created() {
-    console.log("NL ", this.data)
   },
   data: function () {
     let ref = this

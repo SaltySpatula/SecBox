@@ -7,29 +7,32 @@
             color="primary"
     ></v-progress-circular></div>
   <CPUMemoryGraph v-else-if="graph_title === 'CPU Usage'"
-
-                  :socket="this.socket"
                   :graph_title="graph_title"
                   :data="this.data"
   ></CPUMemoryGraph>
     <NetworkLayerGraph v-else-if="graph_title === 'Network Layers'"
-                  :socket="this.socket"
                   :graph_title="graph_title"
                   :data="this.data"
   ></NetworkLayerGraph>
+  <IPFrequencyGraph v-else-if="graph_title === 'IP Addresses'"
+                  :graph_title="graph_title"
+                  :data="this.data">
+
+  </IPFrequencyGraph>
 </template>
 
 <script>
 import CPUMemoryGraph from "@/components/postAnalysisGraphs/CPUMemoryGraph";
 import NetworkLayerGraph from "@/components/postAnalysisGraphs/NetworkLayerGraph";
+import IPFrequencyGraph from "@/components/postAnalysisGraphs/IPFrequencyGraph";
 export default {
   name: "PAGraphWrapper",
-  components:{CPUMemoryGraph, NetworkLayerGraph},
-  props:{socket: Object, graph_title:String},
+  components:{CPUMemoryGraph, NetworkLayerGraph, IPFrequencyGraph},
+  props:{socket: Object,graph_get:String, graph_title:String},
   created() {
 
     let ref = this
-    this.socket.emit("get " + this.graph_title, {
+    this.socket.emit(this.graph_get, {
       "ID":this.$route.params.id
     })
 
@@ -46,6 +49,9 @@ export default {
         }
         else if (ref.graph_title === "Network Layers"){
           ref.data = ref.prepare_network_layer_data(parsed_data)
+        }
+        else if (ref.graph_title === "IP Addresses"){
+          ref.data = parsed_data
         }
         // change flag
         ref.loading = false

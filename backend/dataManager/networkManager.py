@@ -20,7 +20,7 @@ class NetworkManager(DataManager):
             "healthy": {"graph": {}}, "infected": {"graph": {}}}
 
         self.ip_adress_frequency[sandbox_id] = {
-            "healthy": {"graph": {}}, "infected": {"graph": {}}}
+            "healthy": {"graph": {"src":{}, "dst":{}}}, "infected": {"graph": {"src":{}, "dst":{}}}}
         
         self.raw_packet_data[sandbox_id] = {"healthy": [], "infected": []}
 
@@ -79,14 +79,17 @@ class NetworkManager(DataManager):
                 src = data["packet"]["IP"]["src"]
                 dst = data["packet"]["IP"]["dst"]
 
-                if src not in self.ip_adress_frequency[sandbox_id][infected_status]["graph"].keys():
-                    self.ip_adress_frequency[sandbox_id][infected_status]["graph"][src] = 1
+                print(src)
+                print(self.ip_adress_frequency[sandbox_id][infected_status]["graph"]["src"].keys())
+
+                if src not in self.ip_adress_frequency[sandbox_id][infected_status]["graph"]["src"].keys():
+                    self.ip_adress_frequency[sandbox_id][infected_status]["graph"]["src"][src] = 1
                 else:
-                    self.ip_adress_frequency[sandbox_id][infected_status]["graph"][src] += 1
-                if dst not in self.ip_adress_frequency[sandbox_id][infected_status]["graph"].keys():
-                    self.ip_adress_frequency[sandbox_id][infected_status]["graph"][dst] = 1
+                    self.ip_adress_frequency[sandbox_id][infected_status]["graph"]["src"][src] += 1
+                if dst not in self.ip_adress_frequency[sandbox_id][infected_status]["graph"]["dst"].keys():
+                    self.ip_adress_frequency[sandbox_id][infected_status]["graph"]["dst"][dst] = 1
                 else:
-                    self.ip_adress_frequency[sandbox_id][infected_status]["graph"][dst] += 1
+                    self.ip_adress_frequency[sandbox_id][infected_status]["graph"]["dst"][dst] += 1
     
     def export_pcap(self, data, ID):
         for infected_status in data.keys():

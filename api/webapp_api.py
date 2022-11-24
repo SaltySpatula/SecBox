@@ -1,4 +1,5 @@
 import sys
+
 sys.path.append("/home/adrian/Desktop/HS2022/MasterPrject/SecBox")
 
 from backend.dataManager.syscallManager import SysCallManager
@@ -37,7 +38,7 @@ db = MongoEngine()
 db.init_app(app)
 
 socketio = SocketIO(app, cors_allowed_origins=[
-                    'http://localhost:8080', 'http://localhost:5000', 'http://localhost:5001'], ping_timeout=300)
+    'http://localhost:8080', 'http://localhost:5000', 'http://localhost:5001'], ping_timeout=300)
 login = LoginManager(app)
 
 system_call_manager = SysCallManager(socketio, db)
@@ -86,20 +87,20 @@ def handle_my_custom_event(json, methods=['GET', 'POST']):
 
 @socketio.on("cli command", namespace='/live')
 def post_command(data):
-    #TODO: save executed command to DB
+    # TODO: save executed command to DB
     print("received command", data)
     if data["healthy_cmd"] != "":
         healthy = {
-        'ID': data["room"],
-        'CMD': data["healthy_cmd"]
+            'ID': data["room"],
+            'CMD': data["healthy_cmd"]
         }
-        socketio.emit("healthyCommand", json.dumps(healthy),namespace='/cmd')
+        socketio.emit("healthyCommand", json.dumps(healthy), namespace='/cmd')
     if data["infected_cmd"] != "":
         infected = {
-        'ID': data["room"],
-        'CMD': data["infected_cmd"]
+            'ID': data["room"],
+            'CMD': data["infected_cmd"]
         }
-        socketio.emit("infectedCommand", json.dumps(infected),namespace='/cmd')
+        socketio.emit("infectedCommand", json.dumps(infected), namespace='/cmd')
 
 
 @socketio.on('disconnect', namespace='/live')
@@ -128,6 +129,7 @@ def join(data):
     print("Client Connected to room", room)
     emit("Successfully connected to live analysis room " + room, to=room)
 
+
 @socketio.on('join analysis room', namespace="/analysis")
 def join_analysis(data):
     join_room(data["room"])
@@ -139,10 +141,12 @@ def leave(data):
     leave_room(room)
     print("Client left room", room)
 
+
 @socketio.on("stop request", namespace="/live")
 def stopAnalysis(data):
     print("Stopping sandbox", data["ID"])
     stop(data)
+
 
 @socketio.on("get CPU Usage", namespace="/analysis")
 def getCPUMemory(data):
@@ -154,12 +158,22 @@ def getCPUMemory(data):
 
     socketio.emit("CPU Usage", json.dumps(response), namespace="/analysis", room=objects[0]["ID"])
 
+
 @socketio.on("get Network Layers", namespace="/analysis")
 def getNetworkLayers(data):
     sandbox_id = data["ID"]
     objects = json.loads(models.NetworkModel.objects(ID__exact=sandbox_id).to_json())
     response = json.loads(objects[0]["layer_counts"])
     socketio.emit("Network Layers", json.dumps(response), namespace="/analysis", room=objects[0]["ID"])
+
+
+@socketio.on("get IP Addresses", namespace="/analysis")
+def getIPAddresses(data):
+    sandbox_id = data["ID"]
+    objects = json.loads(models.NetworkModel.objects(ID__exact=sandbox_id).to_json())
+    response = json.loads(objects[0]["IP_frequency"])
+    socketio.emit("IP Addresses", json.dumps(response), namespace="/analysis", room=objects[0]["ID"])
+
 
 @app.route("/greeting")
 def greeting():
@@ -177,33 +191,32 @@ def create(data):
     emit("start feedback", json.dumps(feedback), namespace="/start")
 
 
-
-
-@ socketio.on('sysCall', namespace='/sysCall')
+@socketio.on('sysCall', namespace='/sysCall')
 def handle_sys_call(data):
     print("Received system call logs!")
     system_call_manager.handle_message(json.loads(data))
 
 
-@ socketio.on('sandboxReady', namespace='/sandbox')
+@socketio.on('sandboxReady', namespace='/sandbox')
 def handle_ready(json):
     print(json)
     print("sandbox ready!")
 
 
-@ socketio.on('stats', namespace='/performance')
+@socketio.on('stats', namespace='/performance')
 def handle_stats(data):
     performance_manager.handle_message(json.loads(data))
 
 
-@ socketio.on('cmdOut', namespace='/cmd')
+@socketio.on('cmdOut', namespace='/cmd')
 def handle_cmdline(data):
     command_output_manager.handle_message(json.loads(data))
 
 
-@ socketio.on('packet', namespace='/network')
+@socketio.on('packet', namespace='/network')
 def handle_networkpacket(data):
     network_manager.handle_message(json.loads(data))
+
 
 """
 @app.route("/start", methods=['GET'])
@@ -225,7 +238,6 @@ def get_start_data():
     oss = json.dumps(handler.get_available_images())
     malwares = json.dumps(handler.get_available_malware())
 
-
     return {"malwares": malwares, "oss": oss}
 
 
@@ -233,6 +245,8 @@ def get_start_data():
 def start(data):
     socketio.emit("startSandbox", json.dumps(data), namespace='/sandbox')
     return data
+
+
 @socketio.on("stopSandbox", namespace="/sandbox")
 def stop(data):
     print("Stop function called")
@@ -240,6 +254,7 @@ def stop(data):
     network_manager.save_data(data)
     socketio.emit("stopSandbox", json.dumps(data), namespace="/sandbox")
     return data
+
 
 if __name__ == '__main__':
     socketio.run(app, port=5000)
