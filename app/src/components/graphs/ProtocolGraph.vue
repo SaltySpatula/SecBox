@@ -1,6 +1,6 @@
 <template>
   <v-card class="bg-black" style="margin:10px">
-    <v-card-title style="align:center">Read Write Count</v-card-title>
+    <v-card-title style="align:center">Protocol Comparison</v-card-title>
     <apexchart
         ref="RWGraph"
         :options="chartOptions"

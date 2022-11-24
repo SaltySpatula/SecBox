@@ -106,7 +106,7 @@ export default {
         "title": "Network",
         "icon": "mdi-wan",
         "graphs": [
-          {"title": 'Packet Ratio', "icon": 'mdi-nas', "disabled": false},
+          {"title": 'Network Layers', "icon": 'mdi-nas', "disabled": false},
           {"title": 'IP addresses', "icon": 'mdi-map-marker', "disabled": false},
         ]
       },
@@ -122,7 +122,7 @@ export default {
         "title": "Performance",
         "icon": "mdi-poll",
         "graphs": [
-          {"title": 'CPU Memory', "icon": 'mdi-cpu-64-bit', "disabled": false},
+          {"title": 'CPU Usage', "icon": 'mdi-cpu-64-bit', "disabled": false},
           {"title": 'RAM', "icon": 'mdi-memory', "disabled": false},
         ]
       },

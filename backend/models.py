@@ -56,8 +56,9 @@ class NetworkModel(Document):
     def to_json(self):
         return {"ID": self.ID,
                 "layer_counts": self.layer_counts,
-                "raw_packet_data":self.raw_packet_data
         }
+
+
 
 
 class Report(Document):

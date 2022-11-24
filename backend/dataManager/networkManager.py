@@ -29,13 +29,12 @@ class NetworkManager(DataManager):
             self.setup_data_structures(
                 sandbox_id, infected_status, processed_data)
         if self.order_nos[sandbox_id][infected_status] <= processed_data["orderNo"]:
-
             # Call extract functions here
             self.extract_layer_counts(
                 sandbox_id, infected_status, processed_data)
             # Call emit functions here
             self.socketio.emit("layer_counts_graph", self.layer_counts, namespace='/live', room=str(sandbox_id))
-            print(self.layer_counts)
+
             # Add order no. to history
             self.order_nos[sandbox_id][infected_status] = processed_data["orderNo"]
             
@@ -74,7 +73,7 @@ class NetworkManager(DataManager):
             pm = models.NetworkModel(
                 ID=i,
                 layer_counts=json.dumps(self.layer_counts[i]),
-                raw_packet_data=json.dumps(self.raw_packet_data[i])
+                # raw_packet_data=json.dumps(self.raw_packet_data[i])
             )
             pm.save()
         except KeyError:

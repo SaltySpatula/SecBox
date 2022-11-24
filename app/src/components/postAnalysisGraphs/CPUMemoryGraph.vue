@@ -11,27 +11,9 @@
 <script>
 export default {
   name: "CPUMemoryGraph",
-  props: {socket: Object, graph_title: String, data: Object},
+  props: {socket: Object, graph_title: String, data: Object, },
   created() {
-    console.log("CPU:", Object.entries(this.data["healthy"]))
-    /*
-    console.log("get " + this.graph_title)
-    let ref = this
-    this.socket.emit("get " + this.graph_title, {
-      "ID":this.$route.params.id
-    })
-    this.socket.on(this.graph_title, function (data) {
-        console.log(data)
-        let parsed_data = JSON.parse(data)
-        let new_data = parsed_data["data"]["healthy"]["graph"]
-        for (let i = 0; i < new_data.length; i++) {
-            let tuple = [new_data[i]["timestamp"], new_data[i]["cpu_percentage"]]
-            ref.healthy_data.push(tuple)
-        }
-        ref.loading = false;
-      console.log(ref.loading)
-    })
-    */
+
   },
   data: function () {
     return {

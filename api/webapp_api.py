@@ -29,7 +29,7 @@ log.setLevel(logging.ERROR)
 app.config['SECRET_KEY'] = 'secret!'
 app.config['MONGODB_SETTINGS'] = {
     'db': 'SecBoxDB',
-    'host': "mongodb+srv://admin:HmxrjkxTwd0etI6Y@secboxmongodb.nhcx1ch.mongodb.net/?retryWrites=true&w=majority",
+    'host': "mongodb+srv://raf:qZ6911b0fKwEuLWN@secbox.1hcrjgd.mongodb.net/test",
     'port': 27017
 }
 
@@ -144,16 +144,22 @@ def stopAnalysis(data):
     print("Stopping sandbox", data["ID"])
     stop(data)
 
-@socketio.on("get CPU Memory", namespace="/analysis")
+@socketio.on("get CPU Usage", namespace="/analysis")
 def getCPUMemory(data):
     sandbox_id = data["ID"]
     objects = json.loads(models.PerformanceModel.objects(ID__exact=sandbox_id).to_json())
     # assert len(objects) == 1, "Multiple (or no) objects have been found in the DB"
 
-    response = {
-        "data": json.loads(objects[0]["cpu_percentages"])
-    }
-    socketio.emit("CPU Memory", json.dumps(response), namespace="/analysis", room=objects[0]["ID"])
+    response = json.loads(objects[0]["cpu_percentages"])
+
+    socketio.emit("CPU Usage", json.dumps(response), namespace="/analysis", room=objects[0]["ID"])
+
+@socketio.on("get Network Layers", namespace="/analysis")
+def getNetworkLayers(data):
+    sandbox_id = data["ID"]
+    objects = json.loads(models.NetworkModel.objects(ID__exact=sandbox_id).to_json())
+    response = json.loads(objects[0]["layer_counts"])
+    socketio.emit("Network Layers", json.dumps(response), namespace="/analysis", room=objects[0]["ID"])
 
 @app.route("/greeting")
 def greeting():
