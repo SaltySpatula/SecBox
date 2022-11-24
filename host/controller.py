@@ -4,6 +4,43 @@ import json
 import socketio
 import time
 
+session = """{{
+  "trace_session": {{
+    "name": "Default",
+    "points": [
+      {{
+        "name": "syscall/sysno/0/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      }},
+      {{
+        "name": "syscall/sysno/1/enter",
+        "context_fields": [
+          "time",
+          "container_id",
+          "thread_id",
+          "credentials",
+          "cwd"
+        ]
+      }}
+    ],
+    "sinks": [
+      {{
+        "name": "remote",
+        "config": {{
+          "endpoint": "/tmp/{}_{}_gvisor_events.sock",
+          "retries": 3
+        }},
+        "ignore_setup_error": true
+      }}
+    ]
+  }}
+}}"""
 
 healthy_dockerfile = "./healthy/"
 infected_dockerfile = "./infected/"
@@ -79,6 +116,11 @@ class Instance:
         self.sandbox_id = sandbox_id
         self.order_count = 0
         self.current_path = ""
+
+        # Reconfigure the session
+        session_path = self.infection_status+"/session.json"
+        with open(session_path, "w+") as f:
+            f.write(session.format(self.infection_status, self.sandbox_id))
 
         # set up docker container
         self.container = self.docker_client.containers.run(
