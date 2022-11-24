@@ -42,7 +42,6 @@ class NetworkManager(DataManager):
             )
             # Call emit functions here
             self.socketio.emit("layer_counts_graph", self.layer_counts, namespace='/live', room=str(sandbox_id))
-            print(self.ip_adress_frequency)
             # Add order no. to history
             self.order_nos[sandbox_id][infected_status] = processed_data["orderNo"]
             

@@ -1,8 +1,8 @@
 from os import system
 import system_calls
-import platform
 from backend.dataManager.dataManager import DataManager
-
+from backend import models
+import json
 
 class SysCallManager(DataManager):
     def __init__(self, socketio, db):
@@ -17,7 +17,7 @@ class SysCallManager(DataManager):
         self.reads_vs_writes[sandbox_id] = {
             "healthy": {"graph": {"reads": 0, "writes": 0}}, "infected": {"graph": {"reads": 0, "writes": 0}}}
         self.directory_frequency[sandbox_id] = {
-            "healthy": {"graph": {"/": {"n": 0, "sd": []}}, "infected": {"graph": {"/": {"n": 0, "sd": []}}}}}
+            "healthy": {"graph": {"/": {"n": 0, "sd": []}}}, "infected": {"graph": {"/": {"n": 0, "sd": []}}}}
 
     def process_data(self, data, architecture):
         syscall_list = []
@@ -29,7 +29,6 @@ class SysCallManager(DataManager):
 
     def handle_message(self, data):
         print("Processing Received Syscalls...")
-        # TODO: Handle different syscall format
         for infected_status in data["sysCalls"].keys():
             data["sysCalls"][infected_status] = self.process_data(
                 data["sysCalls"][infected_status], data["architecture"])
@@ -37,11 +36,12 @@ class SysCallManager(DataManager):
         sandbox_id = data["ID"]
 
         # Call extract functions here
+        print("Extracting Graphs...")
         self.extract_graphs(sandbox_id, data)
         # Call emit functions here
 
         # TODO: Save Raw Data & Charts
-        # self.save_data()
+        self.save_data(data)
         return True
 
     def get_name_from_no(self, sysno, architecture):
@@ -67,7 +67,6 @@ class SysCallManager(DataManager):
 
         for i in range(len(components[16:])):
             if i % 2 == 1:
-                # TODO: Fix last argument newline still inside
                 args.append(components[16:][i])
 
         processed_system_call = {
@@ -83,14 +82,25 @@ class SysCallManager(DataManager):
         return processed_system_call
 
     def save_data(self, data):
-        pass
+        try:
+            print("Saving Syscall Data: " + data["ID"])
+            i = data["ID"]
+            pm = models.SystemCallModel(
+                ID = i,
+                reads_vs_writes = json.dumps(self.reads_vs_writes),
+                directory_frequency = json.dumps(self.directory_frequency)
+            )
+            pm.save()
+        except KeyError:
+            print("No syscalls to save, proceeding...")
+
 
     def extract_graphs(self, sandbox_id, data):
         self.reads_vs_writes[sandbox_id] = {
             "healthy": {"graph": {"reads": 0, "writes": 0}}, "infected": {"graph": {"reads": 0, "writes": 0}}}
         self.directory_frequency[sandbox_id] = {
-            "healthy": {"graph": {"/": {"n": 0, "sd": []}}, "infected": {"graph": {"/": {"n": 0, "sd": []}}}}}
-    
+            "healthy": {"graph": {"/": {"n": 0, "sd": []}}}, "infected": {"graph": {"/": {"n": 0, "sd": []}}}}
+
         for infected_status in data["sysCalls"]:
             for syscall in data["sysCalls"][infected_status]:
                 self.extract_read_vs_writes(
@@ -107,10 +117,14 @@ class SysCallManager(DataManager):
                 "writes"] = self.reads_vs_writes[sandbox_id][infected_status]["graph"]["writes"] + 1
 
     def extract_directory_frequency(self, syscall, sandbox_id, infected_status):
+        print("Extracting directories...")
         directories = syscall["cwd"].replace('"', '').split("/")
+        directories = list(filter(lambda a: a != '', directories))
+        print(self.directory_frequency[sandbox_id])
+        self.directory_frequency[sandbox_id][infected_status]["graph"]["/"]["n"] += 1
         self.insert_into_tree(
-            self.directory_frequency[sandbox_id][infected_status]["graph"]["/"], directories)
-        print(self.directory_frequency)
+            self.directory_frequency[sandbox_id][infected_status]["graph"], directories)
+        print("Done!")
 
     def find_in_list(self, directory, list):
         for i in range(len(list)):
@@ -119,22 +133,25 @@ class SysCallManager(DataManager):
         return -1
 
     def insert_into_tree(self, tree, directories):
-        print(tree)
-        print(directories)
+        if len(directories) == 0:
+            return tree
         current_directory = directories[0]
-        index = self.find_in_list(current_directory, tree[current_directory]["sd"])
-        print(index)
+        previous_dir = list(tree.keys())[0]
+        index = self.find_in_list(current_directory, tree[previous_dir]["sd"])
         if index == -1:
-            subdir_structure = {directories[0]: {"n": 1,
+            subdir_structure = {current_directory: {"n": 1,
                                 "sd": []}}
-            tree["sd"].append(subdir_structure)
-            index = self.find_in_list(directories[0], tree["sd"])
+            tree[previous_dir]["sd"].append(subdir_structure)
+            index = self.find_in_list(
+                current_directory, tree[previous_dir]["sd"])
         else:
-            tree["sd"][index]["n"] += 1
+            tree[previous_dir]["sd"][index][current_directory]["n"] += 1
         try:
-            subtree = tree["sd"][index]
-            tree["sd"][index]=self.insert_into_tree(subtree, directories[1:])
+            subtree = tree[previous_dir]["sd"][index]
+            tree[previous_dir]["sd"][index] = self.insert_into_tree(
+                subtree, directories[1:])
             return tree
         except IndexError:
-            tree["sd"]=[]
+            tree["sd"] = []
             return tree
+
