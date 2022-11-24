@@ -50,12 +50,13 @@ class PerformanceModel(Document):
 class NetworkModel(Document):
     ID = db().StringField()
     layer_counts = db().StringField()
+    IP_frequency = db().StringField()
 
-    raw_packet_data = db().StringField()
 
     def to_json(self):
         return {"ID": self.ID,
                 "layer_counts": self.layer_counts,
+                "IP_frequency":self.IP_frequency
         }
 
 
