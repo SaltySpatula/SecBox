@@ -11,43 +11,37 @@ class SysCallManager(DataManager):
 
         self.reads_vs_writes = {}
 
-    def setup_data_structures(self, sandbox_id, infected_status, data):
-        self.order_nos[sandbox_id] = {"healthy": 1, "infected": 1}
+        self.directory_frequency = {}
 
+    def setup_data_structures(self, sandbox_id):
         self.reads_vs_writes[sandbox_id] = {
             "healthy": {"graph": {"reads": 0, "writes": 0}}, "infected": {"graph": {"reads": 0, "writes": 0}}}
+        self.directory_frequency[sandbox_id] = {
+            "healthy": {"graph": {"/": {"n": 0, "sd": []}}, "infected": {"graph": {"/": {"n": 0, "sd": []}}}}}
 
-    def process_data(self, data):
+    def process_data(self, data, architecture):
         syscall_list = []
-        for syscall in data["sysCalls"]:
-            processed_system_call = self.process_syscall(syscall, data["architecture"])
+        for syscall in data.splitlines():
+            processed_system_call = self.process_syscall(syscall, architecture)
             if processed_system_call:
                 syscall_list.append(processed_system_call)
-        data["sysCalls"] = syscall_list
-        return data
+        return syscall_list
 
     def handle_message(self, data):
-        processed_data = self.process_data(data)
+        print("Processing Received Syscalls...")
+        # TODO: Handle different syscall format
+        for infected_status in data["sysCalls"].keys():
+            data["sysCalls"][infected_status] = self.process_data(
+                data["sysCalls"][infected_status], data["architecture"])
 
-        sandbox_id = processed_data["ID"]
-        infected_status = processed_data["infectedStatus"]
+        sandbox_id = data["ID"]
 
-        if sandbox_id not in self.order_nos.keys():
-            self.setup_data_structures(
-                sandbox_id, infected_status, processed_data)
-        if self.order_nos[sandbox_id][infected_status] <= processed_data["orderNo"]:
-            if processed_data["sysCalls"]:
+        # Call extract functions here
+        self.extract_graphs(sandbox_id, data)
+        # Call emit functions here
 
-                # Call extract functions here
-                self.extract_reads_v_writes(
-                    sandbox_id, infected_status, processed_data)
-                # Call emit functions here
-                self.socketio.emit("reads_vs_writes_graph",
-                                   self.reads_vs_writes,
-                                   namespace='/live', room=str(sandbox_id))
-                # Add order no to history
-                self.order_nos[sandbox_id][infected_status] = processed_data["orderNo"]
-        self.db_queue.put(processed_data)
+        # TODO: Save Raw Data & Charts
+        # self.save_data()
         return True
 
     def get_name_from_no(self, sysno, architecture):
@@ -59,48 +53,88 @@ class SysCallManager(DataManager):
     def process_syscall(self, syscall, architecture):
         components = syscall.split()
 
-        if components[0] in ["b'E", "b'X"]:
-            if not syscall.__contains__("sysno"):
-                print(syscall)
-                components.insert(16, "sysno:")
-                components.insert(17, "0")
-            args = []
-            time = int(components[5])
-            thread = int(components[7])
-            sysno = int(components[17])
-            sysname = self.get_name_from_no(sysno, architecture)
-            container_id = components[9]
-            cwd = components[14]
-            cred = components[11:13]
+        if not syscall.__contains__("sysno"):
+            components.insert(16, "sysno:")
+            components.insert(17, "0")
+        args = []
+        time = int(components[5])
+        thread = int(components[7])
+        sysno = int(components[17])
+        sysname = self.get_name_from_no(sysno, architecture)
+        container_id = components[9]
+        cwd = components[14]
+        cred = components[11:13]
 
-            for i in range(len(components[16:])):
-                if i % 2 == 1:
-                    # TODO: Fix last argument newline still inside
-                    args.append(components[16:][i])
+        for i in range(len(components[16:])):
+            if i % 2 == 1:
+                # TODO: Fix last argument newline still inside
+                args.append(components[16:][i])
 
-            processed_system_call = {
-                "time_ns": time,
-                "thread_id": thread,
-                "sysno": sysno,
-                "sysname": sysname,
-                "container_id": container_id,
-                "cwd": cwd,
-                "credentials": cred,
-                "args": args
-            }
-            return processed_system_call
-        else:
-            print("Setup Notice:" + syscall)
-            return 0
+        processed_system_call = {
+            "time_ns": time,
+            "thread_id": thread,
+            "sysno": sysno,
+            "sysname": sysname,
+            "container_id": container_id,
+            "cwd": cwd,
+            "credentials": cred,
+            "args": args
+        }
+        return processed_system_call
 
     def save_data(self, data):
         pass
 
-    def extract_reads_v_writes(self, sandbox_id, infected_status, data):
-        for syscall in data["sysCalls"]:
-            if syscall["sysname"] == "read":
-                self.reads_vs_writes[sandbox_id][infected_status]["graph"][
-                    "reads"] = self.reads_vs_writes[sandbox_id][infected_status]["graph"]["reads"] + 1
-            if syscall["sysname"] == "write":
-                self.reads_vs_writes[sandbox_id][infected_status]["graph"][
-                    "writes"] = self.reads_vs_writes[sandbox_id][infected_status]["graph"]["writes"] + 1
+    def extract_graphs(self, sandbox_id, data):
+        self.reads_vs_writes[sandbox_id] = {
+            "healthy": {"graph": {"reads": 0, "writes": 0}}, "infected": {"graph": {"reads": 0, "writes": 0}}}
+        self.directory_frequency[sandbox_id] = {
+            "healthy": {"graph": {"/": {"n": 0, "sd": []}}, "infected": {"graph": {"/": {"n": 0, "sd": []}}}}}
+    
+        for infected_status in data["sysCalls"]:
+            for syscall in data["sysCalls"][infected_status]:
+                self.extract_read_vs_writes(
+                    syscall, sandbox_id, infected_status)
+                self.extract_directory_frequency(
+                    syscall, sandbox_id, infected_status)
+
+    def extract_read_vs_writes(self, syscall, sandbox_id, infected_status):
+        if syscall["sysname"] == "read":
+            self.reads_vs_writes[sandbox_id][infected_status]["graph"][
+                "reads"] = self.reads_vs_writes[sandbox_id][infected_status]["graph"]["reads"] + 1
+        if syscall["sysname"] == "write":
+            self.reads_vs_writes[sandbox_id][infected_status]["graph"][
+                "writes"] = self.reads_vs_writes[sandbox_id][infected_status]["graph"]["writes"] + 1
+
+    def extract_directory_frequency(self, syscall, sandbox_id, infected_status):
+        directories = syscall["cwd"].replace('"', '').split("/")
+        self.insert_into_tree(
+            self.directory_frequency[sandbox_id][infected_status]["graph"]["/"], directories)
+        print(self.directory_frequency)
+
+    def find_in_list(self, directory, list):
+        for i in range(len(list)):
+            if directory in list[i].keys():
+                return i
+        return -1
+
+    def insert_into_tree(self, tree, directories):
+        print(tree)
+        print(directories)
+        current_directory = directories[0]
+        index = self.find_in_list(current_directory, tree[current_directory]["sd"])
+        print(index)
+        if index == -1:
+            subdir_structure = {directories[0]: {"n": 1,
+                                "sd": []}}
+            tree["sd"].append(subdir_structure)
+            index = self.find_in_list(directories[0], tree["sd"])
+        else:
+            tree["sd"][index]["n"] += 1
+        try:
+            subtree = tree["sd"][index]
+            tree["sd"][index]=self.insert_into_tree(subtree, directories[1:])
+            return tree
+        except IndexError:
+            tree["sd"]=[]
+            return tree

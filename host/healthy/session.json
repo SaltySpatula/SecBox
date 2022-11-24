@@ -27,7 +27,7 @@
       {
         "name": "remote",
         "config": {
-          "endpoint": "/tmp/healthy_gvisor_events.sock",
+          "endpoint": "/tmp/healthy_4240ec07b511495fbc11e00a6f1eebb2_gvisor_events.sock",
           "retries": 3
         },
         "ignore_setup_error": true
