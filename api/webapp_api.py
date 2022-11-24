@@ -181,6 +181,7 @@ def create(data):
 
 @ socketio.on('sysCall', namespace='/sysCall')
 def handle_sys_call(data):
+    print("Received system call logs!")
     system_call_manager.handle_message(json.loads(data))
 
 

@@ -33,7 +33,7 @@ class Process(db().Document):
         }
 
 class PerformanceModel(Document):
-    ID = db().StringField(unique=True)
+    ID = db().StringField()
     pid_counts = db().StringField()
     cpu_percentages = db().StringField()
     packet_counts = db().StringField()
@@ -50,15 +50,26 @@ class PerformanceModel(Document):
 class NetworkModel(Document):
     ID = db().StringField()
     layer_counts = db().StringField()
+    IP_frequency = db().StringField()
 
-    raw_packet_data = db().StringField()
 
     def to_json(self):
         return {"ID": self.ID,
                 "layer_counts": self.layer_counts,
+                "IP_frequency":self.IP_frequency
         }
 
+class SystemCallModel(Document):
+    ID = db().StringField()
+    reads_vs_writes = db().StringField()
+    directory_frequency = db().StringField()
 
+
+    def to_json(self):
+        return {"ID": self.ID,
+                "reads_vs_writes": self.reads_vs_writes,
+                "directory_frequency":self.directory_frequency
+        }
 
 
 class Report(Document):
