@@ -87,8 +87,9 @@ class SysCallManager(DataManager):
     def save_data(self, data):
         try:
             print("Saving Syscall Data: " + data["ID"])
+
             i = data["ID"]
-            print(self.reads_vs_writes)
+            print(self.reads_vs_writes[i])
             pm = models.SystemCallModel(
                 ID = i,
                 reads_vs_writes = json.dumps(self.reads_vs_writes[i]),

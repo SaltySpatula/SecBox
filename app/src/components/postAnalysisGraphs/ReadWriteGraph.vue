@@ -13,7 +13,7 @@
 <script>
 export default {
   name: "RWGraph",
-  props: {graph_title: String, data: Object, colors: Object},
+  props: {graph_title: String, data: Object,},
   created() {
     console.log(this.data)
   },
@@ -53,12 +53,12 @@ export default {
       },
       series: [
     {
-      name: 'TCP',
-      data: [0, 0]
+      name: 'Reads',
+      data: [this.data.healthy.graph.reads, this.data.infected.graph.reads]
     },
       {
-      name: 'UDP',
-      data: [0, 0]
+      name: 'Writes',
+      data: [this.data.healthy.graph.writes, this.data.infected.graph.writes]
     }]
     };
   },
