@@ -114,7 +114,7 @@ export default {
         "title": "System Calls",
         "icon": "mdi-console-network",
         "graphs": [
-          {"title": 'Rule violations',"get":"get Rule violations", "icon": 'mdi-alert-octagon', "disabled": false,},
+          {"title": 'Read Write Counts',"get":"get Read Write", "icon": 'mdi-border-color', "disabled": false,},
           {"title": 'Direct Comparison',"get":"get Direct Comparison", "icon": 'mdi-ab-testing', "disabled": false},
         ]
       },

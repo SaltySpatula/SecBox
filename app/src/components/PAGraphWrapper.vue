@@ -20,15 +20,21 @@
                   :data="this.data">
 
   </IPFrequencyGraph>
+  <ReadWriteGraph
+      v-else-if="graph_title === 'IP Addresses'"
+      :graph_title="graph_title"
+      :data="this.data"
+  ></ReadWriteGraph>
 </template>
 
 <script>
 import CPUMemoryGraph from "@/components/postAnalysisGraphs/CPUMemoryGraph";
 import NetworkLayerGraph from "@/components/postAnalysisGraphs/NetworkLayerGraph";
 import IPFrequencyGraph from "@/components/postAnalysisGraphs/IPFrequencyGraph";
+import ReadWriteGraph from "@/components/postAnalysisGraphs/ReadWriteGraph";
 export default {
   name: "PAGraphWrapper",
-  components:{CPUMemoryGraph, NetworkLayerGraph, IPFrequencyGraph},
+  components:{CPUMemoryGraph, NetworkLayerGraph, IPFrequencyGraph, ReadWriteGraph},
   props:{socket: Object,graph_get:String, graph_title:String},
   created() {
 
@@ -52,6 +58,9 @@ export default {
           ref.data = ref.prepare_network_layer_data(parsed_data)
         }
         else if (ref.graph_title === "IP Addresses"){
+          ref.data = parsed_data
+        }
+        else if (ref.graph_title === "Read Write Counts"){
           ref.data = parsed_data
         }
         // change flag

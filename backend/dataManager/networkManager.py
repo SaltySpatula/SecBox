@@ -4,8 +4,6 @@ from scapy.utils import hexstr
 import json
 from backend import models
 import contextlib, io
-import time
-import requests
 
 
 class NetworkManager(DataManager):
@@ -38,7 +36,7 @@ class NetworkManager(DataManager):
         self.extract_layer_counts(sandbox_id, infected_status, processed_data)
         self.extract_IP_adresses(sandbox_id, infected_status, processed_data)
             # Call emit functions here
-        self.socketio.emit("layer_counts_graph", self.layer_counts, namespace='/live', room=str(sandbox_id))
+        self.socketio.emit("layer_counts_graph", self.layer_counts[sandbox_id], namespace='/live', room=str(sandbox_id))
             # Add order no. to history
         self.order_nos[sandbox_id][infected_status] = processed_data["orderNo"]
             
