@@ -62,7 +62,6 @@ class systemCallMonitor:
         self.client = socketio.Client()
         self.client.connect('http://localhost:5000', namespaces=['/sysCall'])
         print("syscall monitor started")
-        order_count = 0
         cwd = os.getcwd() + "/gvisor-master/"
         command = self.base_command + " /tmp/" + \
             infected_status + "_" + \
