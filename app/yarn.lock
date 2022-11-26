@@ -6332,6 +6332,13 @@
   dependencies:
     "plotly.js-dist" "^2.12.1"
 
+"vue3-table-lite@^1.2.7":
+  "integrity" "sha512-Ac4M/FetFUKfgBq8Td+LI7FnADb8ErtJeNMk5WLCPw+lKNjm9FdHEf0Stw9T2/kapNN/DUEEzDx65xaNZfoejg=="
+  "resolved" "https://registry.npmjs.org/vue3-table-lite/-/vue3-table-lite-1.2.7.tgz"
+  "version" "1.2.7"
+  dependencies:
+    "vue" "^3.0.0"
+
 "vuetify-loader@^1.7.3":
   "integrity" "sha512-8PP2w7aAs/rjA+Izec6qY7sHVb75MNrGQrDOTZJ5IEnvl+NiFhVpU2iWdRDZ3eMS842cWxSWStvkr+KJJKy+Iw=="
   "resolved" "https://registry.npmjs.org/vuetify-loader/-/vuetify-loader-1.9.2.tgz"

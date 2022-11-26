@@ -19,8 +19,7 @@ class NetworkManager(DataManager):
         self.layer_counts[sandbox_id] = {
             "healthy": {"graph": {}}, "infected": {"graph": {}}}
 
-        self.ip_adress_frequency[sandbox_id] = {
-            "healthy": {"graph": {"src":{}, "dst":{}}}, "infected": {"graph": {"src":{}, "dst":{}}}}
+        self.ip_adress_frequency[sandbox_id] = {}
         
         self.raw_packet_data[sandbox_id] = {"healthy": [], "infected": []}
 
@@ -68,7 +67,7 @@ class NetworkManager(DataManager):
     def extract_layer_counts(self, sandbox_id, infected_status, data):
         for layer in data["packet"].keys():
             if layer not in ["export", "Raw"]:
-                if layer not in self.layer_counts[sandbox_id][infected_status]["graph"].keys():
+                if layer not in self.layer_counts[sandbox_id][infected_status].keys():
                     self.layer_counts[sandbox_id][infected_status]["graph"][layer] = 1
                 else:
                     self.layer_counts[sandbox_id][infected_status]["graph"][layer] += 1
@@ -79,17 +78,26 @@ class NetworkManager(DataManager):
                 src = data["packet"]["IP"]["src"]
                 dst = data["packet"]["IP"]["dst"]
 
-                print(src)
-                print(self.ip_adress_frequency[sandbox_id][infected_status]["graph"]["src"].keys())
+                empty_model = {
+                    "healthy_src":0,
+                    "healthy_dst":0,
+                    "infected_src":0,
+                    "infected_dst":0
+                }
+                # check if src address exists
+                if src not in self.ip_adress_frequency[sandbox_id].keys():
+                    # create new object because src ip does not exist
+                    self.ip_adress_frequency[sandbox_id][src] = empty_model
+                # add to counter
+                self.ip_adress_frequency[sandbox_id][src][infected_status+"_src"] += 1
 
-                if src not in self.ip_adress_frequency[sandbox_id][infected_status]["graph"]["src"].keys():
-                    self.ip_adress_frequency[sandbox_id][infected_status]["graph"]["src"][src] = 1
-                else:
-                    self.ip_adress_frequency[sandbox_id][infected_status]["graph"]["src"][src] += 1
-                if dst not in self.ip_adress_frequency[sandbox_id][infected_status]["graph"]["dst"].keys():
-                    self.ip_adress_frequency[sandbox_id][infected_status]["graph"]["dst"][dst] = 1
-                else:
-                    self.ip_adress_frequency[sandbox_id][infected_status]["graph"]["dst"][dst] += 1
+                # check if dst address exists
+                if dst not in self.ip_adress_frequency[sandbox_id].keys():
+                    # create new object because dst ip does not exist
+                    self.ip_adress_frequency[sandbox_id][dst] = empty_model
+                self.ip_adress_frequency[sandbox_id][dst][infected_status+"_dst"] += 1
+
+                print(self.ip_adress_frequency[sandbox_id])
     
     def export_pcap(self, data, ID):
         for infected_status in data.keys():

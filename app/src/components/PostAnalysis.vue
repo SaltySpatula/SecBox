@@ -63,10 +63,10 @@
   <v-container fluid>
     <v-row>
       <v-col cols="12" md="4" v-for="graph in selected_graphs" v-bind:key="graph.title">
-        <v-card class="bg-deep-purple-lighten-5">
+        <v-card class="scroll bg-deep-purple-lighten-5">
         <v-card-title>{{ graph.title }}</v-card-title>
           <PAGraphWrapper :socket="this.socket" :graph_title="graph.title" :graph_get="graph.get"/>
-          <v-card-actions>
+          <v-card-actions >
             <div class="my-2">
               <v-btn class="bg-red" @click="deleteGraph(graph)">
                 <v-icon>
