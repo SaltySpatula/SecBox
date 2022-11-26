@@ -29,8 +29,19 @@ class networkMonitor:
                 export_object(packet)
             output = f.getvalue()
             self.buf[infected_status].append(output)
-            print(sys.getsizeof(self.buf[infected_status]))
-            if self.last_emit[infected_status] + 1 <= time.time() or sys.getsizeof(self.buf[infected_status])>=3000:
+            if self.last_emit[infected_status] + 1 <= time.time():
+                message = {
+                    "ID": self.sandbox_id,
+                    "infectedStatus": infected_status,
+                    "orderNo": self.order_count,
+                    "packets": self.buf[infected_status]
+                }
+                self.client[infected_status].emit('packet',
+                                json.dumps(message), namespace='/network')
+                self.last_emit[infected_status] = time.time()
+                self.buf[infected_status] = []
+            if sys.getsizeof(self.buf[infected_status])>=3000:
+                sleep(0.2)
                 message = {
                     "ID": self.sandbox_id,
                     "infectedStatus": infected_status,
