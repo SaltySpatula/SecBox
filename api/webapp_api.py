@@ -174,6 +174,12 @@ def getIPAddresses(data):
     response = json.loads(objects[0]["IP_frequency"])
     socketio.emit("IP Addresses", json.dumps(response), namespace="/analysis", room=objects[0]["ID"])
 
+@socketio.on("get Read Write Counts", namespace="/analysis")
+def getIPAddresses(data):
+    sandbox_id = data["ID"]
+    objects = json.loads(models.SystemCallModel.objects(ID__exact=sandbox_id).to_json())
+    response = json.loads(objects[0]["IP_frequency"])
+    socketio.emit("IP Addresses", json.dumps(response), namespace="/analysis", room=objects[0]["ID"])
 
 @app.route("/greeting")
 def greeting():
@@ -252,6 +258,7 @@ def stop(data):
     print("Stop function called")
     performance_manager.save_data(data)
     network_manager.save_data(data)
+    system_call_manager.save_data(data)
     socketio.emit("stopSandbox", json.dumps(data), namespace="/sandbox")
     return data
 

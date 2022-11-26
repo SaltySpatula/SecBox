@@ -57,38 +57,42 @@ class SysCallManager(DataManager):
             components.insert(16, "sysno:")
             components.insert(17, "0")
         args = []
-        time = int(components[5])
-        thread = int(components[7])
-        sysno = int(components[17])
-        sysname = self.get_name_from_no(sysno, architecture)
-        container_id = components[9]
-        cwd = components[14]
-        cred = components[11:13]
+        try:
+            time = int(components[5])
+            thread = int(components[7])
+            sysno = int(components[17])
+            sysname = self.get_name_from_no(sysno, architecture)
+            container_id = components[9]
+            cwd = components[14]
+            cred = components[11:13]
 
-        for i in range(len(components[16:])):
-            if i % 2 == 1:
-                args.append(components[16:][i])
+            for i in range(len(components[16:])):
+                if i % 2 == 1:
+                    args.append(components[16:][i])
 
-        processed_system_call = {
-            "time_ns": time,
-            "thread_id": thread,
-            "sysno": sysno,
-            "sysname": sysname,
-            "container_id": container_id,
-            "cwd": cwd,
-            "credentials": cred,
-            "args": args
-        }
-        return processed_system_call
+            processed_system_call = {
+                "time_ns": time,
+                "thread_id": thread,
+                "sysno": sysno,
+                "sysname": sysname,
+                "container_id": container_id,
+                "cwd": cwd,
+                "credentials": cred,
+                "args": args
+            }
+            return processed_system_call
+        except:
+            print("Could not process sys call: ", components)
 
     def save_data(self, data):
         try:
             print("Saving Syscall Data: " + data["ID"])
             i = data["ID"]
+            print(self.reads_vs_writes)
             pm = models.SystemCallModel(
                 ID = i,
-                reads_vs_writes = json.dumps(self.reads_vs_writes),
-                directory_frequency = json.dumps(self.directory_frequency)
+                reads_vs_writes = json.dumps(self.reads_vs_writes[i]),
+                directory_frequency = json.dumps(self.directory_frequency[i])
             )
             pm.save()
         except KeyError:

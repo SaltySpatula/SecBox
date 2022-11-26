@@ -1,8 +1,8 @@
 <template>
   <v-card class="bg-black" style="margin:10px">
-    <v-card-title style="align:center">Transport Protocols</v-card-title>
+    <v-card-title style="align:center">Protocol Comparison</v-card-title>
     <apexchart
-        ref="PGraph"
+        ref="RWGraph"
         :options="chartOptions"
         :series="series"
         :height="300"
@@ -12,27 +12,10 @@
 
 <script>
 export default {
-  name: "ProtocolGraph",
-  props: {
-    socket: Object,
-  },
+  name: "RWGraph",
+  props: {graph_title: String, data: Object, colors: Object},
   created() {
-    let ref = this
-    this.socket.on("layer_counts_graph", function (data) {
-      console.log(data)
-      const hd = data["healthy"]["graph"]
-      const infd = data["infected"]["graph"]
-
-      const updated_series = []
-
-
-      for (const [key, value] of Object.entries(hd)) {
-        if (key === "TCP" || key === "UDP" || key === "SCTP"){
-          updated_series.push({name: key, data:[value, infd[key]]})
-          }
-      }
-      ref.$refs.PGraph.updateSeries(updated_series)
-    });
+    console.log(this.data)
   },
   data: function () {
     return {
