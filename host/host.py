@@ -54,7 +54,7 @@ def catch_all(event, data):
     socketio.emit('Unknown Event')
 
 
-namespaces = ['/sandbox', '/sysCall',
+namespaces = ['/sandbox',
               '/network', '/performance', '/cmd', '/dummy']
 if __name__ == '__main__':
     socketio.connect('http://localhost:5000', namespaces=namespaces)

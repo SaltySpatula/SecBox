@@ -5,6 +5,7 @@ import json
 import socketio
 import platform
 import json
+import requests
 
 base_command = "bazel run examples/seccheck:server_cc"
 
@@ -28,13 +29,17 @@ class systemCallMonitor:
         return self
 
     def stop(self):
-        self.client = socketio.Client()
-        self.client.connect('http://localhost:5000', namespaces=['/sysCall'])
+        #self.client = socketio.Client()
+        #self.client.connect('http://localhost:5000', namespaces=['/sysCall'])
         healthy_logfile = "healthy" + "/" + self.sandbox_id + "_syscalls"
         infected_logfile = "infected" + "/" + self.sandbox_id + "_syscalls"
 
         healthy_logstring = ""
         infected_logstring = ""
+
+
+        for p in self.ps:
+            p.kill()
 
         with open(healthy_logfile, "r") as h:
             healthy_logstring = h.read()
@@ -50,17 +55,16 @@ class systemCallMonitor:
                 "infected": infected_logstring
             }
         }
+        requests.post("http://localhost:5000/syscall", json=json.dumps(message))
+        #self.client.emit('sysCall', json.dumps(message), namespace='/sysCall')
         print("Syscall Logs emitted")
-        self.client.emit('sysCall', json.dumps(message), namespace='/sysCall')
         os.remove("infected" + "/" + self.sandbox_id + "_syscalls")
         os.remove("healthy" + "/" + self.sandbox_id + "_syscalls")
     
-        for p in self.ps:
-            p.kill()
 
     def monitoring_process(self, infected_status):
         self.client = socketio.Client()
-        self.client.connect('http://localhost:5000', namespaces=['/sysCall'])
+        #self.client.connect('http://localhost:5000', namespaces=['/sysCall'])
         print("syscall monitor started")
         cwd = os.getcwd() + "/gvisor-master/"
         command = self.base_command + " /tmp/" + \

@@ -5,6 +5,7 @@ import json
 from backend import models
 import contextlib, io
 import time
+import requests
 
 
 class NetworkManager(DataManager):
@@ -81,24 +82,24 @@ class NetworkManager(DataManager):
                     dst = captured_packet["IP"]["dst"]
                     #Add Own IP Information
 
-                empty_model = {
-                    "healthy_src": 0,
-                    "healthy_dst": 0,
-                    "infected_src": 0,
-                    "infected_dst": 0
-                }
-                # check if src address exists
-                if src not in self.ip_adress_frequency[sandbox_id].keys():
-                    # create new object because src ip does not exist
-                    self.ip_adress_frequency[sandbox_id][src] = empty_model
-                # add to counter
-                self.ip_adress_frequency[sandbox_id][src][infected_status + "_src"] += 1
+                    empty_model = {
+                        "healthy_src": 0,
+                        "healthy_dst": 0,
+                        "infected_src": 0,
+                        "infected_dst": 0
+                    }
+                    # check if src address exists
+                    if src not in self.ip_adress_frequency[sandbox_id].keys():
+                        # create new object because src ip does not exist
+                        self.ip_adress_frequency[sandbox_id][src] = empty_model
+                    # add to counter
+                    self.ip_adress_frequency[sandbox_id][src][infected_status + "_src"] += 1
 
-                # check if dst address exists
-                if dst not in self.ip_adress_frequency[sandbox_id].keys():
-                    # create new object because dst ip does not exist
-                    self.ip_adress_frequency[sandbox_id][dst] = empty_model
-                self.ip_adress_frequency[sandbox_id][dst][infected_status + "_dst"] += 1
+                    # check if dst address exists
+                    if dst not in self.ip_adress_frequency[sandbox_id].keys():
+                        # create new object because dst ip does not exist
+                        self.ip_adress_frequency[sandbox_id][dst] = empty_model
+                    self.ip_adress_frequency[sandbox_id][dst][infected_status + "_dst"] += 1
 
     def export_pcap(self, data, ID):
         for infected_status in data.keys():

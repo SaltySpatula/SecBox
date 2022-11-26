@@ -190,11 +190,10 @@ def create(data):
     feedback = start(start_data)
     emit("start feedback", json.dumps(feedback), namespace="/start")
 
-
-@socketio.on('sysCall', namespace='/sysCall')
-def handle_sys_call(data):
-    print("Received system call logs!")
-    system_call_manager.handle_message(json.loads(data))
+@app.route('/syscall', methods = ['GET', 'POST'])
+def syscall_upload():
+    system_call_manager.handle_message(json.loads(request.json))
+    return "That seemed to work!"
 
 
 @socketio.on('sandboxReady', namespace='/sandbox')
