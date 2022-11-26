@@ -4,6 +4,7 @@ from scapy.utils import hexstr
 import json
 from backend import models
 import contextlib, io
+import time 
 
 
 class NetworkManager(DataManager):
@@ -44,48 +45,54 @@ class NetworkManager(DataManager):
             # Add order no. to history
             self.order_nos[sandbox_id][infected_status] = processed_data["orderNo"]
             
-            self.raw_packet_data[sandbox_id][infected_status].append(processed_data["packet"])
+            self.raw_packet_data[sandbox_id][infected_status].extend(processed_data["packets"])
         return True
 
     def process_data(self, data):
-        dict = {}
-        p = import_object(data["packet"][1:-1])
-        try:
-            for index in range(50):
-                layer = p[index]
-                dict[layer.name] = layer.fields
-        except IndexError:
-            pass
-        f = io.StringIO()
-        with contextlib.redirect_stdout(f):
-            export_object(p)
-        output = f.getvalue()
-        dict["export"] = output
-        data["packet"] = dict
+        packet_list = []
+        for captured_packet in data["packets"]:
+            dict = {}
+            p = import_object(captured_packet[1:-1])
+            try:
+                for index in range(50):
+                    layer = p[index]
+                    dict[layer.name] = layer.fields
+            except IndexError:
+                pass
+            f = io.StringIO()
+            with contextlib.redirect_stdout(f):
+                export_object(p)
+            output = f.getvalue()
+            dict["export"] = output
+            packet_list.append(dict)
+        data["packets"]=packet_list
         return data
 
     def extract_layer_counts(self, sandbox_id, infected_status, data):
-        for layer in data["packet"].keys():
-            if layer not in ["export", "Raw"]:
-                if layer not in self.layer_counts[sandbox_id][infected_status]["graph"].keys():
-                    self.layer_counts[sandbox_id][infected_status]["graph"][layer] = 1
-                else:
-                    self.layer_counts[sandbox_id][infected_status]["graph"][layer] += 1
+        for captured_packet in data["packets"]:
+            for layer in captured_packet.keys():
+                if layer not in ["export", "Raw"]:
+                    if layer not in self.layer_counts[sandbox_id][infected_status]["graph"].keys():
+                        self.layer_counts[sandbox_id][infected_status]["graph"][layer] = 1
+                    else:
+                        self.layer_counts[sandbox_id][infected_status]["graph"][layer] += 1
     
     def extract_IP_adresses(self, sandbox_id, infected_status, data):
-        for layer in data["packet"].keys():
-            if layer in ["IP"]:
-                src = data["packet"]["IP"]["src"]
-                dst = data["packet"]["IP"]["dst"]
+        for captured_packet in data["packets"]:
+            for layer in captured_packet.keys():
+                if layer in ["IP"]:
+                    src = captured_packet["IP"]["src"]
+                    dst = captured_packet["IP"]["dst"]
+                    #Add Own IP Information
 
-                if src not in self.ip_adress_frequency[sandbox_id][infected_status]["graph"].keys():
-                    self.ip_adress_frequency[sandbox_id][infected_status]["graph"][src] = 1
-                else:
-                    self.ip_adress_frequency[sandbox_id][infected_status]["graph"][src] += 1
-                if dst not in self.ip_adress_frequency[sandbox_id][infected_status]["graph"].keys():
-                    self.ip_adress_frequency[sandbox_id][infected_status]["graph"][dst] = 1
-                else:
-                    self.ip_adress_frequency[sandbox_id][infected_status]["graph"][dst] += 1
+                    if src not in self.ip_adress_frequency[sandbox_id][infected_status]["graph"].keys():
+                        self.ip_adress_frequency[sandbox_id][infected_status]["graph"][src] = 1
+                    else:
+                        self.ip_adress_frequency[sandbox_id][infected_status]["graph"][src] += 1
+                    if dst not in self.ip_adress_frequency[sandbox_id][infected_status]["graph"].keys():
+                        self.ip_adress_frequency[sandbox_id][infected_status]["graph"][dst] = 1
+                    else:
+                        self.ip_adress_frequency[sandbox_id][infected_status]["graph"][dst] += 1
     
     def export_pcap(self, data, ID):
         for infected_status in data.keys():

@@ -29,7 +29,7 @@ log.setLevel(logging.ERROR)
 app.config['SECRET_KEY'] = 'secret!'
 app.config['MONGODB_SETTINGS'] = {
     'db': 'SecBoxDB',
-    'host': "mongodb+srv://raf:qZ6911b0fKwEuLWN@secbox.1hcrjgd.mongodb.net/test",
+    'host': "mongodb+srv://admin:HmxrjkxTwd0etI6Y@secboxmongodb.nhcx1ch.mongodb.net/?retryWrites=true&w=majority",
     'port': 27017
 }
 

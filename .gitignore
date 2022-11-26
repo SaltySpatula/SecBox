@@ -131,3 +131,5 @@ dmypy.json
 #Gvisor repo
 host/gvisor-master/
 test/
+api/healthy/*
+api/infected/*

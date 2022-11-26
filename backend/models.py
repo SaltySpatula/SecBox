@@ -33,7 +33,7 @@ class Process(db().Document):
         }
 
 class PerformanceModel(Document):
-    ID = db().StringField(unique=True)
+    ID = db().StringField()
     pid_counts = db().StringField()
     cpu_percentages = db().StringField()
     packet_counts = db().StringField()
