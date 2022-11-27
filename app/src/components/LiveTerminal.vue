@@ -14,6 +14,7 @@
                               single-line
                               v-model="cli_text"
                               v-on:keyup.enter="onEnter"
+                              v-on:keyup.up="get_last_message('combined')"
                 ></v-text-field>
                 <p v-if="!this.can_send_cmd_healthy || !this.can_send_cmd_infected" style="color:red">Please wait for the response</p>
             </v-col>
@@ -28,6 +29,7 @@
                 single-line
                 v-model="cli_text_infected"
                 v-on:keyup.enter="onEnter"
+                    v-on:keyup.up="get_last_message('infected')"
           ></v-text-field>
             </v-col>
               <v-col v-if="!this.combined_cli" class="pa-1" cols="12" md="6">
@@ -41,6 +43,7 @@
                 single-line
                 v-model="cli_text_clean"
                 v-on:keyup.enter="onEnter"
+                    v-on:keyup.up="get_last_message('healthy')"
           ></v-text-field>
             </v-col>
             </v-row>
@@ -69,7 +72,9 @@ export default {
     clean_lines:[],
     can_send_cmd_healthy:true,
     can_send_cmd_infected:true,
-
+    last_messages:[],
+    last_message_h:[],
+    last_message_i:[]
       }),
   created() {
    let ref = this
@@ -89,20 +94,29 @@ export default {
       if (this.combined_cli && (this.can_send_cmd_healthy && this.can_send_cmd_infected)){
         this.can_send_cmd_healthy = false;
         this.can_send_cmd_infected = false;
-
+        this.last_messages.push(this.cli_text)
         this.socket.emit('cli command', { "room":this.current_id, "healthy_cmd": this.cli_text, "infected_cmd": this.cli_text});
         this.$refs.CLI_text_field.reset("");
       }
       else if (!this.combined_cli){
         if(this.cli_text_clean && this.can_send_cmd_healthy){
+          if (this.cli_text_clean !== "" && this.cli_text_clean !== " "){
+            this.last_message_h.push(this.cli_text_clean)
           this.clean_lines.push(this.cli_text_clean);
           this.socket.emit('cli command', { "room":this.current_id, "healthy_cmd": this.cli_text_clean, "infected_cmd": ""});
+
+          }
           this.$refs.CLI_text_field_clean.reset("");
         }
         if(this.cli_text_infected && this.can_send_cmd_infected){
-          this.infected_lines.push(this.cli_text_infected)
+          if (this.cli_text_infected !== "" && this.cli_text_infected !== " "){
+            this.last_message_i.push(this.cli_text_infected)
+                      this.infected_lines.push(this.cli_text_infected)
           this.socket.emit('cli command', { "room":this.current_id, "healthy_cmd": "", "infected_cmd": this.cli_text_infected});
+
           this.$refs.CLI_text_field_infected.reset("");
+          }
+
         }
       }
   },
@@ -121,6 +135,20 @@ export default {
           this.can_send_cmd_healthy = true;
         }
         setTimeout(() => {this.$refs.healthy_terminal.scrollToElement();}, 10);
+      }
+    },
+    get_last_message(qualifier){
+      console.log(qualifier)
+      console.log(this.last_messages)
+      if (qualifier === "combined" && this.last_messages.length > 0){
+          this.cli_text = this.last_messages[this.last_messages.length-1]
+          console.log(this.cli_text)
+      }
+      else if(qualifier === "healthy" && this.last_message_h.length > 0){
+         this.cli_text_clean = this.last_messages[this.last_messages.length-1]
+      }
+      else if(qualifier === "infected" && this.last_message_i.length > 0){
+        this.cli_text_infected = this.last_message_i[this.last_message_i.length-1]
       }
     }
   },
