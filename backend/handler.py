@@ -3,6 +3,7 @@ import json
 import subprocess
 import requests
 import uuid
+from backend import models
 
 
 def start_process(sha, selected_os):
@@ -58,16 +59,17 @@ def get_available_images():
     return available_images
 
 
-def get_available_malware():
-    data = {'query': 'get_file_type', 'file_type': 'elf', 'limit': 100}
+def write_malware_to_DB():
+    print("Looking for Malware out there...")
+    data = {'query': 'get_file_type', 'file_type': 'elf', 'limit': 1000}
     url = "https://mb-api.abuse.ch/api/v1/"
     response = requests.post(url, data=data)
     malware_list = []
     if response.status_code == 200:
         response = response.json()
-        malware_names = []
+        malware_names = [(malware["name"], malware["type"]) for malware in models.Malware.objects]
         for malware in response["data"]:
-            if malware["signature"] not in malware_names and malware["signature"] is not None and "64" in malware["tags"]:
+            if (malware["signature"], malware["file_type"]) not in malware_names and malware["signature"] is not None:
                 malware_dict = {
                     "name": malware["signature"],
                     "hash": malware["sha256_hash"],
@@ -76,26 +78,25 @@ def get_available_malware():
                     "tags": malware["tags"]
                 }
                 malware_list.append(malware_dict)
-                malware_names.append(malware["signature"])
+                malware_names.append((malware_dict["name"], malware_dict["type"]))
         malware_list.append({
             "name": "DarkRadiation",
             "hash": "89a694bea1970c2d66aec04c3e530508625d4b28cc6f3fc996e7ba99f1c37841",
             "url": "https://bazaar.abuse.ch/sample/" + "89a694bea1970c2d66aec04c3e530508625d4b28cc6f3fc996e7ba99f1c37841" + "/",
             "type": "sh",
             "tags": ["DarkRadiation", "Ransomware", "sh"]
-            }
+        }
         )
     else:
         print("Invalid Request Response!")
-    
-    data = {'query': 'get_file_type', 'file_type': 'sh', 'limit': 200}
+
+    data = {'query': 'get_file_type', 'file_type': 'sh', 'limit': 1000}
     url = "https://mb-api.abuse.ch/api/v1/"
     response = requests.post(url, data=data)
     if response.status_code == 200:
         response = response.json()
-        malware_names = []
         for malware in response["data"]:
-            if malware["signature"] not in malware_names and malware["signature"] is not None:
+            if (malware["signature"], malware["file_type"]) not in malware_names and malware["signature"] is not None:
                 malware_dict = {
                     "name": malware["signature"],
                     "hash": malware["sha256_hash"],
@@ -104,7 +105,33 @@ def get_available_malware():
                     "tags": malware["tags"]
                 }
                 malware_list.append(malware_dict)
-                malware_names.append(malware["signature"])
+                malware_names.append((malware_dict["name"], malware_dict["type"]))
     else:
         print("Invalid Request Response!")
+    for malware in malware_list:
+        mwm = models.Malware(
+            name=malware["name"],
+            hash=malware["hash"],
+            url=malware["url"],
+            type=malware["type"],
+            tags=malware["tags"]
+        )
+        try:
+            mwm.save()
+        except:
+            print("Sample already present in DB, skipping...")
+    print("Done!")
+
+
+def get_available_malware():
+    malware_list = []
+    for malware in models.Malware.objects:
+        malware_dict = {
+            "name": malware["name"],
+            "hash": malware["hash"],
+            "url": malware["url"],
+            "type": malware["type"],
+            "tags": malware["tags"]
+        }
+        malware_list.append(malware_dict)
     return malware_list

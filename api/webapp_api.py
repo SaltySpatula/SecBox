@@ -37,6 +37,10 @@ app.config['MONGODB_SETTINGS'] = {
 db = MongoEngine()
 db.init_app(app)
 
+
+print("Filling Malware DB...")
+handler.write_malware_to_DB()
+
 socketio = SocketIO(app, cors_allowed_origins=[
     'http://localhost:8080', 'http://localhost:5000', 'http://localhost:5001'], ping_timeout=300)
 login = LoginManager(app)
