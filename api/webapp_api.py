@@ -257,7 +257,6 @@ def stop(data):
     print("Stop function called")
     performance_manager.save_data(data)
     network_manager.save_data(data)
-    system_call_manager.save_data(data)
     socketio.emit("stopSandbox", json.dumps(data), namespace="/sandbox")
     return data
 

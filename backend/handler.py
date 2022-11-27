@@ -67,7 +67,7 @@ def get_available_malware():
         response = response.json()
         malware_names = []
         for malware in response["data"]:
-            if malware["signature"] not in malware_names and malware["signature"] is not None:
+            if malware["signature"] not in malware_names and malware["signature"] is not None and "64" in malware["tags"]:
                 malware_dict = {
                     "name": malware["signature"],
                     "hash": malware["sha256_hash"],
@@ -85,6 +85,26 @@ def get_available_malware():
             "tags": ["DarkRadiation", "Ransomware", "sh"]
             }
         )
-        return malware_list
     else:
         print("Invalid Request Response!")
+    
+    data = {'query': 'get_file_type', 'file_type': 'sh', 'limit': 200}
+    url = "https://mb-api.abuse.ch/api/v1/"
+    response = requests.post(url, data=data)
+    if response.status_code == 200:
+        response = response.json()
+        malware_names = []
+        for malware in response["data"]:
+            if malware["signature"] not in malware_names and malware["signature"] is not None:
+                malware_dict = {
+                    "name": malware["signature"],
+                    "hash": malware["sha256_hash"],
+                    "url": "https://bazaar.abuse.ch/sample/" + str(malware["sha256_hash"]) + "/",
+                    "type": malware["file_type"],
+                    "tags": malware["tags"]
+                }
+                malware_list.append(malware_dict)
+                malware_names.append(malware["signature"])
+    else:
+        print("Invalid Request Response!")
+    return malware_list

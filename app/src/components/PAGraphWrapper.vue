@@ -21,7 +21,7 @@
 
   </IPFrequencyGraph>
   <ReadWriteGraph
-      v-else-if="graph_title === 'IP Addresses'"
+      v-else-if="graph_title === 'Read Write Counts'"
       :graph_title="graph_title"
       :data="this.data"
   ></ReadWriteGraph>
