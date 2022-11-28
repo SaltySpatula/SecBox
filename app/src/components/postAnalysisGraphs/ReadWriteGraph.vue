@@ -1,13 +1,10 @@
 <template>
-  <v-card class="bg-black" style="margin:10px">
-    <v-card-title style="align:center">Protocol Comparison</v-card-title>
     <apexchart
         ref="RWGraph"
         :options="chartOptions"
         :series="series"
         :height="300"
     ></apexchart>
-  </v-card>
 </template>
 
 <script>
@@ -26,7 +23,6 @@ export default {
         chart: {
           type: 'bar',
           stacked: true,
-          foreColor: '#ffffff',
           toolbar: {
             show: false
           },

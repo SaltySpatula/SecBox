@@ -30,7 +30,7 @@ log.setLevel(logging.ERROR)
 app.config['SECRET_KEY'] = 'secret!'
 app.config['MONGODB_SETTINGS'] = {
     'db': 'SecBoxDB',
-    'host': "mongodb+srv://admin:HmxrjkxTwd0etI6Y@secboxmongodb.nhcx1ch.mongodb.net/?retryWrites=true&w=majority",
+    'host': "mongodb+srv://raf:qZ6911b0fKwEuLWN@secbox.1hcrjgd.mongodb.net/test",
     'port': 27017
 }
 
@@ -153,33 +153,47 @@ def getCPUMemory(data):
     sandbox_id = data["ID"]
     objects = json.loads(models.PerformanceModel.objects(ID__exact=sandbox_id).to_json())
     # assert len(objects) == 1, "Multiple (or no) objects have been found in the DB"
+    try:
+        response = json.loads(objects[0]["cpu_percentages"])
+        socketio.emit("CPU Usage", json.dumps(response), namespace="/analysis", room=objects[0]["ID"])
+    except IndexError:
+        print("No corresponding DB entry found for CPU Usage - ID:", sandbox_id)
 
-    response = json.loads(objects[0]["cpu_percentages"])
-
-    socketio.emit("CPU Usage", json.dumps(response), namespace="/analysis", room=objects[0]["ID"])
 
 
 @socketio.on("get Network Layers", namespace="/analysis")
 def getNetworkLayers(data):
     sandbox_id = data["ID"]
-    objects = json.loads(models.NetworkModel.objects(ID__exact=sandbox_id).to_json())
-    response = json.loads(objects[0]["layer_counts"])
-    socketio.emit("Network Layers", json.dumps(response), namespace="/analysis", room=objects[0]["ID"])
+    try:
+        objects = json.loads(models.NetworkModel.objects(ID__exact=sandbox_id).to_json())
+        response = json.loads(objects[0]["layer_counts"])
+        socketio.emit("Network Layers", json.dumps(response), namespace="/analysis", room=objects[0]["ID"])
+    except IndexError:
+        print("No corresponding DB entry found for Network Layer - ID:", sandbox_id)
 
 
 @socketio.on("get IP Addresses", namespace="/analysis")
 def getIPAddresses(data):
     sandbox_id = data["ID"]
-    objects = json.loads(models.NetworkModel.objects(ID__exact=sandbox_id).to_json())
-    response = json.loads(objects[0]["IP_frequency"])
-    socketio.emit("IP Addresses", json.dumps(response), namespace="/analysis", room=objects[0]["ID"])
+    try:
+        objects = json.loads(models.NetworkModel.objects(ID__exact=sandbox_id).to_json())
+        response = json.loads(objects[0]["IP_frequency"])
+        print(response)
+        socketio.emit("IP Addresses", json.dumps(response), namespace="/analysis", room=objects[0]["ID"])
+    except IndexError:
+        print("No corresponding DB entry found for IP frequency - ID: ", sandbox_id)
 
-@socketio.on("get Read Write Counts", namespace="/analysis")
-def getIPAddresses(data):
+
+@socketio.on("get Read Write", namespace="/analysis")
+def getRWCount(data):
     sandbox_id = data["ID"]
-    objects = json.loads(models.SystemCallModel.objects(ID__exact=sandbox_id).to_json())
-    response = json.loads(objects[0]["IP_frequency"])
-    socketio.emit("IP Addresses", json.dumps(response), namespace="/analysis", room=objects[0]["ID"])
+    try:
+        objects = json.loads(models.SystemCallModel.objects(ID__exact=sandbox_id).to_json())
+        response = json.loads(objects[0]["reads_vs_writes"])
+        print(response)
+        socketio.emit("Read Write Counts", json.dumps(response), namespace="/analysis", room=objects[0]["ID"])
+    except IndexError:
+        print("No corresponding DB entry found for Read Write Counts - ID: ", sandbox_id)
 
 @app.route("/greeting")
 def greeting():

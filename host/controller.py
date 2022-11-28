@@ -42,8 +42,8 @@ session = """{{
   }}
 }}"""
 
-healthy_dockerfile = "./healthy/"
-infected_dockerfile = "./infected/"
+healthy_dockerfile = "healthy"
+infected_dockerfile = "infected"
 
 
 class Controller:

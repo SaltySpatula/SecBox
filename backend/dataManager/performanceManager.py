@@ -124,7 +124,10 @@ class PerformanceManager(DataManager):
     def extract_pid_count(self, sandbox_id, infected_status, data):
         current_ts = parser.parse(data["read"])
         # Todo: Fix error after shutdown
-        current_pid_count = data["pids_stats"]["current"]
+        try:
+            current_pid_count = data["pids_stats"]["current"]
+        except KeyError:
+            print("Tried to access data despite shutting down sandbox", sandbox_id)
         self.pid_counts[sandbox_id][infected_status]["graph"].append(
             {"timestamp": current_ts.strftime("%m/%d/%Y, %H:%M:%S.%f%Z"), "pid_count": current_pid_count})
 
