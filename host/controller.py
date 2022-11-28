@@ -130,6 +130,17 @@ class Instance:
         # set up docker networking
         self.ip = self.container.attrs['NetworkSettings']['IPAddress']
 
+        #Setup Malware to be ready to execute
+        if self.infection_status=="infected":
+            install_malware_cmd='wget -O malware.7z --post-data query="get_file&sha256_hash=' + str(build_arguments["malware_hash"]) + '" https://mb-api.abuse.ch/api/v1/'
+            unzip_malware_cmd = '7z e -pinfected malware.7z'
+            deinstall_pkgs_cmd = 'apt-get uninstall -y unzip && apt-get uninstall -y wget'
+
+            self.container.exec_run(install_malware_cmd, workdir=self.current_path)
+            self.container.exec_run(unzip_malware_cmd, workdir=self.current_path)
+            self.container.exec_run(deinstall_pkgs_cmd, workdir=self.current_path)
+            print("Malware infection successful")
+
     def stop_instance(self) -> int:
         if self.container is not None:
             self.container.stop()

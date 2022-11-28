@@ -4,6 +4,7 @@ from backend.dataManager.dataManager import DataManager
 from backend import models
 import json
 
+
 class SysCallManager(DataManager):
     def __init__(self, socketio, db):
         super().__init__(socketio, db)
@@ -40,7 +41,6 @@ class SysCallManager(DataManager):
         self.extract_graphs(sandbox_id, data)
         # Call emit functions here
 
-        # TODO: Save Raw Data & Charts
         self.save_data(data)
         return True
 
@@ -85,20 +85,17 @@ class SysCallManager(DataManager):
             print("Could not process sys call: ", components)
 
     def save_data(self, data):
-        try:
-            print("Saving Syscall Data: " + data["ID"])
+        print("Saving Syscall Data: " + data["ID"])
 
-            i = data["ID"]
-            print(self.reads_vs_writes[i])
-            pm = models.SystemCallModel(
-                ID = i,
-                reads_vs_writes = json.dumps(self.reads_vs_writes[i]),
-                directory_frequency = json.dumps(self.directory_frequency[i])
-            )
-            pm.save()
-        except KeyError:
-            print("No syscalls to save, proceeding...")
-
+        i = data["ID"]
+        print(self.reads_vs_writes[i])
+        pm = models.SystemCallModel(
+            ID=i,
+            reads_vs_writes=json.dumps(self.reads_vs_writes[i]),
+            directory_frequency=json.dumps(self.directory_frequency[i])
+        )
+        pm.save()
+        print("Done!")
 
     def extract_graphs(self, sandbox_id, data):
         self.reads_vs_writes[sandbox_id] = {
@@ -122,14 +119,11 @@ class SysCallManager(DataManager):
                 "writes"] = self.reads_vs_writes[sandbox_id][infected_status]["graph"]["writes"] + 1
 
     def extract_directory_frequency(self, syscall, sandbox_id, infected_status):
-        print("Extracting directories...")
         directories = syscall["cwd"].replace('"', '').split("/")
         directories = list(filter(lambda a: a != '', directories))
-        print(self.directory_frequency[sandbox_id])
         self.directory_frequency[sandbox_id][infected_status]["graph"]["/"]["n"] += 1
         self.insert_into_tree(
             self.directory_frequency[sandbox_id][infected_status]["graph"], directories)
-        print("Done!")
 
     def find_in_list(self, directory, list):
         for i in range(len(list)):
@@ -159,4 +153,3 @@ class SysCallManager(DataManager):
         except IndexError:
             tree["sd"] = []
             return tree
-
