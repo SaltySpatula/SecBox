@@ -24,7 +24,15 @@
       v-else-if="graph_title === 'Read Write Counts'"
       :graph_title="graph_title"
       :data="this.data"
+
   ></ReadWriteGraph>
+  <DirectoryGraph v-else-if="graph_title === 'Directory Graph'"
+                  :graph_title="graph_title"
+      :data="this.data"
+      :render_healthy="this.render_healthy"
+  >
+
+  </DirectoryGraph>
 </template>
 
 <script>
@@ -32,10 +40,12 @@ import CPUMemoryGraph from "@/components/postAnalysisGraphs/CPUMemoryGraph";
 import NetworkLayerGraph from "@/components/postAnalysisGraphs/NetworkLayerGraph";
 import IPFrequencyGraph from "@/components/postAnalysisGraphs/IPFrequencyGraph";
 import ReadWriteGraph from "@/components/postAnalysisGraphs/ReadWriteGraph";
+import DirectoryGraph from "@/components/postAnalysisGraphs/DirectoryGraph";
+
 export default {
   name: "PAGraphWrapper",
-  components:{CPUMemoryGraph, NetworkLayerGraph, IPFrequencyGraph, ReadWriteGraph},
-  props:{socket: Object,graph_get:String, graph_title:String},
+  components:{CPUMemoryGraph, NetworkLayerGraph, IPFrequencyGraph, ReadWriteGraph, DirectoryGraph},
+  props:{render_healthy:Boolean, socket: Object,graph_get:String, graph_title:String},
   created() {
 
     let ref = this
@@ -62,6 +72,16 @@ export default {
         }
         else if (ref.graph_title === "Read Write Counts"){
           ref.data = parsed_data
+        }
+        else if (ref.graph_title === "Directory Graph"){
+          let new_data = {"healthy": {"graph": {"/": {"n": 4185, "sd": [{"sys": {"n": 10, "sd": [{"devices": {"n": 13, "sd": []}}]}}]}}}, "infected": {"graph": {"/": {"n": 21528, "sd": [{"effective_uid:": {"n": 1518, "sd": []}}, {"var": {"n": 0, "sd": [{"lib": {"n": 0, "sd": [{"dpkg": {"n": 0, "sd": [{"tmp.ci": {"n": 179, "sd": []}}]}}]}}]}}, {"tmp": {"n": 2, "sd": []}}, {"sys": {"n": 10, "sd": [{"devices": {"n": 9, "sd": []}}]}}]}}}}
+          let healthy_data = ref.process_data(new_data["healthy"]["graph"])
+          let infected_data = ref.process_data(new_data["infected"]["graph"])
+
+          ref.data={
+            "healthy" : healthy_data,
+            "infected" : infected_data
+          }
         }
         // change flag
         ref.loading = false
@@ -105,7 +125,31 @@ export default {
           name: "infected",
           data: infected_series
         }]}
-  }
+  },
+    iterate_over_sd: function (key, obj,  labels, parents, values) {
+      const sd = obj["sd"]
+      if (sd.length > 0){
+        for (let i = 0; i < sd.length; i++) {
+          let l = Object.keys(sd[i])[0]
+          let new_obj = sd[i][l]
+          let p = key
+          let v = new_obj["n"]
+          labels.push(l)
+          parents.push(p)
+          values.push(v)
+          this.iterate_over_sd(l, new_obj, labels, parents, values)
+        }
+      }
+
+      return {labels:labels, parents:parents, values:values}
+    },
+    process_data: function (graph_data) {
+      const labels = ["root", "/"]
+      const parents = ["", "root"]
+      const values = [0, graph_data["/"]["n"]]
+      const to_iterate = graph_data["/"]
+      return this.iterate_over_sd("root", to_iterate, labels, parents, values)
+    },
   },
   data:function(){
     return{

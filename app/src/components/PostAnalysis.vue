@@ -65,15 +65,18 @@
       <v-col cols="12" md="4" v-for="graph in selected_graphs" v-bind:key="graph.title">
         <v-card class="scroll bg-deep-purple-lighten-5">
         <v-card-title>{{ graph.title }}</v-card-title>
-          <PAGraphWrapper :socket="this.socket" :graph_title="graph.title" :graph_get="graph.get"/>
+          <PAGraphWrapper :render_healthy="this.render_healthy" :socket="this.socket" :graph_title="graph.title" :graph_get="graph.get"/>
           <v-card-actions >
-            <div class="my-2">
               <v-btn class="bg-red" @click="deleteGraph(graph)">
                 <v-icon>
                   mdi-delete
                 </v-icon>
               </v-btn>
-            </div>
+                  <v-btn v-if="graph.title==='Directory Graph'" variant="outlined" @click="this.render_healthy = !this.render_healthy">
+                <v-icon>
+                  mdi-swap-horizontal
+                </v-icon>
+              </v-btn>
           </v-card-actions>
         </v-card>
       </v-col>
@@ -101,6 +104,7 @@ export default {
   data: () => ({
     open: [],
     selected_graphs: [],
+    render_healthy : true,
     graph_data: {
       "network_graphs": {
         "title": "Network",
@@ -115,7 +119,7 @@ export default {
         "icon": "mdi-console-network",
         "graphs": [
           {"title": 'Read Write Counts',"get":"get Read Write", "icon": 'mdi-border-color', "disabled": false,},
-          {"title": 'Direct Comparison',"get":"get Direct Comparison", "icon": 'mdi-ab-testing', "disabled": false},
+          {"title": 'Directory Graph',"get":"get Directory Graph", "icon": 'mdi-folder-open', "disabled": false},
         ]
       },
       "performance_graphs": {

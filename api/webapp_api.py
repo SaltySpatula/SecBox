@@ -199,6 +199,19 @@ def getRWCount(data):
     except IndexError:
         print("No corresponding DB entry found for Read Write Counts - ID: ", sandbox_id)
 
+
+@socketio.on("get Directory Graph", namespace="/analysis")
+def getDirs(data):
+    sandbox_id = data["ID"]
+    try:
+        objects = json.loads(models.SystemCallModel.objects(ID__exact=sandbox_id).to_json())
+        response = json.loads(objects[0]["directory_frequency"])
+        print(response)
+        socketio.emit("Directory Graph", json.dumps(response), namespace="/analysis", room=objects[0]["ID"])
+    except IndexError:
+        print("No corresponding DB entry found for Directory Graph - ID: ", sandbox_id)
+
+
 @app.route("/greeting")
 def greeting():
     return {"greeting": "Server is running"}
