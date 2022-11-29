@@ -69,7 +69,7 @@ def write_malware_to_DB():
         response = response.json()
         malware_names = [(malware["name"], malware["type"]) for malware in models.Malware.objects]
         for malware in response["data"]:
-            if (malware["signature"], malware["file_type"]) not in malware_names and malware["signature"] is not None:
+            if (malware["signature"], malware["file_type"]) not in malware_names and malware["signature"] is not None and "64" in malware["tags"]:
                 malware_dict = {
                     "name": malware["signature"],
                     "hash": malware["sha256_hash"],

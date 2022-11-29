@@ -138,12 +138,12 @@ class SysCallManager(DataManager):
         previous_dir = list(tree.keys())[0]
         index = self.find_in_list(current_directory, tree[previous_dir]["sd"])
         if index == -1:
-            subdir_structure = {current_directory: {"n": 1,
+            subdir_structure = {current_directory: {"n": 0,
                                 "sd": []}}
             tree[previous_dir]["sd"].append(subdir_structure)
             index = self.find_in_list(
                 current_directory, tree[previous_dir]["sd"])
-        else:
+        if len(directories)==1:
             tree[previous_dir]["sd"][index][current_directory]["n"] += 1
         try:
             subtree = tree[previous_dir]["sd"][index]
