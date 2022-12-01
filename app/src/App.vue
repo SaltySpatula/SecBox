@@ -2,12 +2,10 @@
 
   <v-app class="bg-grey-darken-4">
     <v-app-bar
-      absolute
+      fixed
       color="deep-purple darken-2"
       dark
-      shrink-on-scroll
       prominent
-      scroll-target="#scrolling-techniques"
     >
 <router-link to="/">
       <v-btn icon color="white">

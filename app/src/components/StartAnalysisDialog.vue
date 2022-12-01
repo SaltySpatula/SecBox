@@ -130,6 +130,9 @@ export default {
               router.push({path: `/live/${analysis_id}`});
             }
         });
+        setTimeout(()=>{
+          this.sent_request = false;
+        }, 5000)
       }
     }
   },

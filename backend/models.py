@@ -50,7 +50,7 @@ class PerformanceModel(Document):
 class NetworkModel(Document):
     ID = db().StringField()
     layer_counts = db().StringField()
-    IP_frequency = db().StringField()
+    IP_frequency = db().ListField()
 
 
     def to_json(self):
@@ -62,7 +62,7 @@ class NetworkModel(Document):
 class SystemCallModel(Document):
     ID = db().StringField()
     reads_vs_writes = db().StringField()
-    directory_frequency = db().StringField()
+    directory_frequency = db().ListField()
 
 
     def to_json(self):
@@ -73,11 +73,20 @@ class SystemCallModel(Document):
 
 
 class Report(Document):
-    title = db().StringField(max_lenth=200, required=True, unique=True)
-    date = db().IntField(default=0, max_lenth=1)  # 1 to 9
+    ID = db().StringField(unique=True)
+    title = db().StringField(max_lenth=200, required=True)
+    date = db().StringField()  # 1 to 9
     malware = db().ReferenceField(Malware)
+    selected_graphs = db().ListField()
 
     def __str__(self):
         return self.title
 
+    def to_json(self):
+        return {"ID": self.ID,
+                "title": self.title,
+                "date":self.date,
+                "malware":self.malware,
+                "selected_graphs":self.selected_graphs
+        }
 

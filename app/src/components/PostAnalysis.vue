@@ -110,24 +110,24 @@ export default {
         "title": "Network",
         "icon": "mdi-wan",
         "graphs": [
-          {"title": 'Network Layers', "get":"get Network Layers", "icon": 'mdi-nas', "disabled": false},
-          {"title": 'IP Addresses', "get":"get IP Addresses", "icon": 'mdi-map-marker', "disabled": false},
+          {"title": 'Network Layers', "get":"get Network Layers", "icon": 'mdi-nas', "comment":"", "disabled": false},
+          {"title": 'IP Addresses', "get":"get IP Addresses", "icon": 'mdi-map-marker', "comment":"","disabled": false},
         ]
       },
       "syscall_graphs": {
         "title": "System Calls",
         "icon": "mdi-console-network",
         "graphs": [
-          {"title": 'Read Write Counts',"get":"get Read Write", "icon": 'mdi-border-color', "disabled": false,},
-          {"title": 'Directory Graph',"get":"get Directory Graph", "icon": 'mdi-folder-open', "disabled": false},
+          {"title": 'Read Write Counts',"get":"get Read Write", "icon": 'mdi-border-color',"comment":"", "disabled": false,},
+          {"title": 'Directory Graph',"get":"get Directory Graph", "icon": 'mdi-folder-open',"comment":"", "disabled": false},
         ]
       },
       "performance_graphs": {
         "title": "Performance",
         "icon": "mdi-poll",
         "graphs": [
-          {"title": 'CPU Usage', "get":"get CPU Usage", "icon": 'mdi-cpu-64-bit', "disabled": false},
-          {"title": 'RAM', "get":"get RAM", "icon": 'mdi-memory', "disabled": false},
+          {"title": 'CPU Usage', "get":"get CPU Usage", "icon": 'mdi-cpu-64-bit',"comment":"", "disabled": false},
+          {"title": 'RAM', "get":"get RAM", "icon": 'mdi-memory',"comment":"", "disabled": false},
         ]
       },
     }
@@ -147,6 +147,7 @@ export default {
     },
     createReport: function () {
       const current_id = this.$route.params.id
+      this.socket.emit('create report', {"ID": this.$route.params.id, "selected_graphs":this.selected_graphs})
       router.replace({path: '/report/' + current_id},)
     },
   }

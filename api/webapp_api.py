@@ -1,4 +1,5 @@
 import sys
+from datetime import datetime
 
 sys.path.append("/home/adrian/Desktop/HS2022/MasterPrject/SecBox")
 
@@ -139,6 +140,7 @@ def join_analysis(data):
     join_room(data["room"])
 
 
+
 @socketio.on('leave room', namespace='/live')
 def leave(data):
     room = data["room"]
@@ -211,6 +213,36 @@ def getDirs(data):
     except IndexError:
         print("No corresponding DB entry found for Directory Graph - ID: ", sandbox_id)
 
+@socketio.on("create report", namespace="/analysis")
+def create_report(data):
+    print("creating report for", data["ID"])
+    date = datetime.now()
+
+    report = models.Report(ID=data["ID"], selected_graphs=data["selected_graphs"] , title="Title", date=date.strftime("%m/%d/%Y, %H:%M"))
+    report.save()
+
+@socketio.on("get report", namespace="/report")
+def get_report(data):
+    sandbox_id = data["ID"]
+    join_room(data["ID"])
+    try:
+        objects = json.loads(models.Report.objects(ID__exact=sandbox_id).to_json())
+        response = objects[0]
+        socketio.emit("send report", json.dumps(response), namespace="/report", room=objects[0]["ID"])
+    except IndexError:
+        print("No report found")
+
+@socketio.on("update report", namespace="/report")
+def update_report(data):
+    sandbox_id = data["ID"]
+    try:
+        print("updating ", sandbox_id, data)
+        objects = json.loads(models.Report.objects(ID__exact=sandbox_id).to_json())
+        obj = objects[0]
+        obj.update(selected_graphs=data["selected_graphs"])
+    except IndexError:
+        print("Could not perform update: ID not found")
+
 
 @app.route("/greeting")
 def greeting():
@@ -219,10 +251,10 @@ def greeting():
 
 @socketio.on("start request", namespace="/start")
 def create(data):
-    # malware = models.Malware.objects(hash=data["SHA256"])[0]
-    # p = models.Process(SHA256=data["SHA256"], selected_os=data["OS"])
-    # p.malware = malware
-    # p.save()
+    malware = models.Malware.objects(hash=data["SHA256"])[0]
+    p = models.Process(SHA256=data["SHA256"], selected_os=data["OS"])
+    p.malware = malware
+    p.save()
     start_data = handler.start_process(sha=data["SHA256"], selected_os=data["OS"])
     feedback = start(start_data)
     emit("start feedback", json.dumps(feedback), namespace="/start")
@@ -286,9 +318,12 @@ def start(data):
 @socketio.on("stopSandbox", namespace="/sandbox")
 def stop(data):
     print("Stop function called")
-    performance_manager.save_data(data)
-    network_manager.save_data(data)
-    socketio.emit("stopSandbox", json.dumps(data), namespace="/sandbox")
+    try:
+        performance_manager.save_data(data)
+        network_manager.save_data(data)
+        socketio.emit("stopSandbox", json.dumps(data), namespace="/sandbox")
+    except KeyError:
+        print("Sandbox has already been stopped and the data saved")
     return data
 
 
