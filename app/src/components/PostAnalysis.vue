@@ -65,7 +65,7 @@
       <v-col cols="12" md="4" v-for="graph in selected_graphs" v-bind:key="graph.title">
         <v-card class="scroll bg-deep-purple-lighten-5">
         <v-card-title>{{ graph.title }}</v-card-title>
-          <PAGraphWrapper :render_healthy="this.render_healthy" :socket="this.socket" :graph_title="graph.title" :graph_get="graph.get"/>
+          <PAGraphWrapper :render_healthy="this.render_healthy" :render_both="false" :socket="this.socket" :graph_title="graph.title" :graph_get="graph.get"/>
           <v-card-actions >
               <v-btn class="bg-red" @click="deleteGraph(graph)">
                 <v-icon>

@@ -21,11 +21,7 @@ def get_available_os():
 
 
 def get_reports():
-    # some DB action required
-    data_set = {"1": {"title": "Mirai Network Traffic analysis", "malware": "Mirai", "tags": ["elf"]},
-                "2": {"title": "Javascript Malware", "malware": "Vjw0rm", "tags": ["js", "vjw0rm"]}}
-
-    reports = json.dumps(data_set)
+    reports = models.Report.objects()
     return reports
 
 

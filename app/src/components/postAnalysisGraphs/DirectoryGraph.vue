@@ -1,6 +1,19 @@
 <template>
+  <v-container v-if="this.render_both" style="padding:0">
+     <v-row >
+      <v-col cols="12" md="6">
+    <VuePlotly :data="this.healthy_data" :layout="layout_healthy" :display-mode-bar="false"></VuePlotly>
+      </v-col>
+              <v-col cols="12" md="6">
+
+    <VuePlotly :data="this.infected_data" :layout="layout_infected" :display-mode-bar="false"></VuePlotly>
+      </v-col>
+     </v-row>
+  </v-container>
+  <div v-else>
     <VuePlotly v-if="this.render_healthy" :data="healthy_data" :layout="layout_healthy" :display-mode-bar="false"></VuePlotly>
     <VuePlotly v-else  :data="infected_data" :layout="layout_infected" :display-mode-bar="false"></VuePlotly>
+  </div>
 </template>
 
 <script>
@@ -11,7 +24,7 @@ export default {
   components: {
     VuePlotly,
   },
-  props: {render_healthy:Boolean, graph_title: String, data: Object},
+  props: {render_healthy:Boolean, render_both:Boolean, graph_title: String, data: Object},
   created(){
   },
   methods: {
@@ -40,7 +53,7 @@ export default {
       layout_healthy:{
   margin: {l: 0, r: 0, b: 0, t: 0},
 
-  height: 300,
+  height: 315,
         plot_bgcolor: 'rgba(0,0,0,0)',
     paper_bgcolor: 'rgba(0,0,0,0)',
         title: {text:"Healthy",y:0.1}
@@ -48,11 +61,12 @@ export default {
             layout_infected:{
   margin: {l: 0, r: 0, b: 0, t: 0},
 
-  height: 300,
+  height: 315,
         plot_bgcolor: 'rgba(0,0,0,0)',
     paper_bgcolor: 'rgba(0,0,0,0)',
         title: {text:"Infected",y:0.1}
 }
+
     }
   }
 }

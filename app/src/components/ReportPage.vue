@@ -28,20 +28,18 @@
               Save & Exit
        </v-btn>
 </v-navigation-drawer>
-  <v-container align="left" class="bg-deep-purple-lighten-4" style="width:80em">
-    <h1> SecBox Report</h1>
+  <v-container align="left" class="bg-deep-purple-lighten-4" >
+    <v-text-field
+            v-model="this.title"
+            label="Enter a title"
+            filled
+            style="font-size:2em;max-height:4em;"
+          ></v-text-field>
     <v-row v-if="this.selected_graphs">
       <v-col cols="12" md="6" v-for="graph in this.selected_graphs" v-bind:key="graph.title">
         <v-card class="bg-deep-purple-lighten-5">
         <v-card-title>{{ graph.title }}</v-card-title>
-          <PAGraphWrapper :render_healthy="this.render_healthy" :socket="this.socket_analysis" :graph_title="graph.title" :graph_get="graph.get"/>
-          <v-card-actions  v-if="graph.title==='Directory Graph'">
-                  <v-btn variant="outlined" @click="this.render_healthy = !this.render_healthy">
-                <v-icon>
-                  mdi-swap-horizontal
-                </v-icon>
-              </v-btn>
-          </v-card-actions>
+          <PAGraphWrapper :render_healthy="this.render_healthy" :render_both="true" :socket="this.socket_analysis" :graph_title="graph.title" :graph_get="graph.get"/>
            <v-textarea
           v-model="graph.comment"/>
         </v-card>
@@ -64,6 +62,7 @@ export default {
     this.socket.on("send report", function (data){
           data = JSON.parse(data)
           ref.selected_graphs = data["selected_graphs"]
+          ref.title = data["title"]
           ref.loading = false
         })
 
@@ -74,6 +73,7 @@ export default {
       render_healthy : true,
     loading : true,
     selected_graphs : [],
+    title:""
   }),
   methods: {
     getDate:function (){
@@ -85,8 +85,8 @@ export default {
       console.log(day, month, year)
     },
     saveGraph:function(){
-      console.log("updating", this.selected_graphs)
-      this.socket.emit("update report", {ID: this.$route.params.id, selected_graphs:this.selected_graphs})
+      //console.log("updating", this.title, this.selected_graphs)
+      this.socket.emit("update report", {ID: this.$route.params.id, title:this.title, selected_graphs:this.selected_graphs})
     }
   }
 
@@ -94,5 +94,7 @@ export default {
 </script>
 
 <style scoped>
-
+.v-text-field input {
+  font-size:1.2em
+}
 </style>

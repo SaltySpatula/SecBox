@@ -24,11 +24,13 @@ class Malware(db().Document):
 
 class Process(db().Document):
     SHA256 = db().StringField()
+    ID = db().StringField(unique=True)
     malware = db().ReferenceField(Malware, dbref=True)
     selected_os = db().StringField()
 
     def to_json(self):
         return {"SHA256": self.SHA256,
+                "ID": self.ID,
                 "selected_os": self.selected_os
         }
 
@@ -50,7 +52,7 @@ class PerformanceModel(Document):
 class NetworkModel(Document):
     ID = db().StringField()
     layer_counts = db().StringField()
-    IP_frequency = db().ListField()
+    IP_frequency = db().StringField()
 
 
     def to_json(self):
@@ -62,7 +64,7 @@ class NetworkModel(Document):
 class SystemCallModel(Document):
     ID = db().StringField()
     reads_vs_writes = db().StringField()
-    directory_frequency = db().ListField()
+    directory_frequency = db().StringField()
 
 
     def to_json(self):

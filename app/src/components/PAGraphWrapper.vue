@@ -30,6 +30,7 @@
                   :graph_title="graph_title"
       :data="this.data"
       :render_healthy="this.render_healthy"
+                  :render_both="this.render_both"
   >
 
   </DirectoryGraph>
@@ -45,7 +46,7 @@ import DirectoryGraph from "@/components/postAnalysisGraphs/DirectoryGraph";
 export default {
   name: "PAGraphWrapper",
   components:{CPUMemoryGraph, NetworkLayerGraph, IPFrequencyGraph, ReadWriteGraph, DirectoryGraph},
-  props:{render_healthy:Boolean, socket: Object,graph_get:String, graph_title:String},
+  props:{render_healthy:Boolean, render_both:Boolean, socket: Object,graph_get:String, graph_title:String},
   created() {
 
     let ref = this

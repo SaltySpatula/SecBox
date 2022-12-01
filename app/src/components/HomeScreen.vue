@@ -27,16 +27,16 @@
           </v-card>
         </v-col>
         <v-col cols="12" md="4">
-          <v-card class="bg-deep-purple-accent-1" style="overflow-y: auto; height:50rem">
+          <v-card class="bg-deep-purple-accent-1" style="overflow-y: auto; height:50rem" >
             <v-card-text >
             <h1 class="pa-md-4" align="center"> Latest Reports </h1>
-
             <v-row align="center" class="ma-2">
               <v-col justify="center" cols="4" md="12" sm="12"
                 v-for="report in reports"
                 :key="report.title">
-                <v-card class="bg-purple-darken-4">
+                <v-card class="bg-purple-darken-4" @click="goToReport(report.ID)">
                   <v-card-title v-text="report.title"></v-card-title>
+                  <v-card-subtitle>{{report.date}}</v-card-subtitle>
                   <v-card-actions >
                     <div v-for="tag in report.tags" :key="tag" style="padding-right:10px">
                         <v-btn flat variant="outlined">
@@ -59,6 +59,7 @@
 
 
 import StartAnalysisDialog from "@/components/StartAnalysisDialog";
+import router from "@/router";
 
 export default {
 
@@ -71,9 +72,13 @@ export default {
   }),
   created: async function(){
         const gResponse = await fetch("http://localhost:5000/getReports");
-        const gObject = await gResponse.json();
-        this.reports = JSON.parse(gObject.reports);
-        console.log(this.reports);
+        const reports = await gResponse.json();
+        this.reports = reports["reports"]
+    },
+  methods:{
+    goToReport:function(id){
+      router.replace({path: '/report/' + id})
     }
+  }
 }
 </script>
