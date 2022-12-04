@@ -31,3 +31,5 @@ sudo python3 ./host.py
 ```
 
 
+## Configuration
+Configuration happens through the respective .env files for the respective system components.
