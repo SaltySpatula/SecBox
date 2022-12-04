@@ -38,6 +38,7 @@ class PerformanceModel(Document):
     ID = db().StringField()
     pid_counts = db().StringField()
     cpu_percentages = db().StringField()
+    ram_usage = db().StringField()
     packet_counts = db().StringField()
     raw_perf_data = db().StringField()
 
@@ -45,6 +46,7 @@ class PerformanceModel(Document):
         return {"ID": self.ID,
                 "pid_counts": self.pid_counts,
                 "cpu_percentages":self.cpu_percentages,
+                "ram_usage":self.ram_usage,
                 "packet_counts":self.packet_counts,
                 "raw_perf_data":self.raw_perf_data
         }

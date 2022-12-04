@@ -9,14 +9,18 @@ class PerformanceManager(DataManager):
     def __init__(self, socketio, db):
         super().__init__(socketio, db)
         self.cpu_percentages = {}
+        self.ram_usage = {}
         self.pid_counts = {}
         self.packet_counts = {}
         self.raw_perf_data = {}
 
-    def setup_data_structures(self, sandbox_id, infected_status, data):
+    def setup_data_structures(self, sandbox_id):
         self.order_nos[sandbox_id] = {"healthy": 1, "infected": 1}
 
         self.cpu_percentages[sandbox_id] = {
+            "healthy": {"graph": []}, "infected": {"graph": []}}
+
+        self.ram_usage[sandbox_id] = {
             "healthy": {"graph": []}, "infected": {"graph": []}}
 
         self.pid_counts[sandbox_id] = {"healthy": {
@@ -32,13 +36,15 @@ class PerformanceManager(DataManager):
         infected_status = data["infectedStatus"]
 
         if sandbox_id not in self.order_nos.keys():
-            self.setup_data_structures(sandbox_id, infected_status, data)
+            self.setup_data_structures(sandbox_id)
         if self.order_nos[sandbox_id][infected_status] <= data["orderNo"]:
             # Call emit functions here
-            self.extract_cpu_percentages(sandbox_id, infected_status, data)
+            self.extract_cpu_percentages(
+                sandbox_id, infected_status, data)
             self.extract_pid_count(sandbox_id, infected_status, data["stats"])
             self.extract_packet_count(
                 sandbox_id, infected_status, data["stats"])
+            self.extract_ram_usage(sandbox_id, infected_status, data["stats"])
 
             # TODO: Create function for prepping data
             cpu_percentage_trimmed = self.cpu_percentages[sandbox_id][infected_status]["graph"]
@@ -106,7 +112,8 @@ class PerformanceManager(DataManager):
             self.socketio.emit("packet_graph",
                                response_packets, namespace='/live', room=str(sandbox_id))
             self.order_nos[sandbox_id][infected_status] = data["orderNo"]
-            self.raw_perf_data[sandbox_id][infected_status].append(data["stats"])
+            self.raw_perf_data[sandbox_id][infected_status].append(
+                data["stats"])
         return True
 
     def save_data(self, data):
@@ -116,6 +123,7 @@ class PerformanceManager(DataManager):
             ID=i,
             pid_counts=json.dumps(self.pid_counts[i]),
             cpu_percentages=json.dumps(self.cpu_percentages[i]),
+            ram_usage=json.dumps(self.ram_usage[i]),
             packet_counts=json.dumps(self.packet_counts[i]),
             raw_perf_data=json.dumps(self.raw_perf_data[i])
         )
@@ -123,13 +131,22 @@ class PerformanceManager(DataManager):
 
     def extract_pid_count(self, sandbox_id, infected_status, data):
         current_ts = parser.parse(data["read"])
-        # Todo: Fix error after shutdown
         try:
             current_pid_count = data["pids_stats"]["current"]
         except KeyError:
             print("Tried to access data despite shutting down sandbox", sandbox_id)
         self.pid_counts[sandbox_id][infected_status]["graph"].append(
             {"timestamp": current_ts.strftime("%m/%d/%Y, %H:%M:%S.%f%Z"), "pid_count": current_pid_count})
+
+    def extract_ram_usage(self, sandbox_id, infected_status, data):
+        current_ts = parser.parse(data["read"])
+        current_usage = data["memory_stats"]["usage"]
+        limit = data["memory_stats"]["limit"]
+
+        self.ram_usage[sandbox_id][infected_status]["graph"].append(
+            {"timestamp": current_ts.strftime(
+                "%m/%d/%Y, %H:%M:%S.%f%Z"), "pid_count": current_usage, "limit": limit}
+        )
 
     def extract_cpu_percentages(self, sandbox_id, infected_status, data):
         current_ts = parser.parse(data["stats"]["read"])
