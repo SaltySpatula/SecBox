@@ -6,3 +6,4 @@ flask_login==0.6.2
 system_calls==5.19.0
 scapy==2.4.5
 gevent==22.10.2
+python-dotenv==0.21.0

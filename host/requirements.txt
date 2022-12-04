@@ -3,3 +3,6 @@ docker==6.0.0
 websockets==10.3
 python-socketio==5.7.1
 system-calls==5.19.0
+scapy==2.4.5
+gevent_websocket==0.10.1
+python-dotenv==0.21.0

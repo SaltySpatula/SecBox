@@ -1,7 +1,9 @@
 import sys
 from datetime import datetime
-
-sys.path.append("/home/adrian/Desktop/HS2022/MasterPrject/SecBox")
+import os
+cwd = os.getcwd()
+path = cwd[:-4]
+sys.path.append(path)
 
 from backend.dataManager.syscallManager import SysCallManager
 from backend.dataManager.performanceManager import PerformanceManager
@@ -16,23 +18,26 @@ from backend import handler, models
 from flask_mongoengine import MongoEngine
 from flask_login import LoginManager, login_user, current_user, UserMixin
 import logging
-import json
+import json 
 
+from dotenv import load_dotenv
+
+load_dotenv()
 # Hosted DB:
 # admin
 # HmxrjkxTwd0etI6Y
-# mongodb+srv://admin:<password>@secboxmongodb.nhcx1ch.mongodb.net/?retryWrites=true&w=majority
+# mongodb+srv://admin:HmxrjkxTwd0etI6Y@secboxmongodb.nhcx1ch.mongodb.net/?retryWrites=true&w=majority
 
 app = Flask(__name__)
 CORS(app)
 log = logging.getLogger("werkzeug")
 log.setLevel(logging.ERROR)
 
-app.config['SECRET_KEY'] = 'secret!'
+app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 app.config['MONGODB_SETTINGS'] = {
-    'db': 'SecBoxDB',
-    'host': "mongodb+srv://raf:qZ6911b0fKwEuLWN@secbox.1hcrjgd.mongodb.net/test",
-    'port': 27017
+    'db': os.getenv('DB'),
+    'host': os.getenv('DB_HOST'),
+    'port': int(os.getenv('DB_PORT'))
 }
 
 db = MongoEngine()
@@ -42,7 +47,7 @@ print("Filling Malware DB...")
 handler.write_malware_to_DB()
 
 socketio = SocketIO(app, cors_allowed_origins=[
-    'http://localhost:8080', 'http://localhost:5000', 'http://localhost:5001'], ping_timeout=300)
+    os.getenv('FE_IP_PORT'), os.getenv('HOST_IP_PORT')], ping_timeout=300)
 login = LoginManager(app)
 
 system_call_manager = SysCallManager(socketio, db)

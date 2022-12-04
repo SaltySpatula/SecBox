@@ -2,6 +2,10 @@ import time
 import socketio
 import sandboxHandler
 import json
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 socketio = socketio.Client()
 
@@ -57,6 +61,6 @@ def catch_all(event, data):
 namespaces = ['/sandbox',
               '/network', '/performance', '/cmd', '/dummy']
 if __name__ == '__main__':
-    socketio.connect('http://localhost:5000', namespaces=namespaces)
+    socketio.connect(os.getenv('BE_IP_PORT'), namespaces=namespaces)
     print("Host running...")
     socketio.wait()
