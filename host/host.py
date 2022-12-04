@@ -61,6 +61,11 @@ def catch_all(event, data):
 namespaces = ['/sandbox',
               '/network', '/performance', '/cmd', '/dummy']
 if __name__ == '__main__':
-    socketio.connect(os.getenv('BE_IP_PORT'), namespaces=namespaces)
-    print("Host running...")
-    socketio.wait()
+    while True:
+        try:
+            socketio.connect(os.getenv('BE_IP_PORT'), namespaces=namespaces)
+            print("Host running...")
+            socketio.wait()
+        except Exception:
+            print("Server not available, retrying in 5s")
+            time.sleep(5)

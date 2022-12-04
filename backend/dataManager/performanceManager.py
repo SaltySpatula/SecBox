@@ -163,9 +163,10 @@ class PerformanceManager(DataManager):
             previous_ts = parser.parse(
                 self.cpu_percentages[sandbox_id][infected_status]["previous_ts"])
 
-            nanoseconds_delta = (previous_ts - current_ts).microseconds * 1000
-            if nanoseconds_delta:
-                percentage = (current_ns-previous_ns) / nanoseconds_delta * 100
+            system_delta = (previous_ts - current_ts).microseconds * 1000
+            cpu_delta = current_ns-previous_ns
+            if system_delta:
+                percentage = (cpu_delta/system_delta) * 100
             else:
                 percentage = 0
 
