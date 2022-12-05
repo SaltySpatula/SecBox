@@ -3,6 +3,7 @@ import system_calls
 from backend.dataManager.dataManager import DataManager
 from backend import models
 import json
+import csv
 
 
 class SysCallManager(DataManager):
@@ -57,20 +58,19 @@ class SysCallManager(DataManager):
             components.insert(16, "sysno:")
             components.insert(17, "0")
         args = []
-        try:
-            time = int(components[5])
-            thread = int(components[7])
-            sysno = int(components[17])
-            sysname = self.get_name_from_no(sysno, architecture)
-            container_id = components[9]
-            cwd = components[14]
-            cred = components[11:13]
+        time = int(components[5])
+        thread = int(components[7])
+        sysno = int(components[17])
+        sysname = self.get_name_from_no(sysno, architecture)
+        container_id = components[9]
+        cwd = components[14]
+        cred = str(components[11:13]).replace(",", " ")
 
-            for i in range(len(components[16:])):
-                if i % 2 == 1:
-                    args.append(components[16:][i])
+        for i in range(len(components[16:])):
+            if i % 2 == 1:
+                args.append(components[16:][i])
 
-            processed_system_call = {
+        processed_system_call = {
                 "time_ns": time,
                 "thread_id": thread,
                 "sysno": sysno,
@@ -78,11 +78,9 @@ class SysCallManager(DataManager):
                 "container_id": container_id,
                 "cwd": cwd,
                 "credentials": cred,
-                "args": args
-            }
-            return processed_system_call
-        except:
-            print("Could not process sys call: ", components)
+                "args": str(args).replace(",", ";")
+        }
+        return processed_system_call
 
     def save_data(self, data):
         print("Saving Syscall Data: " + data["ID"])
@@ -95,7 +93,17 @@ class SysCallManager(DataManager):
             directory_frequency=json.dumps(self.directory_frequency[i])
         )
         pm.save()
-        print("Done!")
+        ID = data["ID"]
+        for infected_status in data["sysCalls"].keys():
+            file_path = infected_status + '/' + str(ID) + '.csv'
+            with open(file_path, "w+", newline="") as f:
+                title = "time_ns,thread_id,sysno,sysname,container_id,cwd,credentials,args".split(
+                    ",")
+                cw = csv.DictWriter(f, title, delimiter=',',
+                                    quotechar='|', quoting=csv.QUOTE_MINIMAL)
+                cw.writeheader()
+                cw.writerows(data["sysCalls"][infected_status])
+            print("Done!")
 
     def extract_graphs(self, sandbox_id, data):
         self.reads_vs_writes[sandbox_id] = {
@@ -143,7 +151,7 @@ class SysCallManager(DataManager):
             tree[previous_dir]["sd"].append(subdir_structure)
             index = self.find_in_list(
                 current_directory, tree[previous_dir]["sd"])
-        if len(directories)==1:
+        if len(directories) == 1:
             tree[previous_dir]["sd"][index][current_directory]["n"] += 1
         try:
             subtree = tree[previous_dir]["sd"][index]
