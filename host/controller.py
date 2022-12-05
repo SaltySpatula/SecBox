@@ -4,43 +4,7 @@ import json
 import socketio
 import time
 
-session = """{{
-  "trace_session": {{
-    "name": "Default",
-    "points": [
-      {{
-        "name": "syscall/sysno/0/enter",
-        "context_fields": [
-          "time",
-          "container_id",
-          "thread_id",
-          "credentials",
-          "cwd"
-        ]
-      }},
-      {{
-        "name": "syscall/sysno/1/enter",
-        "context_fields": [
-          "time",
-          "container_id",
-          "thread_id",
-          "credentials",
-          "cwd"
-        ]
-      }}
-    ],
-    "sinks": [
-      {{
-        "name": "remote",
-        "config": {{
-          "endpoint": "/tmp/{}_{}_gvisor_events.sock",
-          "retries": 3
-        }},
-        "ignore_setup_error": true
-      }}
-    ]
-  }}
-}}"""
+syscalls_to_monitor = 438
 
 healthy_dockerfile = "healthy"
 infected_dockerfile = "infected"
@@ -59,14 +23,13 @@ class Controller:
         }
         infected_args = {
             "os_image": self.os,
-            "malware_hash":self.mw_hash
+            "malware_hash": self.mw_hash
         }
 
         self.healthyInstance = Instance(
             healthy_dockerfile, "healthy", self.sandbox_id, healthy_args)
         self.infectedInstance = Instance(
             infected_dockerfile, "infected", self.sandbox_id, infected_args)
-
 
     def __enter__(self):
         return self
@@ -95,11 +58,6 @@ class Controller:
         self.runInParallel(self.healthyInstance.execute_command,
                            self.infectedInstance.execute_command, command)
 
-    def terminate_command(self):
-        pass
-        # ToDo: implement a way to stop a running command e.g. ping google.com
-        # e.g. through ps -aux , find process running currently runniing command and kill
-
 
 class Instance:
     def __init__(self, dockerfile, infection_status, sandbox_id, build_arguments) -> None:
@@ -117,10 +75,45 @@ class Instance:
         self.order_count = 0
         self.current_path = ""
 
+        syscall_monitoring_str = """{"trace_session": {"name": "Default",
+            "points": ["""
+        for i in range(syscalls_to_monitor):
+            syscall_config = """
+            {{
+                "name": "syscall/sysno/{}/enter",
+                "context_fields": [
+                    "time",
+                    "container_id",
+                    "thread_id",
+                    "credentials",
+                    "cwd"
+                ]
+            }}""".format(i)
+            if i != 0:
+                syscall_monitoring_str = syscall_monitoring_str + "," + syscall_config
+            else:
+                syscall_monitoring_str = syscall_monitoring_str + syscall_config
+        syscall_monitoring_str = syscall_monitoring_str + "],"
+        sinks = """
+            "sinks": [
+                {{
+                    "name": "remote",
+                    "config": {{
+                    "endpoint": "/tmp/{}_{}_gvisor_events.sock",
+                    "retries": 3
+                }},
+            "ignore_setup_error": true
+        }}
+        ]
+    }}
+}}"""
+        sinks = sinks.format(self.infection_status, self.sandbox_id)
+
+        session = syscall_monitoring_str + sinks
         # Reconfigure the session
         session_path = self.infection_status+"/session.json"
         with open(session_path, "w+") as f:
-            f.write(session.format(self.infection_status, self.sandbox_id))
+            f.write(session)
 
         # set up docker container
         self.container = self.docker_client.containers.run(
@@ -130,15 +123,20 @@ class Instance:
         # set up docker networking
         self.ip = self.container.attrs['NetworkSettings']['IPAddress']
 
-        #Setup Malware to be ready to execute
-        if self.infection_status=="infected":
-            install_malware_cmd='wget -O malware.7z --post-data query="get_file&sha256_hash=' + str(build_arguments["malware_hash"]) + '" https://mb-api.abuse.ch/api/v1/'
+        # Setup Malware to be ready to execute
+        if self.infection_status == "infected":
+            install_malware_cmd = 'wget -O malware.7z --post-data query="get_file&sha256_hash=' + \
+                str(build_arguments["malware_hash"]) + \
+                '" https://mb-api.abuse.ch/api/v1/'
             unzip_malware_cmd = '7z e -pinfected malware.7z'
             deinstall_pkgs_cmd = 'apt-get uninstall -y unzip && apt-get uninstall -y wget'
 
-            self.container.exec_run(install_malware_cmd, workdir=self.current_path)
-            self.container.exec_run(unzip_malware_cmd, workdir=self.current_path)
-            self.container.exec_run(deinstall_pkgs_cmd, workdir=self.current_path)
+            self.container.exec_run(
+                install_malware_cmd, workdir=self.current_path)
+            self.container.exec_run(
+                unzip_malware_cmd, workdir=self.current_path)
+            self.container.exec_run(
+                deinstall_pkgs_cmd, workdir=self.current_path)
             print("Malware infection successful")
 
     def stop_instance(self) -> int:
@@ -146,7 +144,6 @@ class Instance:
             self.container.stop()
             self.container.remove(force=True)
             self.container = None
-
 
     def execute_command(self, command):
         message = {
@@ -167,7 +164,7 @@ class Instance:
                 self.current_path += wd
                 command = "bash -c " + command
                 if self.container.exec_run(command, workdir=self.current_path).exit_code:
-                    #Remove failed cd from path
+                    # Remove failed cd from path
                     end_index = len(wd)
                     self.current_path = self.current_path[:-end_index]
             console_output = self.container.exec_run(
