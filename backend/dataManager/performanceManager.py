@@ -142,10 +142,10 @@ class PerformanceManager(DataManager):
         current_ts = parser.parse(data["read"])
         current_usage = data["memory_stats"]["usage"]
         limit = data["memory_stats"]["limit"]
-
+        ram_percentage = current_usage/limit * 100
         self.ram_usage[sandbox_id][infected_status]["graph"].append(
             {"timestamp": current_ts.strftime(
-                "%m/%d/%Y, %H:%M:%S.%f%Z"), "pid_count": current_usage, "limit": limit}
+                "%m/%d/%Y, %H:%M:%S.%f%Z"), "ram_usage": ram_percentage}
         )
 
     def extract_cpu_percentages(self, sandbox_id, infected_status, data):
