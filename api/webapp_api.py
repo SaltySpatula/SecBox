@@ -218,6 +218,19 @@ def getDirs(data):
         print("No corresponding DB entry found for Directory Graph - ID: ", sandbox_id)
 
 
+@socketio.on("download pcap", namespace="/analysis")
+def download(data):
+    ID = data["ID"]
+    infected_status = data["infected_status"]
+    path = "/" + infected_status + "/" + ID + ".pcap"
+    with open(path, 'rb') as file:
+        message = {
+            "ID": ID,
+            "infected_status":infected_status,
+            "file": file
+        }
+        socketio.emit("pcap ready", message, namespace="/analysis", room=ID)
+
 @socketio.on("create report", namespace="/analysis")
 def create_report(data):
     print("creating report for", data["ID"])

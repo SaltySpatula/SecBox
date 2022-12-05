@@ -83,7 +83,6 @@ class systemCallMonitor:
     def runInParallel(self, fn1, fn2, arg1, arg2):
         fns = [fn1, fn2]
         args = [arg1, arg2]
-        procs = []
         for index in range(len(fns)):
             p = Process(target=fns[index], args=(args[index],))
             p.start()

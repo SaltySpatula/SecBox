@@ -1,7 +1,3 @@
-from http import client
-import sys
-import time
-# sys.path.append("/home/adrian/Desktop/HS2022/MasterPrject/SecBox/host/monitors")
 import socketio
 from multiprocessing import Process
 from controller import Controller
@@ -29,7 +25,6 @@ def find_by_id(sandbox_id):
 
 
 def stop_sandbox(json):
-    # ToDo: handle integer casting
     print(json)
     sandbox = find_by_id(json['ID'])
     print(sandbox)
@@ -85,7 +80,7 @@ class Sandbox:
         self.syscallMonitor = systemCallMonitor.systemCallMonitor(
             self.sandbox_id)
         self.syscallMonitor.start()
-        sleep(8)
+        sleep(6)
         self.controller = Controller(self.mw_hash, self.os, self.sandbox_id)
 
         self.perfMonitor = performanceMonitor.performanceMonitor(
