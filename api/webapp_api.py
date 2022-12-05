@@ -219,7 +219,7 @@ def getDirs(data):
 
 
 @socketio.on("download pcap", namespace="/analysis")
-def download(data):
+def download_pcap(data):
     ID = data["ID"]
     infected_status = data["infected_status"]
     path = "/" + infected_status + "/" + ID + ".pcap"
@@ -230,6 +230,19 @@ def download(data):
             "file": file
         }
         socketio.emit("pcap ready", message, namespace="/analysis", room=ID)
+
+@socketio.on("download syscalls", namespace="/analysis")
+def download_pcap(data):
+    ID = data["ID"]
+    infected_status = data["infected_status"]
+    path = "/" + infected_status + "/" + ID + ".csv"
+    with open(path, 'rb') as file:
+        message = {
+            "ID": ID,
+            "infected_status":infected_status,
+            "file": file
+        }
+        socketio.emit("csv ready", message, namespace="/analysis", room=ID)
 
 @socketio.on("create report", namespace="/analysis")
 def create_report(data):
