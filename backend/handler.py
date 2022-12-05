@@ -15,11 +15,6 @@ def start_process(sha, selected_os):
     return dictionary
 
 
-def get_available_os():
-    oss = ["ubuntu 22.04", "ubuntu 20.04", "ubuntu 18.04"]
-    return json.dumps(oss)
-
-
 def get_reports():
     reports = models.Report.objects()
     return reports
@@ -37,7 +32,7 @@ def get_available_images():
 
 def write_malware_to_DB():
     print("Looking for Malware out there...")
-    data = {'query': 'get_file_type', 'file_type': 'elf', 'limit': 1000}
+    data = {'query': 'get_file_type', 'file_type': 'elf', 'limit': 10000}
     url = "https://mb-api.abuse.ch/api/v1/"
     response = requests.post(url, data=data)
     malware_list = []
@@ -45,43 +40,52 @@ def write_malware_to_DB():
         response = response.json()
         malware_names = [(malware["name"], malware["type"]) for malware in models.Malware.objects]
         for malware in response["data"]:
-            if (malware["signature"], malware["file_type"]) not in malware_names and malware["signature"] is not None and "64" in malware["tags"]:
-                malware_dict = {
-                    "name": malware["signature"],
-                    "hash": malware["sha256_hash"],
-                    "url": "https://bazaar.abuse.ch/sample/" + str(malware["sha256_hash"]) + "/",
-                    "type": malware["file_type"],
-                    "tags": malware["tags"]
-                }
-                malware_list.append(malware_dict)
-                malware_names.append((malware_dict["name"], malware_dict["type"]))
+            if malware["tags"]:
+                if "32" in malware["tags"] or "64" in malware["tags"]:
+                    bitness = 64 if "64" in malware["tags"] else 32
+                    if (malware["signature"], malware["file_type"], bitness) not in malware_names and malware["signature"] is not None and ("64" in malware["tags"] or "32" in malware["tags"]):
+                        malware_dict = {
+                            "name": malware["signature"],
+                            "hash": malware["sha256_hash"],
+                            "url": "https://bazaar.abuse.ch/sample/" + str(malware["sha256_hash"]) + "/",
+                            "type": malware["file_type"],
+                            "bitness": bitness,
+                            "tags": malware["tags"]
+                        }
+                        malware_list.append(malware_dict)
+                        malware_names.append((malware_dict["name"], malware_dict["type"], bitness))
         malware_list.append({
             "name": "DarkRadiation",
             "hash": "89a694bea1970c2d66aec04c3e530508625d4b28cc6f3fc996e7ba99f1c37841",
             "url": "https://bazaar.abuse.ch/sample/" + "89a694bea1970c2d66aec04c3e530508625d4b28cc6f3fc996e7ba99f1c37841" + "/",
             "type": "sh",
-            "tags": ["DarkRadiation", "Ransomware", "sh"]
+            "bitness": 64,
+            "tags": ["DarkRadiation", "Ransomware", "sh", "64"]
         }
         )
     else:
         print("Invalid Request Response!")
 
-    data = {'query': 'get_file_type', 'file_type': 'sh', 'limit': 1000}
+    data = {'query': 'get_file_type', 'file_type': 'sh', 'limit': 10000}
     url = "https://mb-api.abuse.ch/api/v1/"
     response = requests.post(url, data=data)
     if response.status_code == 200:
         response = response.json()
         for malware in response["data"]:
-            if (malware["signature"], malware["file_type"]) not in malware_names and malware["signature"] is not None:
-                malware_dict = {
-                    "name": malware["signature"],
-                    "hash": malware["sha256_hash"],
-                    "url": "https://bazaar.abuse.ch/sample/" + str(malware["sha256_hash"]) + "/",
-                    "type": malware["file_type"],
-                    "tags": malware["tags"]
-                }
-                malware_list.append(malware_dict)
-                malware_names.append((malware_dict["name"], malware_dict["type"]))
+            if malware["tags"]:
+                if "32" in malware["tags"] or "64" in malware["tags"]:
+                    bitness = 64 if "64" in malware["tags"] else 32
+                    if (malware["signature"], malware["file_type"], bitness) not in malware_names and malware["signature"] is not None and ("64" in malware["tags"] or "32" in malware["tags"]):
+                        malware_dict = {
+                            "name": malware["signature"],
+                            "hash": malware["sha256_hash"],
+                            "url": "https://bazaar.abuse.ch/sample/" + str(malware["sha256_hash"]) + "/",
+                            "type": malware["file_type"],
+                            "bitness": bitness,
+                            "tags": malware["tags"]
+                        }
+                        malware_list.append(malware_dict)
+                        malware_names.append((malware_dict["name"], malware_dict["type"], bitness))
     else:
         print("Invalid Request Response!")
     for malware in malware_list:
@@ -90,6 +94,7 @@ def write_malware_to_DB():
             hash=malware["hash"],
             url=malware["url"],
             type=malware["type"],
+            bitness = malware["bitness"],
             tags=malware["tags"]
         )
         try:
@@ -99,15 +104,17 @@ def write_malware_to_DB():
     print("Done!")
 
 
-def get_available_malware():
+def get_available_malware(bitness):
     malware_list = []
     for malware in models.Malware.objects:
-        malware_dict = {
-            "name": malware["name"],
-            "hash": malware["hash"],
-            "url": malware["url"],
-            "type": malware["type"],
-            "tags": malware["tags"]
-        }
-        malware_list.append(malware_dict)
+        if malware["bitness"]==bitness:
+            malware_dict = {
+                "name": malware["name"],
+                "hash": malware["hash"],
+                "url": malware["url"],
+                "type": malware["type"],
+                "bitness": malware["bitness"],
+                "tags": malware["tags"]
+            }
+            malware_list.append(malware_dict)
     return malware_list

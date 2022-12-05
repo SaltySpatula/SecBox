@@ -7,7 +7,8 @@ class Malware(db().Document):
     hash = db().StringField(unique=True)
     url = db().StringField()
     type = db().StringField()
-    tags = db().ListField(db().StringField())
+    bitness = db().IntField()
+    tags = db().ListField(db().StringField()) 
 
     def __str__(self):
         return self.name

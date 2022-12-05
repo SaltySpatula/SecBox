@@ -43,6 +43,8 @@ app.config['MONGODB_SETTINGS'] = {
 db = MongoEngine()
 db.init_app(app)
 
+host_bitness = int(os.getenv('HOST_BITNESS'))
+
 print("Filling Malware DB...")
 handler.write_malware_to_DB()
 
@@ -308,7 +310,7 @@ def get_reports():
 @app.route("/getStartData")
 def get_start_data():
     oss = json.dumps(handler.get_available_images())
-    malwares = json.dumps(handler.get_available_malware())
+    malwares = json.dumps(handler.get_available_malware(host_bitness))
 
     return {"malwares": malwares, "oss": oss}
 

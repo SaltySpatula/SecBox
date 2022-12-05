@@ -6,6 +6,7 @@ import socketio
 import platform
 import json
 import requests
+import sys
 
 base_command = "bazel run examples/seccheck:server_cc"
 
@@ -17,6 +18,7 @@ class systemCallMonitor:
         self.client = None
         self.ps = []
         self.arch = platform.processor()
+        self.bitness = 64 if sys.maxsize > 2**32 else 32
 
     def run(self):
         p = Process(target=self.runInParallel, args=(
