@@ -18,7 +18,7 @@ from backend import handler, models
 from flask_mongoengine import MongoEngine
 from flask_login import LoginManager, login_user, current_user, UserMixin
 import logging
-import json 
+import json
 
 from dotenv import load_dotenv
 

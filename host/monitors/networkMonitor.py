@@ -38,10 +38,10 @@ class networkMonitor:
                 }
                 self.client[infected_status].emit('packet',
                                 json.dumps(message), namespace='/network')
+                self.client[infected_status].sleep(0)
                 self.last_emit[infected_status] = time.time()
                 self.buf[infected_status] = []
             if sys.getsizeof(self.buf[infected_status])>=2500:
-                sleep(0.2)
                 message = {
                     "ID": self.sandbox_id,
                     "infectedStatus": infected_status,
@@ -50,6 +50,8 @@ class networkMonitor:
                 }
                 self.client[infected_status].emit('packet',
                                 json.dumps(message), namespace='/network')
+                self.client[infected_status].sleep(0)
+                sleep(0.2)
                 self.last_emit[infected_status] = time.time()
                 self.buf[infected_status] = []
         return handle_packet
