@@ -26,14 +26,20 @@
       :data="this.data"
 
   ></ReadWriteGraph>
+    <RAMGraph
+      v-else-if="graph_title === 'RAM'"
+      :graph_title="graph_title"
+      :data="this.data"
+  >
+  </RAMGraph>
   <DirectoryGraph v-else-if="graph_title === 'Directory Graph'"
                   :graph_title="graph_title"
       :data="this.data"
       :render_healthy="this.render_healthy"
                   :render_both="this.render_both"
   >
-
   </DirectoryGraph>
+
 </template>
 
 <script>
@@ -42,10 +48,10 @@ import NetworkLayerGraph from "@/components/postAnalysisGraphs/NetworkLayerGraph
 import IPFrequencyGraph from "@/components/postAnalysisGraphs/IPFrequencyGraph";
 import ReadWriteGraph from "@/components/postAnalysisGraphs/ReadWriteGraph";
 import DirectoryGraph from "@/components/postAnalysisGraphs/DirectoryGraph";
-
+import RAMGraph from "@/components/postAnalysisGraphs/RAMGraph";
 export default {
   name: "PAGraphWrapper",
-  components:{CPUMemoryGraph, NetworkLayerGraph, IPFrequencyGraph, ReadWriteGraph, DirectoryGraph},
+  components:{CPUMemoryGraph, NetworkLayerGraph, IPFrequencyGraph, ReadWriteGraph, DirectoryGraph, RAMGraph},
   props:{render_healthy:Boolean, render_both:Boolean, socket: Object,graph_get:String, graph_title:String},
   created() {
 
@@ -58,8 +64,8 @@ export default {
         let parsed_data = JSON.parse(data)
         if (ref.graph_title === "CPU Usage"){
 
-          let healthy_data = ref.prepare_cpu_data(parsed_data["healthy"]["graph"])
-          let infected_data = ref.prepare_cpu_data(parsed_data["infected"]["graph"])
+          let healthy_data = ref.prepare_cpu_data(parsed_data["healthy"]["graph"], "cpu_percentage")
+          let infected_data = ref.prepare_cpu_data(parsed_data["infected"]["graph"], "cpu_percentage")
           ref.data={
             "healthy" : healthy_data,
             "infected" : infected_data
@@ -75,10 +81,17 @@ export default {
           ref.data = parsed_data
         }
         else if (ref.graph_title === "Directory Graph"){
-          let new_data = {"healthy": {"graph": {"/": {"n": 4185, "sd": [{"sys": {"n": 10, "sd": [{"devices": {"n": 13, "sd": []}}]}}]}}}, "infected": {"graph": {"/": {"n": 21528, "sd": [{"effective_uid:": {"n": 1518, "sd": []}}, {"var": {"n": 0, "sd": [{"lib": {"n": 0, "sd": [{"dpkg": {"n": 0, "sd": [{"tmp.ci": {"n": 179, "sd": []}}]}}]}}]}}, {"tmp": {"n": 2, "sd": []}}, {"sys": {"n": 10, "sd": [{"devices": {"n": 9, "sd": []}}]}}]}}}}
-          let healthy_data = ref.process_data(new_data["healthy"]["graph"])
-          let infected_data = ref.process_data(new_data["infected"]["graph"])
+          let healthy_data = ref.process_data(parsed_data["healthy"]["graph"])
+          let infected_data = ref.process_data(parsed_data["infected"]["graph"])
 
+          ref.data={
+            "healthy" : healthy_data,
+            "infected" : infected_data
+          }
+        }
+        else if (ref.graph_title === "RAM"){
+          let healthy_data = ref.prepare_cpu_data(parsed_data["healthy"]["graph"], "ram_usage")
+          let infected_data = ref.prepare_cpu_data(parsed_data["infected"]["graph"], "ram_usage")
           ref.data={
             "healthy" : healthy_data,
             "infected" : infected_data
@@ -89,11 +102,12 @@ export default {
     })
   },
   methods:{
-    prepare_cpu_data: function (new_data) {
+    prepare_cpu_data: function (new_data, key) {
       const a = []
       for (let i = 0; i < new_data.length; i++) {
             const time = new Date(new_data[i]["timestamp"])
-            const tuple = [time, new_data[i]["cpu_percentage"]]
+
+            const tuple = [time, new_data[i][key]]
             a.push(tuple)
         }
       return a

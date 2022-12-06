@@ -193,6 +193,16 @@ def getIPAddresses(data):
     except IndexError:
         print("No corresponding DB entry found for IP frequency - ID: ", sandbox_id)
 
+@socketio.on("get RAM", namespace="/analysis")
+def getRam(data):
+    sandbox_id = data["ID"]
+    try:
+        objects = json.loads(models.PerformanceModel.objects(ID__exact=sandbox_id).to_json())
+        response = json.loads(objects[0]["ram_usage"])
+        print(response)
+        socketio.emit("RAM", json.dumps(response), namespace="/analysis", room=objects[0]["ID"])
+    except IndexError:
+        print("No corresponding DB entry found for IP frequency - ID: ", sandbox_id)
 
 @socketio.on("get Read Write", namespace="/analysis")
 def getRWCount(data):
@@ -288,7 +298,9 @@ def create(data):
     emit("start feedback", json.dumps(feedback), namespace="/start")
 
     malware = models.Malware.objects(hash=data["SHA256"])[0]
-    p = models.Process(SHA256=data["SHA256"], ID=feedback["ID"], selected_os=data["OS"])
+    idx = feedback["ID"]
+    print(idx)
+    p = models.Process(SHA256=data["SHA256"], ID=idx, selected_os=data["OS"])
     p.malware = malware
     p.save()
 

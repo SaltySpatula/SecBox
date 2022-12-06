@@ -36,7 +36,7 @@ class Process(db().Document):
         }
 
 class PerformanceModel(Document):
-    ID = db().StringField()
+    ID = db().StringField(unique=True)
     pid_counts = db().StringField()
     cpu_percentages = db().StringField()
     ram_usage = db().StringField()
@@ -53,7 +53,7 @@ class PerformanceModel(Document):
         }
 
 class NetworkModel(Document):
-    ID = db().StringField()
+    ID = db().StringField(unique=True)
     layer_counts = db().StringField()
     IP_frequency = db().StringField()
 
@@ -65,7 +65,7 @@ class NetworkModel(Document):
         }
 
 class SystemCallModel(Document):
-    ID = db().StringField()
+    ID = db().StringField(unique=True)
     reads_vs_writes = db().StringField()
     directory_frequency = db().StringField()
 

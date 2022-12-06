@@ -3,15 +3,34 @@ SecBox tool; a lightweight, container based malware analysis sandbox.
 Requires Python version 3.9.
 
 ## Frontend Setup
-
+The frontend requires [Node 16.X](https://www.stewright.me/2022/01/tutorial-install-nodejs-16-on-ubuntu-20-04/) and
+ [Yarn](https://classic.yarnpkg.com/lang/en/docs/install/#debian-stable). To install the dependencies go to 
+```
+├── SecBox
+│   ├── app
+```           
+and run `npm run serve`.
 
 ## Backend Setup
-All dependencies required for the backend can be installed by running:
+The backend requires [python 3.9](https://www.python.org/downloads/release/python-390/) and [pip](https://pip.pypa.io/en/stable/installation/).
+All dependencies required for the backend can be installed in
 ```
-pip install -r requirements.txt
+├── SecBox
+│   ├── api
+``` 
+with `pip install -r requirements.txt`.
+
+To add a [mongo DB](https://www.mongodb.com/), a .env file in this directory must be configured:
+```
+DB_PORT= "27017"
+HOST_BITNESS= 64
+HOST="mongodb+srv://raf:"
+DB= "DB?"
 ```
 
-The backend can be run the following way, from the api directory:
+
+
+
 ```
 python3 webapp_api.py
 ```
