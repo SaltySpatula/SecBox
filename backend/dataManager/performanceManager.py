@@ -150,32 +150,18 @@ class PerformanceManager(DataManager):
 
     def extract_cpu_percentages(self, sandbox_id, infected_status, data):
         current_ts = parser.parse(data["stats"]["read"])
-        current_ns = data["stats"]["cpu_stats"]["cpu_usage"]["total_usage"]
 
-        if data["orderNo"] == 1:
-            self.cpu_percentages[sandbox_id][infected_status]["previous_ts"] = current_ts.strftime(
-                "%m/%d/%Y, %H:%M:%S.%f%Z")
-            self.cpu_percentages[sandbox_id][infected_status]["previous_ns"] = current_ns
-            self.cpu_percentages[sandbox_id][infected_status]["graph"].append(
-                {"timestamp": current_ts.strftime("%m/%d/%Y, %H:%M:%S.%f%Z"), "cpu_percentage": 0})
+        system_delta = data["stats"]['cpu_stats']['system_cpu_usage'] - data["stats"]['precpu_stats']['system_cpu_usage']
+        cpu_delta = data["stats"]['cpu_stats']['cpu_usage']['total_usage'] - data["stats"]['precpu_stats']['cpu_usage']['total_usage']
+        no_cores = data["stats"]['cpu_stats']['online_cpus']
+
+        if system_delta:
+            percentage = (cpu_delta/system_delta) * 100 * no_cores
         else:
-            previous_ns = self.cpu_percentages[sandbox_id][infected_status]["previous_ns"]
-            previous_ts = parser.parse(
-                self.cpu_percentages[sandbox_id][infected_status]["previous_ts"])
+            percentage = 0
 
-            system_delta = (previous_ts - current_ts).microseconds * 1000
-            cpu_delta = current_ns-previous_ns
-            if system_delta:
-                percentage = (cpu_delta/system_delta) * 100
-            else:
-                percentage = 0
+        self.cpu_percentages[sandbox_id][infected_status]["graph"].append({"timestamp": current_ts.strftime("%m/%d/%Y, %H:%M:%S.%f%Z"), "cpu_percentage": percentage})
 
-            self.cpu_percentages[sandbox_id][infected_status]["graph"].append(
-                {"timestamp": current_ts.strftime("%m/%d/%Y, %H:%M:%S.%f%Z"), "cpu_percentage": percentage})
-
-            self.cpu_percentages[sandbox_id][infected_status]["previous_ts"] = current_ts.strftime(
-                "%m/%d/%Y, %H:%M:%S.%f%Z")
-            self.cpu_percentages[sandbox_id][infected_status]["previous_ns"] = current_ns
 
     def extract_packet_count(self, sandbox_id, infected_status, data):
         current_ts = parser.parse(
