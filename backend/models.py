@@ -81,7 +81,7 @@ class Report(Document):
     ID = db().StringField(unique=True)
     title = db().StringField(max_lenth=200, required=True)
     date = db().StringField()  # 1 to 9
-    malware = db().ReferenceField(Malware)
+    malware = db().StringField()
     selected_graphs = db().ListField()
 
     def __str__(self):

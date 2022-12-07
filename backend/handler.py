@@ -17,6 +17,11 @@ def start_process(sha, selected_os):
 
 def get_reports():
     reports = models.Report.objects()
+    try:
+        for report in reports:
+            report["malware"] = json.loads(report["malware"])
+    except:
+        print("no malware found")
     return reports
 
 

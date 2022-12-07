@@ -1,6 +1,7 @@
 import sys
 from datetime import datetime
 import os
+
 cwd = os.getcwd()
 path = cwd[:-4]
 sys.path.append(path)
@@ -9,7 +10,7 @@ from backend.dataManager.syscallManager import SysCallManager
 from backend.dataManager.performanceManager import PerformanceManager
 from backend.dataManager.networkManager import NetworkManager
 from backend.dataManager.cmdOutManager import CmdOutManager
-from flask import Flask, session, request, abort
+from flask import Flask, session, request, abort, send_file
 from flask_socketio import SocketIO
 from flask_socketio import send, emit, join_room, leave_room
 from flask_cors import CORS
@@ -83,6 +84,7 @@ def login():
     login_user(User(username))
 
     return ''
+
 
 # TODO: Remove
 @socketio.on("receive data")
@@ -193,16 +195,17 @@ def getIPAddresses(data):
     except IndexError:
         print("No corresponding DB entry found for IP frequency - ID: ", sandbox_id)
 
+
 @socketio.on("get RAM", namespace="/analysis")
 def getRam(data):
     sandbox_id = data["ID"]
     try:
         objects = json.loads(models.PerformanceModel.objects(ID__exact=sandbox_id).to_json())
         response = json.loads(objects[0]["ram_usage"])
-        print(response)
         socketio.emit("RAM", json.dumps(response), namespace="/analysis", room=objects[0]["ID"])
     except IndexError:
         print("No corresponding DB entry found for IP frequency - ID: ", sandbox_id)
+
 
 @socketio.on("get Read Write", namespace="/analysis")
 def getRWCount(data):
@@ -228,31 +231,19 @@ def getDirs(data):
         print("No corresponding DB entry found for Directory Graph - ID: ", sandbox_id)
 
 
-@socketio.on("download pcap", namespace="/analysis")
-def download_pcap(data):
-    ID = data["ID"]
-    infected_status = data["infected_status"]
-    path = "/" + infected_status + "/" + ID + ".pcap"
-    with open(path, 'rb') as file:
-        message = {
-            "ID": ID,
-            "infected_status":infected_status,
-            "file": file
-        }
-        socketio.emit("pcap ready", message, namespace="/analysis", room=ID)
+@app.route('/report/download_pcap/<identification>/<infection>', methods=['GET'])
+def fetch_pcap(identification, infection):
+    p = infection + "/" + identification + ".pcap"
+    response = send_file(p)
+    return response
 
-@socketio.on("download syscalls", namespace="/analysis")
-def download_pcap(data):
-    ID = data["ID"]
-    infected_status = data["infected_status"]
-    path = "/" + infected_status + "/" + ID + ".csv"
-    with open(path, 'rb') as file:
-        message = {
-            "ID": ID,
-            "infected_status":infected_status,
-            "file": file
-        }
-        socketio.emit("csv ready", message, namespace="/analysis", room=ID)
+
+@app.route('/report/download_syscalls/<identification>/<infection>', methods=['GET'])
+def fetch_syscalls(identification, infection):
+    p = infection + "/" + identification + ".csv"
+    response = send_file(p)
+    return response
+
 
 @socketio.on("create report", namespace="/analysis")
 def create_report(data):
@@ -261,6 +252,9 @@ def create_report(data):
 
     report = models.Report(ID=data["ID"], selected_graphs=data["selected_graphs"], title="Title",
                            date=date.strftime("%m/%d/%Y, %H:%M"))
+
+    obj = models.Process.objects(ID__exact=data["ID"])[0]
+    report.malware = json.dumps(obj["malware"].to_json())
     report.save()
 
 
@@ -271,6 +265,7 @@ def get_report(data):
     try:
         objects = json.loads(models.Report.objects(ID__exact=sandbox_id).to_json())
         response = objects[0]
+        response["malware"] = json.loads(response["malware"])
         socketio.emit("send report", json.dumps(response), namespace="/report", room=objects[0]["ID"])
     except IndexError:
         print("No report found")
@@ -299,7 +294,6 @@ def create(data):
 
     malware = models.Malware.objects(hash=data["SHA256"])[0]
     idx = feedback["ID"]
-    print(idx)
     p = models.Process(SHA256=data["SHA256"], ID=idx, selected_os=data["OS"])
     p.malware = malware
     p.save()
@@ -339,6 +333,8 @@ def create():
     start(feedback)
     return feedback
 """
+
+
 @app.route("/getReports")
 def get_reports():
     reports = handler.get_reports()

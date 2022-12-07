@@ -27,6 +27,38 @@
               </v-icon>
               Save & Exit
        </v-btn>
+  <v-spacer></v-spacer>
+  <v-card style="padding:10px">
+    <v-title>Download Menu</v-title>
+     <v-switch
+      v-model="download_files"
+      color="primary"
+      label="PCAP Healthy"
+      value="PCAP Healthy"
+      hide-details
+    ></v-switch>
+    <v-switch
+      v-model="download_files"
+      color="primary"
+      label="PCAP Infected"
+      value="PCAP Infected"
+      hide-details
+    ></v-switch>
+    <v-btn
+        style="margin-top: 1em"
+                block
+              large
+              color="secondary"
+              dark
+        @click="this.downloadPCAP('infected');this.downloadSyscalls('infected')"
+            >
+              <v-icon              >
+                mdi-download
+              </v-icon>
+              Download Files
+       </v-btn>
+    </v-card>
+
 </v-navigation-drawer>
   <v-container align="left" class="bg-deep-purple-lighten-4" >
     <v-text-field
@@ -51,7 +83,7 @@
 <script>
 import io from "socket.io-client";
 import PAGraphWrapper from "@/components/PAGraphWrapper";
-
+import download from "downloadjs"
 export default {
   name: "ReportPage",
   components:{PAGraphWrapper},
@@ -70,24 +102,35 @@ export default {
     this.socket_analysis.emit('join analysis room', {"room": this.$route.params.id}, function () {});
   },
   data: () => ({
+    download_files : [],
       render_healthy : true,
     loading : true,
     selected_graphs : [],
     title:""
   }),
   methods: {
-    getDate:function (){
-      const date = new Date();
-
-      let day = date.getDate();
-      let month = date.getMonth() + 1;
-      let year = date.getFullYear();
-      console.log(day, month, year)
-    },
     saveGraph:function(){
       //console.log("updating", this.title, this.selected_graphs)
       this.socket.emit("update report", {ID: this.$route.params.id, title:this.title, selected_graphs:this.selected_graphs})
-    }
+    },
+    downloadPCAP: function(infected_status){
+      let id = this.$route.params.id
+      fetch("http://localhost:5000/report/download_pcap/"+id+"/"+infected_status)
+          .then(res=>{
+            return res.blob();
+        }).then(blob=>{
+            download(blob, "PCAP_"+infected_status+"_"+ id+".pcap")
+        }).catch(err=>console.log(err));
+    },
+    downloadSyscalls: function(infected_status){
+      let id = this.$route.params.id
+      fetch("http://localhost:5000/report/download_syscalls/"+id+"/"+infected_status)
+          .then(res=>{
+            return res.blob();
+        }).then(blob=>{
+            download(blob, "syscalls_"+infected_status+"_"+ id+".csv")
+        }).catch(err=>console.log(err));
+  }
   }
 
 }

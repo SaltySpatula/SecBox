@@ -19,7 +19,6 @@ export default {
   created() {
     let ref = this
     this.socket.on("layer_counts_graph", function (data) {
-      console.log(data)
       const hd = data["healthy"]["graph"]
       const infd = data["infected"]["graph"]
 

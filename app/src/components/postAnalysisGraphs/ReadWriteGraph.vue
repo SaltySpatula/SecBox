@@ -12,7 +12,6 @@ export default {
   name: "RWGraph",
   props: {graph_title: String, data: Object,},
   created() {
-    console.log(this.data)
   },
   data: function () {
     return {
