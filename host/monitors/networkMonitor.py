@@ -33,7 +33,6 @@ class networkMonitor:
                 self.infected_buf.append(output)
                 buffer = self.infected_buf
             if self.last_emit[infected_status] + 1 <= time.time():
-                print(infected_status + str(len(buffer)))
                 message = {
                     "ID": self.sandbox_id,
                     "infectedStatus": infected_status,
@@ -44,14 +43,12 @@ class networkMonitor:
                     client.emit('packet',
                                     json.dumps(message), namespace='/network')
                     self.last_emit[infected_status] = time.time()
-                print("packets emitted time" + infected_status)
                 self.order_count = self.order_count+1
                 if infected_status=="healthy":
                     self.healthy_buf = []
                 else:
                     self.infected_buf = []
             elif sys.getsizeof(buffer)>=1000:
-                print(infected_status + str(len((buffer))) + "size")
                 message = {
                     "ID": self.sandbox_id,
                     "infectedStatus": infected_status,
@@ -62,7 +59,6 @@ class networkMonitor:
                     client.emit('packet',
                                 json.dumps(message), namespace='/network')
                     self.last_emit[infected_status] = time.time()
-                print("packets emitted size" + infected_status)
                 self.order_count = self.order_count+1
                 client.sleep(0)
                 sleep(0.1)

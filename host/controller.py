@@ -4,7 +4,7 @@ import json
 import socketio
 import time
 
-syscalls_to_monitor = 2
+syscalls_to_monitor = 384
 
 healthy_dockerfile = "healthy"
 infected_dockerfile = "infected"

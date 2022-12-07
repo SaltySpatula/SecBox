@@ -2,6 +2,7 @@ import os
 from subprocess import Popen, PIPE, STDOUT
 from multiprocessing import Process
 import json
+import time
 import socketio
 import platform
 import json
@@ -60,6 +61,7 @@ class systemCallMonitor:
         requests.post("http://localhost:5000/syscall", json=json.dumps(message))
         #self.client.emit('sysCall', json.dumps(message), namespace='/sysCall')
         print("Syscall Logs emitted")
+        time.sleep(10)
         os.remove("infected" + "/" + self.sandbox_id + "_syscalls")
         os.remove("healthy" + "/" + self.sandbox_id + "_syscalls")
     

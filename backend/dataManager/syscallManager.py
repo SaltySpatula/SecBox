@@ -53,22 +53,30 @@ class SysCallManager(DataManager):
 
     def process_syscall(self, syscall, architecture):
         components = syscall.split()
-
         if not syscall.__contains__("sysno"):
             components.insert(16, "sysno:")
             components.insert(17, "0")
         args = []
-        time = int(components[5])
-        thread = int(components[7])
-        sysno = int(components[17])
-        sysname = self.get_name_from_no(sysno, architecture)
-        container_id = components[9]
-        cwd = components[14]
-        cred = str(components[11:13]).replace(",", " ")
 
-        for i in range(len(components[16:])):
+        time_index = components.index("time_ns:") + 1
+        thread_index = components.index("thread_id:") + 1
+        sysno_index = components.index("sysno:") + 1
+        container_id_index = components.index("container_id:") + 1
+        cwd_index = components.index("cwd:") + 1
+
+        credentials_indexes = [components[container_id_index:cwd_index].index("{"), components[container_id_index:cwd_index].index("}")]
+
+        time = int(components[time_index])
+        thread = int(components[thread_index])
+        sysno = int(components[sysno_index])
+        sysname = self.get_name_from_no(sysno, architecture)
+        container_id = components[container_id_index]
+        cwd = components[cwd_index]
+        cred = str(components[credentials_indexes[0]:credentials_indexes[1]]).replace(",", " ")
+
+        for i in range(len(components[sysno_index:])):
             if i % 2 == 1:
-                args.append(components[16:][i])
+                args.append(components[sysno_index:][i])
 
         processed_system_call = {
                 "time_ns": time,
