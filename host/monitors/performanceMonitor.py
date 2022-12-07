@@ -32,6 +32,7 @@ class performanceMonitor:
                 "stats": stats
             }
             self.client.emit('stats', json.dumps(message), namespace='/performance')
+            self.client.sleep(0)
 
     def run(self):
         p = Process(target=self.runInParallel, args=(

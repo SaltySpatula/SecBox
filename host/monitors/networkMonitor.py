@@ -1,5 +1,6 @@
 from subprocess import Popen, PIPE, STDOUT
 from multiprocessing import Process
+import threading
 import json
 from scapy.all import *
 import socketio
@@ -9,56 +10,72 @@ import time
 from time import sleep
 import sys
 
-
-
 class networkMonitor:
     def __init__(self, sandbox_id, controller) -> None:
         self.sandbox_id = sandbox_id
-        self.client = {"healthy": None, "infected": None}
         self.controller = controller
         self.ps = []
         self.order_count = 0
-        self.buf = {"healthy": [], "infected": []}
+        self.infected_buf = []
+        self.healthy_buf = []
         self.last_emit = {"healthy": time.time(), "infected": time.time()}
 
-    def handler_wrap(self, infected_status):
+    def handler_wrap(self, infected_status, client, lock):
         def handle_packet(packet):
-            self.order_count = self.order_count+1
             f = io.StringIO()
             with contextlib.redirect_stdout(f):
                 export_object(packet)
             output = f.getvalue()
-            self.buf[infected_status].append(output)
+            if infected_status=="healthy":
+                self.healthy_buf.append(output)
+                buffer = self.healthy_buf
+            else:
+                self.infected_buf.append(output)
+                buffer = self.infected_buf
             if self.last_emit[infected_status] + 1 <= time.time():
+                print(infected_status + str(len(buffer)))
                 message = {
                     "ID": self.sandbox_id,
                     "infectedStatus": infected_status,
                     "orderNo": self.order_count,
-                    "packets": self.buf[infected_status]
+                    "packets": buffer
                 }
-                self.client[infected_status].emit('packet',
-                                json.dumps(message), namespace='/network')
-                self.client[infected_status].sleep(0)
-                self.last_emit[infected_status] = time.time()
-                self.buf[infected_status] = []
-            if sys.getsizeof(self.buf[infected_status])>=2500:
+                with lock:
+                    client.emit('packet',
+                                    json.dumps(message), namespace='/network')
+                    self.last_emit[infected_status] = time.time()
+                print("packets emitted time" + infected_status)
+                self.order_count = self.order_count+1
+                if infected_status=="healthy":
+                    self.healthy_buf = []
+                else:
+                    self.infected_buf = []
+            elif sys.getsizeof(buffer)>=1000:
+                print(infected_status + str(len((buffer))) + "size")
                 message = {
                     "ID": self.sandbox_id,
                     "infectedStatus": infected_status,
                     "orderNo": self.order_count,
-                    "packets": self.buf[infected_status]
+                    "packets": buffer
                 }
-                self.client[infected_status].emit('packet',
+                with lock:
+                    client.emit('packet',
                                 json.dumps(message), namespace='/network')
-                self.client[infected_status].sleep(0)
-                sleep(0.2)
-                self.last_emit[infected_status] = time.time()
-                self.buf[infected_status] = []
+                    self.last_emit[infected_status] = time.time()
+                print("packets emitted size" + infected_status)
+                self.order_count = self.order_count+1
+                client.sleep(0)
+                sleep(0.1)
+                if infected_status=="healthy":
+                    self.healthy_buf = []
+                else:
+                    self.infected_buf = []
         return handle_packet
 
     def monitoring_process(self, infected_status):
-        self.client[infected_status] = socketio.Client()
-        self.client[infected_status].connect('http://localhost:5000', namespaces='/network')
+        client = socketio.Client()
+        client.connect('http://localhost:5000', namespaces='/network')
+        lock = threading.Lock()
         sleep(2)
         print("network monitor started")
         instance = None
@@ -68,7 +85,7 @@ class networkMonitor:
             instance = self.controller.infectedInstance
         print("sniffing for " + "host "+str(instance.ip))
         sniff(iface="docker0", filter="host "+str(instance.ip),
-              prn=self.handler_wrap(infected_status))
+              prn=self.handler_wrap(infected_status, client, lock))
 
     def run(self):
         p = Process(target=self.runInParallel, args=(
