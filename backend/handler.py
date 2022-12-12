@@ -77,22 +77,6 @@ def write_malware_to_DB():
             "tags": ["Monti", "Ransomware", "elf", "64"]
         })
         malware_list.append({
-            "name": "BlackBasta",
-            "hash": "0d6c3de5aebbbe85939d7588150edf7b7bdc712fceb6a83d79e65b6f79bfc2ef",
-            "url": "https://bazaar.abuse.ch/sample/" + "0d6c3de5aebbbe85939d7588150edf7b7bdc712fceb6a83d79e65b6f79bfc2ef" + "/",
-            "type": "elf",
-            "bitness": 64,
-            "tags": ["BlackBasta", "Ransomware", "elf", "64"]
-        })
-        malware_list.append({
-            "name": "LockBit",
-            "hash": "2c14356e0a6a9019c50b069e88fe58abbbc3c93451a74e3e66f8c1a2a831e9ba",
-            "url": "https://bazaar.abuse.ch/sample/" + "2c14356e0a6a9019c50b069e88fe58abbbc3c93451a74e3e66f8c1a2a831e9ba" + "/",
-            "type": "elf",
-            "bitness": 64,
-            "tags": ["LockBit", "Ransomware", "elf", "64"]
-        })
-        malware_list.append({
             "name": "CoinMiner",
             "hash": "0e79ec7b00c14a4c576803a1fd2e8dd3ea077e4e98dafa77d26c0f9d6f27f0c9",
             "url": "https://bazaar.abuse.ch/sample/" + "0e79ec7b00c14a4c576803a1fd2e8dd3ea077e4e98dafa77d26c0f9d6f27f0c9" + "/",
