@@ -35,7 +35,7 @@ export default {
     return {
       healthy_data:[{
       type: "sunburst",
-        hovertext:[this.data["infected"].root_value],
+        hovertext:[this.data["healthy"].root_value],
         hoverinfo:["label+text"],
       labels: this.data["healthy"].labels,
       parents: this.data["healthy"].parents,
