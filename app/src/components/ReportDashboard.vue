@@ -20,13 +20,13 @@
 
       <v-btn
           style="margin-left:auto;margin-right:0;"
-        :icon="show ? 'mdi-chevron-up' : 'mdi-chevron-down'"
-        @click="show = !show"
+        :icon="report.show ? 'mdi-chevron-up' : 'mdi-chevron-down'"
+        @click="report.show = !report.show"
       ></v-btn>
     </v-card-actions>
 
     <v-expand-transition>
-      <div v-show="show">
+      <div v-show="report.show">
         <MalwareCard :malware="report.malware"></MalwareCard>
       </div>
     </v-expand-transition>
@@ -49,7 +49,6 @@ export default {
   data: () => ({
       reports:null,
     malware:null,
-    show:false
   }),
   created: async function(){
         const gResponse = await fetch("http://localhost:5000/getReports");
@@ -57,6 +56,7 @@ export default {
         this.reports = obj["reports"]
         for (let i=0; i<this.reports.length;i++){
           this.reports[i].malware = JSON.parse(this.reports[i].malware)
+          this.reports[i].show = false
         }
     },
   methods:{

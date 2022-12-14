@@ -140,7 +140,13 @@ def join(data):
     room = data["room"]
     join_room(room)
     print("Client Connected to room", room)
-    emit("Successfully connected to live analysis room " + room, to=room)
+    try:
+        process = models.Process.objects(ID__exact=data["room"])[0]
+        malware = process["malware"].to_json()
+
+        socketio.emit("Malware of Process", json.dumps(malware), namespace="/live", room=data["room"])
+    except IndexError:
+        print("No corresponding DB entry found for Process:", data["room"])
 
 
 @socketio.on('join analysis room', namespace="/analysis")

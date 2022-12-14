@@ -29,6 +29,8 @@
         </v-card>
       </v-col>
       <v-col cols="12" md="6">
+
+
         <v-card class="pa-0 bg-deep-purple-lighten-3">
           <LiveTerminal :combined_cli="this.combined_cli" :current_id="this.$route.params.id"
                         :socket="this.socket"></LiveTerminal>
@@ -65,6 +67,17 @@
         </v-card>
       </v-col>
     </v-row>
+    <v-lazy
+      v-model="isActive"
+      :options="{
+        threshold: .8
+      }"
+      min-height="200"
+      transition="fade-transition"
+    >
+              <MalwareCard v-if="this.malware" :malware="this.malware"></MalwareCard>
+
+    </v-lazy>
   </v-container>
 </template>
 
@@ -76,13 +89,15 @@ import PacketGraph from "@/components/graphs/PacketGraph";
 import PIDCountGraph from "@/components/graphs/PIDCountGraph";
 import ProtocolGraph from "@/components/graphs/ProtocolGraph";
 import io from "socket.io-client";
-
+import MalwareCard from "@/components/MalwareCard";
 export default {
   name: "LiveAnalysis",
-  components: {LiveTerminal, PacketGraph, PIDCountGraph, CPUPercentages: CPUPercentages, ProtocolGraph},
+  components: {MalwareCard, LiveTerminal, PacketGraph, PIDCountGraph, CPUPercentages: CPUPercentages, ProtocolGraph},
   data: () => ({
     loading: true,
     combined_cli: true,
+    malware:null,
+    isActive:false
   }),
   props: {},
   created() {
@@ -94,10 +109,14 @@ export default {
       // console.log("joined ", data);
     });
     if (ref.loading){
-        this.socket.on("pid_graph", function (){
+        this.socket.on("cpu_percentages_graph", function (){
           ref.loading = false
         })
       }
+        this.socket.on("Malware of Process", function (data) {
+      ref.malware = JSON.parse(data)
+      console.log(ref.malware.name)
+    })
 
   },
   methods: {
