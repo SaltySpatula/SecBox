@@ -71,8 +71,23 @@
               <v-icon              >
                 mdi-content-save
               </v-icon>
-              Save & Exit
+              Save
        </v-btn>
+  <router-link to="/">
+  <v-btn
+        style="margin-top: 1em"
+                block
+              large
+              color="error"
+              dark
+        @click="this.saveGraph()"
+            >
+              <v-icon              >
+                mdi-exit-to-app
+              </v-icon>
+              Exit
+       </v-btn>
+    </router-link>
   <div style="position: absolute;
                 bottom: 0;width:300px">
   <MalwareCard
@@ -110,6 +125,8 @@ export default {
   name: "ReportPage",
   components:{PAGraphWrapper, MalwareCard},
   created(){
+
+
     this.socket = io("ws://localhost:5000/report");
     const ref = this
     this.socket.emit('get report', {"ID": this.$route.params.id})
@@ -130,13 +147,15 @@ export default {
     loading : true,
     selected_graphs : [],
     malware : null,
-    title:""
+    title:"",
+    unsavedChanges : false
   }),
   methods: {
     saveGraph:function(){
       //console.log("updating", this.title, this.selected_graphs)
       this.socket.emit("update report", {ID: this.$route.params.id, title:this.title, selected_graphs:this.selected_graphs})
     },
+
     downloadManager:function(){
       if (this.download_files){
       for (let i=0;i<this.download_files.length;i++){
