@@ -342,6 +342,7 @@ def handle_cmdline(data):
 
 @socketio.on('packet', namespace='/network')
 def handle_networkpacket(data):
+    print("Packet received")
     network_manager.handle_message(json.loads(data))
 
 
