@@ -35,6 +35,8 @@ export default {
     return {
       healthy_data:[{
       type: "sunburst",
+        hovertext:[this.data["infected"].root_value],
+        hoverinfo:["label+text"],
       labels: this.data["healthy"].labels,
       parents: this.data["healthy"].parents,
       values:  this.data["healthy"].values,
@@ -43,6 +45,8 @@ export default {
       marker: {line: {width: 2}},
 }],infected_data:[{
       type: "sunburst",
+        hovertext:[this.data["infected"].root_value],
+        hoverinfo:["label+text"],
       labels: this.data["infected"].labels,
       parents: this.data["infected"].parents,
       values:  this.data["infected"].values,
@@ -52,7 +56,7 @@ export default {
 }],
       layout_healthy:{
   margin: {l: 0, r: 0, b: 0, t: 0},
-
+  extendsunburstcolorway: true,
   height: 315,
         plot_bgcolor: 'rgba(0,0,0,0)',
     paper_bgcolor: 'rgba(0,0,0,0)',

@@ -159,11 +159,13 @@ export default {
       return {labels:labels, parents:parents, values:values}
     },
     process_data: function (graph_data) {
-      const labels = ["root", "/"]
-      const parents = ["", "root"]
-      const values = [0, graph_data["/"]["n"]]
+      const labels = ["/"]
+      const parents = [""]
+      const values = [0]
       const to_iterate = graph_data["/"]
-      return this.iterate_over_sd("root", to_iterate, labels, parents, values)
+      let data = this.iterate_over_sd("/", to_iterate, labels, parents, values)
+      data["root_value"] = graph_data["/"]["n"]
+      return data
     },
   },
   data:function(){
