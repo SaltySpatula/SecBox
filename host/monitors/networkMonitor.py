@@ -22,7 +22,6 @@ class networkMonitor:
 
     def handler_wrap(self, infected_status, client, lock):
         def handle_packet(packet):
-            print("packet sniffed" + str(infected_status))
             f = io.StringIO()
             with contextlib.redirect_stdout(f):
                 export_object(packet)
@@ -36,15 +35,12 @@ class networkMonitor:
                         "orderNo": self.order_count,
                         "packets": self.healthy_buf
                     }
-                    print("trying to get lock..."  + str(infected_status))
                     try:
                         with lock:
-                            print("Got Lock" + str(infected_status))
                             client.emit('packet',
                                             json.dumps(message), namespace='/network')
                             self.last_emit[infected_status] = time.time()
                             self.order_count = self.order_count+1
-                            print(str(self.order_count) + str(infected_status)+ " packets emitted: " + str(len(message["packets"])))
                         client.sleep(0)
                         self.healthy_buf = []
                     except socketio.exceptions.BadNamespaceError:
@@ -57,15 +53,12 @@ class networkMonitor:
                         "orderNo": self.order_count,
                         "packets": self.healthy_buf
                     }
-                    print("trying to get lock..." + str(infected_status))
                     try:
                         with lock:
-                            print("Got Lock" + str(infected_status))
                             client.emit('packet',
                                         json.dumps(message), namespace='/network')
                             self.last_emit[infected_status] = time.time()
                             self.order_count = self.order_count+1
-                            print(str(self.order_count) + str(infected_status)+ " packets emitted: " + str(len(message["packets"])))
                         self.healthy_buf = []
                         client.sleep(0)
                         sleep(0.2)
@@ -81,15 +74,12 @@ class networkMonitor:
                         "orderNo": self.order_count,
                         "packets": self.infected_buf
                     }
-                    print("trying to get lock..." + str(infected_status))
                     try:
                         with lock:
-                            print("Got Lock" + str(infected_status))
                             client.emit('packet',
                                         json.dumps(message), namespace='/network')
                             self.last_emit[infected_status] = time.time()
                             self.order_count = self.order_count+1
-                            print(str(self.order_count) + str(infected_status)+ " packets emitted: " + str(len(message["packets"])))
                         self.infected_buf = []
                         client.sleep(0)
                     except socketio.exceptions.BadNamespaceError:
@@ -102,15 +92,12 @@ class networkMonitor:
                         "orderNo": self.order_count,
                         "packets": self.infected_buf
                     }
-                    print("trying to get lock..." + str(infected_status))
                     try:
                         with lock:
-                            print("Got Lock " + str(infected_status))
                             client.emit('packet',
                                         json.dumps(message), namespace='/network')
                             self.last_emit[infected_status] = time.time()
                             self.order_count = self.order_count+1
-                            print(str(self.order_count) + str(infected_status)+ " packets emitted: " + str(len(message["packets"])))
                         self.infected_buf = []
                         client.sleep(0)
                         sleep(0.2)
