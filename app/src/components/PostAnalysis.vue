@@ -28,10 +28,7 @@
         ></v-list-item>
       </v-list-group>
     </v-list>
-    <v-container fluid style="position: absolute;bottom:0;">
-      <MalwareCard
-          malwareName="test"
-      ></MalwareCard>
+    <v-container fluid >
       <v-btn
           style="margin-top: 1em"
           block
@@ -59,6 +56,13 @@
       </v-btn>
 
     </v-container>
+    <div style="position: absolute;
+                bottom: 0;width:400px">
+  <MalwareCard
+          v-if="this.malware"
+          :malware="this.malware"
+      ></MalwareCard>
+    </div>
   </v-navigation-drawer>
   <v-container fluid>
     <v-row>
@@ -100,10 +104,16 @@ export default {
     this.socket.emit('join analysis room', {"room": this.$route.params.id}, function () {
       // console.log("joined ", data);
     });
+    const ref = this
+    this.socket.on("Malware of Process", function (data) {
+      ref.malware = JSON.parse(data)
+      console.log(ref.malware.name)
+    })
   },
   data: () => ({
     open: [],
     selected_graphs: [],
+    malware : null,
     render_healthy : true,
     graph_data: {
       "network_graphs": {

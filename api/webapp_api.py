@@ -146,6 +146,13 @@ def join(data):
 @socketio.on('join analysis room', namespace="/analysis")
 def join_analysis(data):
     join_room(data["room"])
+    try:
+        process = models.Process.objects(ID__exact=data["room"])[0]
+        malware = process["malware"].to_json()
+
+        socketio.emit("Malware of Process", json.dumps(malware), namespace="/analysis", room=data["room"])
+    except IndexError:
+        print("No corresponding DB entry found for Process:", data["room"])
 
 
 @socketio.on('leave room', namespace='/live')
@@ -183,6 +190,18 @@ def getNetworkLayers(data):
     except IndexError:
         print("No corresponding DB entry found for Network Layer - ID:", sandbox_id)
 
+"""
+@socketio.on("get Malware of Process")
+def get_malware_of_process(data):
+    sandbox_id = data["ID"]
+    try:
+        process = models.Process.objects(ID__exact=data["ID"])[0]
+        malware = json.dumps(process["malware"].to_json())
+
+        socketio.emit("Malware of Process", json.dumps(malware), namespace="/analysis", room=data["ID"])
+    except IndexError:
+        print("No corresponding DB entry found for Process:", sandbox_id)
+"""
 
 @socketio.on("get IP Addresses", namespace="/analysis")
 def getIPAddresses(data):

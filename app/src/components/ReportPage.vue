@@ -14,22 +14,9 @@
         width="300"
         class="bg-deep-purple-lighten-1"
       >
-  <v-btn
-        style="margin-top: 1em"
-                block
-              large
-              color="primary"
-              dark
-        @click="this.saveGraph()"
-            >
-              <v-icon              >
-                mdi-content-save
-              </v-icon>
-              Save & Exit
-       </v-btn>
-  <v-spacer></v-spacer>
-  <v-card style="padding:10px">
-    <v-title>Download Menu</v-title>
+
+  <v-card class="bg-deep-purple-lighten-2" style="padding:10px">
+    <v-card-title>Download Files</v-card-title>
      <v-switch
       v-model="download_files"
       color="primary"
@@ -44,13 +31,28 @@
       value="PCAP Infected"
       hide-details
     ></v-switch>
+        <v-switch
+      v-model="download_files"
+      color="primary"
+      label="SysCalls Healthy"
+      value="SysCalls Healthy"
+      hide-details
+    ></v-switch>
+            <v-switch
+      v-model="download_files"
+      color="primary"
+      label="SysCalls Infected"
+      value="SysCalls Infected"
+      hide-details
+    ></v-switch>
     <v-btn
         style="margin-top: 1em"
                 block
               large
-              color="secondary"
+              color="primary"
               dark
-        @click="this.downloadPCAP('infected');this.downloadSyscalls('infected')"
+        :disabled="this.download_files.length === 0"
+        @click="this.downloadManager()"
             >
               <v-icon              >
                 mdi-download
@@ -58,7 +60,26 @@
               Download Files
        </v-btn>
     </v-card>
-
+  <v-btn
+        style="margin-top: 1em"
+                block
+              large
+              color="primary"
+              dark
+        @click="this.saveGraph()"
+            >
+              <v-icon              >
+                mdi-content-save
+              </v-icon>
+              Save & Exit
+       </v-btn>
+  <div style="position: absolute;
+                bottom: 0;width:300px">
+  <MalwareCard
+          v-if="this.malware"
+          :malware="this.malware"
+      ></MalwareCard>
+    </div>
 </v-navigation-drawer>
   <v-container align="left" class="bg-deep-purple-lighten-4" >
     <v-text-field
@@ -84,9 +105,10 @@
 import io from "socket.io-client";
 import PAGraphWrapper from "@/components/PAGraphWrapper";
 import download from "downloadjs"
+import MalwareCard from "@/components/MalwareCard";
 export default {
   name: "ReportPage",
-  components:{PAGraphWrapper},
+  components:{PAGraphWrapper, MalwareCard},
   created(){
     this.socket = io("ws://localhost:5000/report");
     const ref = this
@@ -96,6 +118,7 @@ export default {
           ref.selected_graphs = data["selected_graphs"]
           ref.title = data["title"]
           ref.loading = false
+          ref.malware = data.malware
         })
 
     this.socket_analysis = io("ws://localhost:5000/analysis");
@@ -106,12 +129,31 @@ export default {
       render_healthy : true,
     loading : true,
     selected_graphs : [],
+    malware : null,
     title:""
   }),
   methods: {
     saveGraph:function(){
       //console.log("updating", this.title, this.selected_graphs)
       this.socket.emit("update report", {ID: this.$route.params.id, title:this.title, selected_graphs:this.selected_graphs})
+    },
+    downloadManager:function(){
+      if (this.download_files){
+      for (let i=0;i<this.download_files.length;i++){
+        if (this.download_files[i] === "SysCalls Infected"){
+          this.downloadSyscalls("infected")
+        }
+        else if (this.download_files[i] === "SysCalls Healthy"){
+          this.downloadSyscalls("healthy")
+        }
+        else if (this.download_files[i] === "PCAP Healthy"){
+          this.downloadPCAP("healthy")
+        }
+        else if (this.download_files[i] === "PCAP Infected"){
+          this.downloadPCAP("infected")
+        }
+      }
+      }
     },
     downloadPCAP: function(infected_status){
       let id = this.$route.params.id

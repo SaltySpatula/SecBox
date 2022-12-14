@@ -1,0 +1,5 @@
+- Make sure you can create a new analysis process from all screens
+- Fix display of waiting message in CLI
+- Apexchart error
+- Add malware to report
+- Fix homescreen
