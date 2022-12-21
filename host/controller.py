@@ -73,7 +73,7 @@ class Instance:
         self.client.connect('http://localhost:5000', namespaces=['/cmd'])
         self.sandbox_id = sandbox_id
         self.order_count = 0
-        self.current_path = ""
+        self.current_path = "/"
 
         syscall_monitoring_str = """{"trace_session": {"name": "Default",
             "points": ["""

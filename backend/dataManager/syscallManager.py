@@ -76,7 +76,7 @@ class SysCallManager(DataManager):
 
         for i in range(len(components[sysno_index:])):
             if i % 2 == 1:
-                args.append(components[sysno_index:][i])
+                args.append(components[sysno_index:][i+1])
 
         processed_system_call = {
                 "time_ns": time,
