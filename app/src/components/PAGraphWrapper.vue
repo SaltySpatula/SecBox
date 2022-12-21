@@ -119,10 +119,13 @@ export default {
         const healthy_series = []
         const infected_series = []
         const labels = []
-        for (const [key, value] of Object.entries(healthy)) {
-          let combined = value + infected[key]
+        for (const [key, value] of Object.entries(infected)) {
+          if (!healthy[key]){
+            healthy[key] = 0
+          }
+          let combined = value + healthy[key]
           let r1 = value/combined
-          let r2 = infected[key]/combined
+          let r2 = healthy[key]/combined
           healthy_series.push(r1)
           infected_series.push(r2)
           let key_string = String(key)

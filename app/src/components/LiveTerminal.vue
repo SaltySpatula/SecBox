@@ -1,8 +1,8 @@
 <template>
  <v-container fluid class="ma-0 pa-0">
             <v-row align="center" class="ma-2">
-              <TerminalInterface ref="infected_terminal" type="infected" color="#13d3b6" :lines=this.infected_lines></TerminalInterface>
-              <TerminalInterface ref="healthy_terminal" type="healthy" color="#d917bf" :lines=this.clean_lines></TerminalInterface>
+              <TerminalInterface ref="infected_terminal" type="infected" color="#d917bf" :lines=this.infected_lines></TerminalInterface>
+              <TerminalInterface ref="healthy_terminal" type="healthy" color="#13d3b6" :lines=this.clean_lines></TerminalInterface>
               <v-col v-if="this.combined_cli" cols="12" md="12" style="padding:0; padding-top: 8px">
                 <v-text-field
                               v-if="this.combined_cli"
