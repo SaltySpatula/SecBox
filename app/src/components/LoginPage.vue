@@ -19,7 +19,7 @@ export default {
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify(data)
       }
-      const gResponse = await fetch("http://localhost:5000/login", requestOptions)
+      const gResponse = await fetch("http://"+process.env.VUE_APP_ROOT+"/login", requestOptions)
       console.log(gResponse)
 
 

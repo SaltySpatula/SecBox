@@ -99,7 +99,7 @@ export default {
   components: {MalwareCard, PAGraphWrapper},
   created() {
     // joining room
-    this.socket = io("ws://localhost:5000/analysis");
+    this.socket = io("ws://"+process.env.VUE_APP_ROOT+"/analysis");
 
     this.socket.emit('join analysis room', {"room": this.$route.params.id}, function () {
       // console.log("joined ", data);

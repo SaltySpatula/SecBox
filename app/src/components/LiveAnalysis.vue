@@ -103,7 +103,7 @@ export default {
   created() {
     let ref = this;
     // joining room
-    this.socket = io("ws://localhost:5000/live");
+    this.socket = io("ws://"+process.env.VUE_APP_ROOT+"/live");
 
     this.socket.emit('join room', {"room": this.$route.params.id}, function () {
       // console.log("joined ", data);

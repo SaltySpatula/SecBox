@@ -68,7 +68,7 @@ export default {
       reports:[]
   }),
   created: async function(){
-        const gResponse = await fetch("http://localhost:5000/getReports");
+        const gResponse = await fetch("http://"+process.env.VUE_APP_ROOT+"/getReports");
         const reports = await gResponse.json();
         this.reports = reports["reports"]
     },
