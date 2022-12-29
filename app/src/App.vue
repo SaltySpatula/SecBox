@@ -68,7 +68,7 @@ export default {
         const gObject = await gResponse.json();
         this.flaskGreeting = gObject.greeting;
 
-        const startData = await fetch("http://"+process.env.VUE_APP_ROOT+"getStartData");
+        const startData = await fetch("http://"+process.env.VUE_APP_ROOT+"/getStartData");
         const startObj = await startData.json();
         this.osData = JSON.parse(startObj.oss)
         this.mwData = JSON.parse(startObj.malwares)
