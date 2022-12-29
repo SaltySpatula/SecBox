@@ -9,7 +9,7 @@ The frontend requires [Node 16.X](https://www.stewright.me/2022/01/tutorial-inst
 ├── SecBox
 │   ├── app
 ```           
-and run `npm run serve`.
+and run `npm install`.
 
 ## Backend Setup
 The backend requires [python 3.9](https://www.python.org/downloads/release/python-390/) and [pip](https://pip.pypa.io/en/stable/installation/).
