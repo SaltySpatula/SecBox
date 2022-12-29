@@ -84,6 +84,14 @@ def write_malware_to_DB():
             "bitness": 64,
             "tags": ["CoinMiner", "Miner", "elf", "64"]
         })
+        malware_list.append({
+            "name": "Mirai",
+            "hash": "e11271171067715941a63b98d2a2ccca756b5e90c3df6fac27712f5ca6a624ae",
+            "url": "https://bazaar.abuse.ch/sample/" + "e11271171067715941a63b98d2a2ccca756b5e90c3df6fac27712f5ca6a624ae" + "/",
+            "type": "elf",
+            "bitness": 64,
+            "tags": ["Mirai",  "elf", "64"]
+        })
     else:
         print("Invalid Request Response!")
 

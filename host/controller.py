@@ -3,6 +3,10 @@ from multiprocessing import Process
 import json
 import socketio
 import time
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 syscalls_to_monitor = 384
 
@@ -11,18 +15,18 @@ infected_dockerfile = "infected"
 
 
 class Controller:
-    def __init__(self, mw_hash, os, sandbox_id) -> None:
+    def __init__(self, mw_hash, operating_system, sandbox_id) -> None:
         self.client = socketio.Client()
-        self.client.connect('http://localhost:5000', namespaces=['/sandbox'])
+        self.client.connect(os.getenv('BE_IP_PORT'), namespaces=['/sandbox'])
         self.mw_hash = mw_hash
-        self.os = os
+        self.operating_system = operating_system
         self.sandbox_id = sandbox_id
 
         healthy_args = {
-            "os_image": self.os
+            "os_image": self.operating_system
         }
         infected_args = {
-            "os_image": self.os,
+            "os_image": self.operating_system,
             "malware_hash": self.mw_hash
         }
 
@@ -70,7 +74,7 @@ class Instance:
         self.log_generator = None
         self.infection_status = infection_status
         self.client = socketio.Client()
-        self.client.connect('http://localhost:5000', namespaces=['/cmd'])
+        self.client.connect(os.getenv('BE_IP_PORT'), namespaces=['/cmd'])
         self.sandbox_id = sandbox_id
         self.order_count = 0
         self.current_path = "/"

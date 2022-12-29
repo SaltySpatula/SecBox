@@ -8,6 +8,11 @@ import platform
 import json
 import requests
 import sys
+import os
+
+from dotenv import load_dotenv
+
+load_dotenv()
 
 base_command = "bazel run examples/seccheck:server_cc"
 
@@ -32,8 +37,6 @@ class systemCallMonitor:
         return self
 
     def stop(self):
-        #self.client = socketio.Client()
-        #self.client.connect('http://localhost:5000', namespaces=['/sysCall'])
         healthy_logfile = "healthy" + "/" + self.sandbox_id + "_syscalls"
         infected_logfile = "infected" + "/" + self.sandbox_id + "_syscalls"
 
@@ -58,7 +61,7 @@ class systemCallMonitor:
                 "infected": infected_logstring
             }
         }
-        requests.post("http://localhost:5000/syscall", json=json.dumps(message))
+        requests.post(str(os.getenv('BE_IP_PORT')) + "/syscall", json=json.dumps(message))
         #self.client.emit('sysCall', json.dumps(message), namespace='/sysCall')
         print("Syscall Logs emitted")
         time.sleep(10)

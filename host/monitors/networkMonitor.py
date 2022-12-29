@@ -9,6 +9,11 @@ import io
 import time
 from time import sleep
 import sys
+import os
+
+from dotenv import load_dotenv
+
+load_dotenv()
 
 class networkMonitor:
     def __init__(self, sandbox_id, controller) -> None:
@@ -44,7 +49,7 @@ class networkMonitor:
                         client.sleep(0)
                         self.healthy_buf = []
                     except socketio.exceptions.BadNamespaceError:
-                        client.connect('http://localhost:5000', namespaces='/network')
+                        client.connect(os.getenv('BE_IP_PORT'), namespaces='/network')
                         client.sleep(0)
                 elif sys.getsizeof(self.healthy_buf)>=1000:
                     message = {
@@ -63,7 +68,7 @@ class networkMonitor:
                         client.sleep(0)
                         sleep(0.2)
                     except socketio.exceptions.BadNamespaceError:
-                        client.connect('http://localhost:5000', namespaces='/network')
+                        client.connect(os.getenv('BE_IP_PORT'), namespaces='/network')
                         client.sleep(0)
             else:
                 self.infected_buf.append(output)
@@ -83,7 +88,7 @@ class networkMonitor:
                         self.infected_buf = []
                         client.sleep(0)
                     except socketio.exceptions.BadNamespaceError:
-                        client.connect('http://localhost:5000', namespaces='/network')
+                        client.connect(os.getenv('BE_IP_PORT'), namespaces='/network')
                         client.sleep(0)
                 elif sys.getsizeof(self.infected_buf)>=1000:
                     message = {
@@ -103,7 +108,7 @@ class networkMonitor:
                         sleep(0.2)
                     except socketio.exceptions.BadNamespaceError:
                         print("Caught Exception" + str(infected_status))
-                        client.connect('http://localhost:5000', namespaces='/network')
+                        client.connect(os.getenv('BE_IP_PORT'), namespaces='/network')
                         client.sleep(0)
                         
 
@@ -111,7 +116,7 @@ class networkMonitor:
 
     def monitoring_process(self, infected_status, lock):
         client = socketio.Client()
-        client.connect('http://localhost:5000', namespaces='/network')
+        client.connect(os.getenv('BE_IP_PORT'), namespaces='/network')
         sleep(2)
         print("network monitor started")
         instance = None

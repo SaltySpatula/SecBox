@@ -2,7 +2,11 @@ from subprocess import Popen, PIPE, STDOUT
 from multiprocessing import Process
 import json
 import socketio
+import os
 
+from dotenv import load_dotenv
+
+load_dotenv()
 
 
 class performanceMonitor:
@@ -15,7 +19,7 @@ class performanceMonitor:
 
     def monitoring_process(self, infected_status):
         self.client = socketio.Client()
-        self.client.connect('http://localhost:5000', namespaces=['/performance'])
+        self.client.connect(os.getenv('BE_IP_PORT'), namespaces=['/performance'])
         print("performance monitor started")
         order_count = 0
         container = None
