@@ -41,7 +41,7 @@ export default {
           data: ref.infected_cpu_data["percentages"]
         },],
 
-        colors: ["#d917bf", "#13d3b6"],
+        colors: ["#13d3b6", "#d917bf"],
       })
     });
 

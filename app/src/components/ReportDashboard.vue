@@ -51,7 +51,7 @@ export default {
     malware:null,
   }),
   created: async function(){
-        const gResponse = await fetch("http://localhost:5000/getReports");
+        const gResponse = await fetch("http://"+process.env.VUE_APP_ROOT+"/getReports");
         const obj  = await gResponse.json();
         this.reports = obj["reports"]
         for (let i=0; i<this.reports.length;i++){

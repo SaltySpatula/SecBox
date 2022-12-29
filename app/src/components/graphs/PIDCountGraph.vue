@@ -60,7 +60,7 @@ export default {
         },
         labels: ["healthy", "infected"],
         legend: {position: "bottom"},
-        colors: ["#d917bf", "#13d3b6"],
+        colors: ["#13d3b6", "#d917bf"],
       },
       series: [1, 1]
     };

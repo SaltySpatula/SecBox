@@ -117,7 +117,7 @@ export default {
         console.error("Validation Error")
       }
       else {
-        this.socket = io("ws://localhost:5000/start");
+        this.socket = io("ws://"+process.env.VUE_APP_ROOT+"/start");
         const response = {"SHA256": this.picked_malware, "OS": this.picked_os};
         this.socket.emit('start request', response);
         this.sent_request = true;

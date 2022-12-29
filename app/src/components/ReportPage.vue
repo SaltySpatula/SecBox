@@ -127,7 +127,7 @@ export default {
   created(){
 
 
-    this.socket = io("ws://localhost:5000/report");
+    this.socket = io("ws://"+process.env.VUE_APP_ROOT+"/report");
     const ref = this
     this.socket.emit('get report', {"ID": this.$route.params.id})
     this.socket.on("send report", function (data){
@@ -138,7 +138,7 @@ export default {
           ref.malware = data.malware
         })
 
-    this.socket_analysis = io("ws://localhost:5000/analysis");
+    this.socket_analysis = io("ws://"+process.env.VUE_APP_ROOT+"/analysis");
     this.socket_analysis.emit('join analysis room', {"room": this.$route.params.id}, function () {});
   },
   data: () => ({
@@ -176,7 +176,7 @@ export default {
     },
     downloadPCAP: function(infected_status){
       let id = this.$route.params.id
-      fetch("http://localhost:5000/report/download_pcap/"+id+"/"+infected_status)
+      fetch("http://"+process.env.VUE_APP_ROOT+"/report/download_pcap/"+id+"/"+infected_status)
           .then(res=>{
             return res.blob();
         }).then(blob=>{
@@ -185,7 +185,7 @@ export default {
     },
     downloadSyscalls: function(infected_status){
       let id = this.$route.params.id
-      fetch("http://localhost:5000/report/download_syscalls/"+id+"/"+infected_status)
+      fetch("http://"+process.env.VUE_APP_ROOT+"/report/download_syscalls/"+id+"/"+infected_status)
           .then(res=>{
             return res.blob();
         }).then(blob=>{
