@@ -9,7 +9,7 @@ The frontend requires [Node 16.X](https://www.stewright.me/2022/01/tutorial-inst
 ├── SecBox
 │   ├── app
 ```           
-and run `npm install`.
+and run `npm install`. Create a .env file with the value VUE_APP_ROOT with the desired backend IP, e.g. `VUE_APP_ROOT="localhost:5000"` for if you are running it locally.
 
 ## Backend Setup
 The backend requires [python 3.9](https://www.python.org/downloads/release/python-390/) and [pip](https://pip.pypa.io/en/stable/installation/).
@@ -24,7 +24,7 @@ To add a [mongo DB](https://www.mongodb.com/), a .env file in this directory mus
 ```
 DB_PORT= "27017"
 HOST_BITNESS= 64
-HOST="mongodb+srv://raf:"
+HOST="mongodb+srv://"
 DB= "DB?"
 ```
 
