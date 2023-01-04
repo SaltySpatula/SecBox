@@ -49,8 +49,7 @@ host_bitness = int(os.getenv('HOST_BITNESS'))
 print("Filling Malware DB...")
 handler.write_malware_to_DB()
 
-socketio = SocketIO(app, cors_allowed_origins=[
-    os.getenv('FE_IP_PORT'), os.getenv('HOST_IP_PORT')], ping_timeout=300)
+socketio = SocketIO(app, cors_allowed_origins="*", ping_timeout=300)
 login = LoginManager(app)
 
 system_call_manager = SysCallManager(socketio, db)
