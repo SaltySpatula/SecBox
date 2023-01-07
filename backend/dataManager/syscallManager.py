@@ -5,7 +5,6 @@ from backend import models
 import json
 import csv
 
-
 class SysCallManager(DataManager):
     def __init__(self, socketio, db):
         super().__init__(socketio, db)
@@ -21,10 +20,10 @@ class SysCallManager(DataManager):
         self.directory_frequency[sandbox_id] = {
             "healthy": {"graph": {"/": {"n": 0, "sd": []}}}, "infected": {"graph": {"/": {"n": 0, "sd": []}}}}
 
-    def process_data(self, data, architecture):
+    def process_data(self, data):
         syscall_list = []
         for syscall in data.splitlines():
-            processed_system_call = self.process_syscall(syscall, architecture)
+            processed_system_call = json.loads(syscall)
             if processed_system_call:
                 syscall_list.append(processed_system_call)
         return syscall_list
@@ -34,7 +33,6 @@ class SysCallManager(DataManager):
         for infected_status in data["sysCalls"].keys():
             data["sysCalls"][infected_status] = self.process_data(
                 data["sysCalls"][infected_status], data["architecture"])
-
         sandbox_id = data["ID"]
 
         # Call extract functions here
@@ -44,51 +42,6 @@ class SysCallManager(DataManager):
 
         self.save_data(data)
         return True
-
-    def get_name_from_no(self, sysno, architecture):
-        names = list(self.syscalls.syscalls["archs"][architecture].keys())
-        index = list(
-            self.syscalls.syscalls["archs"][architecture].values()).index(sysno)
-        return names[index]
-
-    def process_syscall(self, syscall, architecture):
-        components = syscall.split()
-        if not syscall.__contains__("sysno"):
-            components.insert(16, "sysno:")
-            components.insert(17, "0")
-        args = []
-
-        time_index = components.index("time_ns:") + 1
-        thread_index = components.index("thread_id:") + 1
-        sysno_index = components.index("sysno:") + 1
-        container_id_index = components.index("container_id:") + 1
-        cwd_index = components.index("cwd:") + 1
-
-        credentials_indexes = [components[container_id_index:cwd_index].index("{"), components[container_id_index:cwd_index].index("}")]
-
-        time = int(components[time_index])
-        thread = int(components[thread_index])
-        sysno = int(components[sysno_index])
-        sysname = self.get_name_from_no(sysno, architecture)
-        container_id = components[container_id_index]
-        cwd = components[cwd_index]
-        cred = str(components[credentials_indexes[0]:credentials_indexes[1]]).replace(",", " ")
-
-        for i in range(len(components[sysno_index:])):
-            if i % 2 == 1:
-                args.append(components[sysno_index:][i+1])
-
-        processed_system_call = {
-                "time_ns": time,
-                "thread_id": thread,
-                "sysno": sysno,
-                "sysname": sysname,
-                "container_id": container_id,
-                "cwd": cwd,
-                "credentials": cred,
-                "args": str(args).replace(",", ";")
-        }
-        return processed_system_call
 
     def save_data(self, data):
         print("Saving Syscall Data: " + data["ID"])

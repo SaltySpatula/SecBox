@@ -6,3 +6,4 @@ system-calls==5.19.0
 scapy==2.4.5
 gevent_websocket==0.10.1
 python-dotenv==0.21.0
+protobuf==4.21.12
