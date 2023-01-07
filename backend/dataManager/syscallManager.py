@@ -32,7 +32,7 @@ class SysCallManager(DataManager):
         print("Processing Received Syscalls...")
         for infected_status in data["sysCalls"].keys():
             data["sysCalls"][infected_status] = self.process_data(
-                data["sysCalls"][infected_status], data["architecture"])
+                data["sysCalls"][infected_status])
         sandbox_id = data["ID"]
 
         # Call extract functions here
