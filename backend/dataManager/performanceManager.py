@@ -1,3 +1,5 @@
+import flask_mongoengine
+
 from backend.dataManager.dataManager import DataManager
 from dateutil import parser
 from datetime import datetime
@@ -129,14 +131,7 @@ class PerformanceManager(DataManager):
             raw_perf_data=json.dumps(self.raw_perf_data[i])
         )
 
-        try:
-            objects = json.loads(models.PerformanceModel.objects(ID__exact=data["ID"]).to_json())
-            if (objects[0]):
-                pm.update()
-            else:
-                pm.save()
-        except:
-            "Error while saving performance data"
+        pm.save()
 
 
     def extract_pid_count(self, sandbox_id, infected_status, data):
@@ -160,17 +155,17 @@ class PerformanceManager(DataManager):
 
     def extract_cpu_percentages(self, sandbox_id, infected_status, data):
         current_ts = parser.parse(data["stats"]["read"])
+        if data:
+            system_delta = data["stats"]['cpu_stats']['system_cpu_usage'] - data["stats"]['precpu_stats']['system_cpu_usage']
+            cpu_delta = data["stats"]['cpu_stats']['cpu_usage']['total_usage'] - data["stats"]['precpu_stats']['cpu_usage']['total_usage']
+            no_cores = data["stats"]['cpu_stats']['online_cpus']
 
-        system_delta = data["stats"]['cpu_stats']['system_cpu_usage'] - data["stats"]['precpu_stats']['system_cpu_usage']
-        cpu_delta = data["stats"]['cpu_stats']['cpu_usage']['total_usage'] - data["stats"]['precpu_stats']['cpu_usage']['total_usage']
-        no_cores = data["stats"]['cpu_stats']['online_cpus']
+            if system_delta:
+                percentage = (cpu_delta/system_delta) * 100 * no_cores
+            else:
+                percentage = 0
 
-        if system_delta:
-            percentage = (cpu_delta/system_delta) * 100 * no_cores
-        else:
-            percentage = 0
-
-        self.cpu_percentages[sandbox_id][infected_status]["graph"].append({"timestamp": current_ts.strftime("%m/%d/%Y, %H:%M:%S.%f%Z"), "cpu_percentage": percentage})
+            self.cpu_percentages[sandbox_id][infected_status]["graph"].append({"timestamp": current_ts.strftime("%m/%d/%Y, %H:%M:%S.%f%Z"), "cpu_percentage": percentage})
 
 
     def extract_packet_count(self, sandbox_id, infected_status, data):
