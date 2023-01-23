@@ -20,6 +20,7 @@
               dark
               min-height="5em"
               style="position:relative;bottom:0"
+              @click="stop"
             >
               <v-icon              >
                 mdi-delete
@@ -125,6 +126,10 @@ export default {
       const current_id = this.$route.params.id
       router.replace({path: '/analysis/' + current_id})
     },
+    stop: function () {
+      this.socket.emit("stop request", {"ID":this.$route.params.id})
+      router.push({ path: '/' })
+    }
   },
 
 }

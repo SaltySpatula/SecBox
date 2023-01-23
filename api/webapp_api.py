@@ -385,6 +385,7 @@ def stop(data):
     print("Stop function called")
     try:
         performance_manager.save_data(data)
+        print("Saved performance data", data)
         network_manager.save_data(data)
         socketio.emit("stopSandbox", json.dumps(data), namespace="/sandbox")
     except KeyError:

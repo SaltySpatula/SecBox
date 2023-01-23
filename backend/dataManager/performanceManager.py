@@ -119,6 +119,7 @@ class PerformanceManager(DataManager):
     def save_data(self, data):
         print("Saving Performance Data: ", data["ID"])
         i = data["ID"]
+
         pm = models.PerformanceModel(
             ID=i,
             pid_counts=json.dumps(self.pid_counts[i]),
@@ -127,7 +128,16 @@ class PerformanceManager(DataManager):
             packet_counts=json.dumps(self.packet_counts[i]),
             raw_perf_data=json.dumps(self.raw_perf_data[i])
         )
-        pm.save()
+
+        try:
+            objects = json.loads(models.PerformanceModel.objects(ID__exact=data["ID"]).to_json())
+            if (objects[0]):
+                pm.update()
+            else:
+                pm.save()
+        except:
+            "Error while saving performance data"
+
 
     def extract_pid_count(self, sandbox_id, infected_status, data):
         current_ts = parser.parse(data["read"])

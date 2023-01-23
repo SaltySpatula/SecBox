@@ -26,9 +26,7 @@ def get_reports():
 
 
 def get_available_images():
-    output = subprocess.run(
-        ['curl', '-L', '-s', 'https://registry.hub.docker.com/v2/repositories/library/ubuntu/tags?page_size=40'],
-        text=True, capture_output=True)
+    output = subprocess.run(['curl', '-L', '-s', 'https://registry.hub.docker.com/v2/repositories/library/ubuntu/tags?page_size=40'],text=True, capture_output=True)
     available_images = []
     for item in json.loads(output.stdout)['results']:
         available_images.append("ubuntu:" + item['name'])

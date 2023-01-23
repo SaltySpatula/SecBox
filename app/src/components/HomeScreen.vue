@@ -2,7 +2,7 @@
   <div>
     <v-container fluid>
       <v-row align="center" class="ma-2">
-        <v-col cols="12" md="4">
+        <v-col cols="12" md="4" lg="4" xl="5">
           <v-card class="bg-deep-purple-accent-1" style="overflow-y: auto; height:50rem">
             <v-card-text >
             <h1 class="pa-md-4" align="center"> Project Description </h1>
@@ -18,19 +18,16 @@
             </v-card-text>
           </v-card>
         </v-col>
-        <v-col cols="12" md="4" fill-height>
-          <v-card class="bg-purple-darken-4" style="overflow-y: auto; height:10rem">
-              <v-card-title class="align-center pa-md-4">Analyze a new File</v-card-title>
-              <v-card-actions class="justify-center align-center" >
-            </v-card-actions>
-          </v-card>
+        <v-col cols="12" md="4" lg="4" xl="2" fill-height align="center"
+      justify="center">
+              <img :src="require('@/static/logo.png')" alt="SecBox Logo: An impossible cube"/>
         </v-col>
-        <v-col cols="12" md="4">
+        <v-col cols="12" md="4" lg="4" xl="5">
           <v-card class="bg-deep-purple-accent-1" style="overflow-y: auto; height:50rem" >
             <v-card-text >
             <h1 class="pa-md-4" align="center"> Latest Reports </h1>
             <v-row align="center" class="ma-2">
-              <v-col justify="center" cols="4" md="12" sm="12"
+              <v-col justify="center" cols="4"  md="12" sm="12"
                 v-for="report in reports"
                 :key="report.title">
                 <v-card class="bg-purple-darken-4" @click="goToReport(report.ID)">

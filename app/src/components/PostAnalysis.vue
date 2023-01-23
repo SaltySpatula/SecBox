@@ -48,6 +48,7 @@
              color="red"
              dark
              tile
+             @click="abandonReport"
       >
         <v-icon>
           mdi-delete
@@ -160,6 +161,9 @@ export default {
       this.socket.emit('create report', {"ID": this.$route.params.id, "selected_graphs":this.selected_graphs})
       router.replace({path: '/report/' + current_id},)
     },
+    abandonReport: function (){
+      router.push({ path: '/' })
+    }
   }
 }
 </script>
