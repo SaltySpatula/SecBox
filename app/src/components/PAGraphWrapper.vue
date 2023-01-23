@@ -126,8 +126,8 @@ export default {
           let combined = value + healthy[key]
           let r1 = value/combined
           let r2 = healthy[key]/combined
-          healthy_series.push(r1)
-          infected_series.push(r2)
+          healthy_series.push(r2)
+          infected_series.push(r1)
           let key_string = String(key)
           let length = 10
           let trimmedString = key_string.length > length ? key_string.substring(0, length - 3) + "..." : key_string.substring(0, length)
