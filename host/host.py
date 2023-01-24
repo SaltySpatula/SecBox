@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-socketio = socketio.Client()
+socketio = socketio.Client(request_timeout=15)
 
 @socketio.event
 def connect():

@@ -59,36 +59,16 @@ class systemCallMonitor:
         with open(infected_logfile, "r") as i:
             infected_logstring = i.read()
 
-        infected_loglist = infected_logstring.split("\n")
-        healthy_loglist = healthy_logstring.split("\n")
-        last_message = 0
-        while not last_message:
-            if len(healthy_loglist)>50000 or len(infected_loglist)>50000:
-                message = {
-                    "ID": self.sandbox_id,
-                    "architecture": self.arch,
-                    "sysCalls": {
-                        "healthy": "\n".join(healthy_loglist[:50000]),
-                        "infected": "\n".join(infected_loglist[:50000])
-                    },
-                    "lastMessage": last_message
-                }
-                healthy_loglist = healthy_loglist[50000:]
-                infected_loglist = infected_loglist[50000:]
-            else:
-                last_message = 1
-                message = {
-                    "ID": self.sandbox_id,
-                    "architecture": self.arch,
-                    "sysCalls": {
-                        "healthy": "\n".join(healthy_loglist),
-                        "infected": "\n".join(infected_loglist)
-                    },
-                    "lastMessage": last_message
-                }
-            requests.post(str(os.getenv('BE_IP_PORT')) +
-                        "/syscall", json=json.dumps(message))
-            time.sleep(0.1)
+        message = {
+                "ID": self.sandbox_id,
+                "architecture": self.arch,
+                "sysCalls": {
+                    "healthy": healthy_logstring,
+                    "infected": infected_logstring
+                },
+                "lastMessage": 1
+            }
+        requests.post(str(os.getenv('BE_IP_PORT')) + "/syscall", json=json.dumps(message))
         print("Syscall Logs emitted")
         time.sleep(10)
         os.remove("infected" + "/" + self.sandbox_id + "_syscalls")
@@ -132,6 +112,7 @@ class systemCallMonitor:
             if not self.handshake(conn):
                 conn.close()
             print("Handshake Successful")
+            write_counter = 0
             with open(infected_status + "/" + self.sandbox_id + "_syscalls", "w+") as logfile:
                 while True:
                     data = conn.recv(10240)
@@ -155,6 +136,19 @@ class systemCallMonitor:
                                 "args": str(args).replace(",", ";")
                             }
                             logfile.write(json.dumps(syscall)+"\n")
+                            write_counter += 1
+                        if write_counter>=10000:
+                            message = {
+                                "ID": self.sandbox_id,
+                                "architecture": self.arch,
+                                "sysCalls": {
+                                    infected_status: logfile.read()
+                                },
+                                "lastMessage": 0
+                            }
+                            requests.post(str(os.getenv('BE_IP_PORT')) + "/syscall", json=json.dumps(message))
+                            logfile.truncate()
+                            write_counter = 0
 
     def runInParallel(self, fn1, fn2, arg1, arg2):
         fns = [fn1, fn2]
