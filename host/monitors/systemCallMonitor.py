@@ -88,6 +88,7 @@ class systemCallMonitor:
                 }
             requests.post(str(os.getenv('BE_IP_PORT')) +
                         "/syscall", json=json.dumps(message))
+            time.sleep(0.1)
         print("Syscall Logs emitted")
         time.sleep(10)
         os.remove("infected" + "/" + self.sandbox_id + "_syscalls")
