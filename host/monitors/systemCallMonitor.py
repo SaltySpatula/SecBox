@@ -63,18 +63,18 @@ class systemCallMonitor:
         healthy_loglist = healthy_logstring.split("\n")
         last_message = 0
         while not last_message:
-            if len(healthy_loglist)>10000 or len(infected_loglist)>10000:
+            if len(healthy_loglist)>50000 or len(infected_loglist)>50000:
                 message = {
                     "ID": self.sandbox_id,
                     "architecture": self.arch,
                     "sysCalls": {
-                        "healthy": "\n".join(healthy_loglist[:10000]),
-                        "infected": "\n".join(infected_loglist[:10000])
+                        "healthy": "\n".join(healthy_loglist[:50000]),
+                        "infected": "\n".join(infected_loglist[:50000])
                     },
                     "lastMessage": last_message
                 }
-                healthy_loglist = healthy_loglist[10000:]
-                infected_loglist = infected_loglist[10000:]
+                healthy_loglist = healthy_loglist[50000:]
+                infected_loglist = infected_loglist[50000:]
             else:
                 last_message = 1
                 message = {
