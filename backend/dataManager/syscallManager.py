@@ -38,9 +38,9 @@ class SysCallManager(DataManager):
         # Call extract functions here
         print("Extracting Graphs...")
         self.extract_graphs(sandbox_id, data)
-        # Call emit functions here
-
-        self.save_data(data)
+        if data["lastMessage"]:
+            self.save_data(data)
+            print("Last Message received, data saved, graphs ready.")
         return True
 
     def save_data(self, data):
@@ -67,10 +67,11 @@ class SysCallManager(DataManager):
             print("Done!")
 
     def extract_graphs(self, sandbox_id, data):
-        self.reads_vs_writes[sandbox_id] = {
-            "healthy": {"graph": {"reads": 0, "writes": 0}}, "infected": {"graph": {"reads": 0, "writes": 0}}}
-        self.directory_frequency[sandbox_id] = {
-            "healthy": {"graph": {"/": {"n": 0, "sd": []}}}, "infected": {"graph": {"/": {"n": 0, "sd": []}}}}
+        if sandbox_id not in list(self.reads_vs_writes.keys()):
+            self.reads_vs_writes[sandbox_id] = {
+                "healthy": {"graph": {"reads": 0, "writes": 0}}, "infected": {"graph": {"reads": 0, "writes": 0}}}
+            self.directory_frequency[sandbox_id] = {
+                "healthy": {"graph": {"/": {"n": 0, "sd": []}}}, "infected": {"graph": {"/": {"n": 0, "sd": []}}}}
 
         for infected_status in data["sysCalls"]:
             for syscall in data["sysCalls"][infected_status]:

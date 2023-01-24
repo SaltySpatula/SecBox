@@ -59,17 +59,35 @@ class systemCallMonitor:
         with open(infected_logfile, "r") as i:
             infected_logstring = i.read()
 
-        message = {
-            "ID": self.sandbox_id,
-            "architecture": self.arch,
-            "sysCalls": {
-                "healthy": healthy_logstring,
-                "infected": infected_logstring
-            }
-        }
-        requests.post(str(os.getenv('BE_IP_PORT')) +
-                      "/syscall", json=json.dumps(message))
-        #self.client.emit('sysCall', json.dumps(message), namespace='/sysCall')
+        infected_loglist = infected_logstring.split("\n")
+        healthy_loglist = healthy_logstring.split("\n")
+        last_message = 0
+        while not last_message:
+            if len(healthy_loglist)>10000 or len(infected_loglist)>10000:
+                message = {
+                    "ID": self.sandbox_id,
+                    "architecture": self.arch,
+                    "sysCalls": {
+                        "healthy": "\n".join(healthy_loglist[:10000]),
+                        "infected": "\n".join(infected_loglist[:10000])
+                    },
+                    "lastMessage": last_message
+                }
+                healthy_loglist = healthy_loglist[10000:]
+                infected_loglist = infected_loglist[10000:]
+            else:
+                last_message = 1
+                message = {
+                    "ID": self.sandbox_id,
+                    "architecture": self.arch,
+                    "sysCalls": {
+                        "healthy": "\n".join(healthy_loglist),
+                        "infected": "\n".join(infected_loglist)
+                    },
+                    "lastMessage": last_message
+                }
+            requests.post(str(os.getenv('BE_IP_PORT')) +
+                        "/syscall", json=json.dumps(message))
         print("Syscall Logs emitted")
         time.sleep(10)
         os.remove("infected" + "/" + self.sandbox_id + "_syscalls")
@@ -98,7 +116,6 @@ class systemCallMonitor:
     def monitoring_process(self, infected_status):
         self.client = socketio.Client()
         print("syscall monitor started")
-        cwd = os.getcwd() + "/gvisor-master/"
         socket_addr = "/tmp/" + \
             infected_status + "_" + \
             str(self.sandbox_id) + "_gvisor_events.sock"
