@@ -29,14 +29,12 @@ class SysCallManager(DataManager):
         return syscall_list
 
     def handle_message(self, data):
-        print("Processing Received Syscalls...")
         for infected_status in data["sysCalls"].keys():
             data["sysCalls"][infected_status] = self.process_data(
                 data["sysCalls"][infected_status])
         sandbox_id = data["ID"]
 
         # Call extract functions here
-        print("Extracting Graphs...")
         self.extract_graphs(sandbox_id, data)
         if data["lastMessage"]:
             self.save_data(data)

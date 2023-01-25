@@ -29,6 +29,7 @@ def stop_sandbox(json):
     sandbox = find_by_id(json['ID'])
     print(sandbox)
     sandbox.stop()
+    sandboxes[json['ID']] = None
 
 
 def stop_all():
@@ -80,7 +81,6 @@ class Sandbox:
         self.syscallMonitor = systemCallMonitor.systemCallMonitor(
             self.sandbox_id)
         self.syscallMonitor.start()
-        sleep(6)
         self.controller = Controller(self.mw_hash, self.os, self.sandbox_id)
 
         self.perfMonitor = performanceMonitor.performanceMonitor(
@@ -102,7 +102,16 @@ class Sandbox:
         self.perfMonitor.stop()
         self.netMonitor.stop()
         self.controller.stop_instances()
-        self.process.kill()
+        self.process.terminate()
+        print("Waiting for terminated process to terminate")
+        self.process.join()
+        print("Closing terminated process")
+        self.process.close()
         print("process killed")
+        self.syscallMonitor = None
+        self.controller = None
+        self.perfMonitor = None
+        self.netMonitor = None
         self.stopped = True
         print("Sandbox stopped, processes joined")
+        return 1

@@ -46,7 +46,12 @@ class performanceMonitor:
 
     def stop(self):
         for p in self.ps:
-            p.kill()
+            p.terminate()
+        for p in self.ps:
+            print("Waiting for terminated performance monitor process to terminate")
+            p.join()
+            print("Closing terminated process")
+            p.close()
 
     def runInParallel(self, fn1, fn2, args1, args2):
         fns = [fn1, fn2]

@@ -110,8 +110,6 @@ class networkMonitor:
                         print("Caught Exception" + str(infected_status))
                         client.connect(os.getenv('BE_IP_PORT'), namespaces='/network')
                         client.sleep(0)
-                        
-
         return handle_packet
 
     def monitoring_process(self, infected_status, lock):
@@ -138,7 +136,12 @@ class networkMonitor:
 
     def stop(self):
         for p in self.ps:
-            p.kill()
+            p.terminate()
+        for p in self.ps:
+            print("Waiting for terminated network monitor process to terminate")
+            p.join()
+            print("Closing terminated process")
+            p.close()
 
     def runInParallel(self, fn1, fn2, args1, args2):
         print("Running in paralell")

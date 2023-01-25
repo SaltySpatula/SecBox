@@ -32,6 +32,7 @@ class systemCallMonitor:
         self.arch = platform.processor()
         self.bitness = 64 if sys.maxsize > 2**32 else 32
         self.syscalls = system_calls.syscalls()
+        self.stopped = False
 
     def run(self):
         p = Process(target=self.runInParallel, args=(
@@ -50,8 +51,15 @@ class systemCallMonitor:
         healthy_logstring = ""
         infected_logstring = ""
 
+        self.stopped = True
+
         for p in self.ps:
-            p.kill()
+            p.terminate()
+        for p in self.ps:
+            print("Waiting for terminated syscall monitor process to terminate")
+            p.join()
+            print("Closing terminated process")
+            p.close()
 
         with open(healthy_logfile, "r") as h:
             healthy_logstring = h.read()
@@ -73,6 +81,7 @@ class systemCallMonitor:
         time.sleep(10)
         os.remove("infected" + "/" + self.sandbox_id + "_syscalls")
         os.remove("healthy" + "/" + self.sandbox_id + "_syscalls")
+        return 0
 
     def handshake(self, conn):
         bytes = conn.recv(10240)
@@ -114,7 +123,7 @@ class systemCallMonitor:
             print("Handshake Successful")
             write_counter = 0
             with open(infected_status + "/" + self.sandbox_id + "_syscalls", "w+") as logfile:
-                while True:
+                while not self.stopped:
                     data = conn.recv(10240)
                     if len(data) > 1:
                         message_type = struct.unpack("<h", data[2:4])[0]
@@ -149,6 +158,9 @@ class systemCallMonitor:
                             requests.post(str(os.getenv('BE_IP_PORT')) + "/syscall", json=json.dumps(message))
                             logfile.truncate()
                             write_counter = 0
+                    else:
+                        print("No more syscalls to receive, closing server")
+                        break
 
     def runInParallel(self, fn1, fn2, arg1, arg2):
         fns = [fn1, fn2]
