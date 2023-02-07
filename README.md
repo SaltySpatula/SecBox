@@ -52,3 +52,8 @@ sudo python3 ./host.py
 
 ## Configuration
 Configuration happens through the respective .env files for the respective system components.
+
+
+## Demo Video
+A demo is available on YouTube:
+https://www.youtube.com/watch?v=lkEE3iQvFtk
