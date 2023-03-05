@@ -46,7 +46,7 @@ sudo ./setup_bazel_gvisor.sh
 The host can then be run from the host directory by running:
 
 ```
-sudo python3 ./host.py
+sudo python3 host.py
 ```
 
 
