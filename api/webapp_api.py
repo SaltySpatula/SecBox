@@ -24,10 +24,6 @@ import json
 from dotenv import load_dotenv
 
 load_dotenv()
-# Hosted DB:
-# admin
-# HmxrjkxTwd0etI6Y
-# mongodb+srv://admin:HmxrjkxTwd0etI6Y@secboxmongodb.nhcx1ch.mongodb.net/?retryWrites=true&w=majority
 
 app = Flask(__name__)
 CORS(app)
